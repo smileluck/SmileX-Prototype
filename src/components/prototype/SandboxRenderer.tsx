@@ -96,6 +96,13 @@ const BRIDGE_SCRIPT = `<script>
     return parts.join(' > ');
   }
 
+  // Throttle helper for high-frequency events
+  var _posTimer=null;
+  function schedulePosition(){
+    if(_posTimer)return;
+    _posTimer=setTimeout(function(){_posTimer=null;positionMarkers();},16);
+  }
+
   function renderMarkers(annotations,activePage,selectedId){
     document.querySelectorAll('.smilex-marker').forEach(function(m){m.remove();});
     document.querySelectorAll('.smilex-target-highlight').forEach(function(el){el.classList.remove('smilex-target-highlight');el.style.outline='';el.style.backgroundColor='';el.style.position='';});
@@ -118,8 +125,6 @@ const BRIDGE_SCRIPT = `<script>
       byPage[pageId].forEach(function(a){
         var target=container.querySelector(a.selector);
         if(!target)return;
-        var br=target.getBoundingClientRect();
-        if(br.width===0&&br.height===0)return;
         var color=markerColor(a.markerNumber);
         var isActive=a.id===selectedId;
 
@@ -129,12 +134,13 @@ const BRIDGE_SCRIPT = `<script>
         target.style.outline=isActive?'3px solid '+color:'2px solid '+color;
         target.style.backgroundColor=isActive?'rgba(0,0,0,0.04)':'';
 
-        // Marker on body with fixed positioning
+        // Always create marker (even for hidden targets — modals/tabs may show later)
         var el=document.createElement('div');
         el.className='smilex-marker'+(isActive?' smilex-marker-active':'');
         el.style.position='fixed';
         el.style.zIndex='200';
         el.style.background=color;
+        el.style.display='none';
         el.textContent=a.markerNumber;
         el.setAttribute('data-ann-id',a.id);
         el.addEventListener('click',function(e){
@@ -151,12 +157,6 @@ const BRIDGE_SCRIPT = `<script>
   function positionMarkers(){
     var annotations=_currentAnnotations;
     var activePage=_currentActivePage;
-    var byPage={};
-    annotations.forEach(function(a){
-      var pg=a.page||activePage;
-      if(!byPage[pg])byPage[pg]=[];
-      byPage[pg].push(a);
-    });
 
     document.querySelectorAll('.smilex-marker').forEach(function(marker){
       var annId=marker.getAttribute('data-ann-id');
@@ -164,22 +164,29 @@ const BRIDGE_SCRIPT = `<script>
       if(!ann)return;
       var pg=ann.page||activePage;
       var container=document.getElementById('page-'+pg)||document.getElementById(pg);
-      if(!container)return;
+      if(!container){marker.style.display='none';return;}
       var target=container.querySelector(ann.selector);
       if(!target){marker.style.display='none';return;}
       var r=target.getBoundingClientRect();
       if(r.width===0&&r.height===0){marker.style.display='none';return;}
       marker.style.display='';
-      marker.style.left=(r.right-15)+'px';
-      marker.style.top=(r.top-9)+'px';
+      // Small elements (buttons): place marker outside to preserve click area
+      if(r.width<60){
+        marker.style.left=(r.right+3)+'px';
+        marker.style.top=(r.top+r.height/2-12)+'px';
+      }else{
+        marker.style.left=(r.right-15)+'px';
+        marker.style.top=(r.top-6)+'px';
+      }
     });
   }
 
-  // Auto-reposition on layout change and scroll
-  var _ro=new ResizeObserver(function(){positionMarkers();});
+  // Auto-reposition on layout change, scroll, and DOM mutations
+  var _ro=new ResizeObserver(function(){schedulePosition();});
   _ro.observe(document.documentElement);
-  window.addEventListener('scroll',function(){positionMarkers();},true);
-  window.addEventListener('resize',function(){positionMarkers();});
+  window.addEventListener('scroll',function(){schedulePosition();},true);
+  window.addEventListener('resize',function(){schedulePosition();});
+  new MutationObserver(function(){schedulePosition();}).observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['style','class']});
 
   // Placing mode: highlight on hover, capture click to get selector
   var _lastHighlight=null;
