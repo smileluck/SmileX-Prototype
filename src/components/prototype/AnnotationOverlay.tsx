@@ -28,8 +28,8 @@ export function AnnotationOverlay({
   const handleClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     if (!isPlacing || !overlayRef.current) return
     const rect = overlayRef.current.getBoundingClientRect()
-    const x = ((e.clientX - rect.left) / rect.width) * 100
-    const y = ((e.clientY - rect.top) / rect.height) * 100
+    const x = (e.clientX - rect.left) / rect.width
+    const y = (e.clientY - rect.top) / rect.height
     onPlaceMarker(x, y)
     setIsPlacing(false)
   }, [isPlacing, onPlaceMarker])
@@ -67,8 +67,8 @@ export function AnnotationOverlay({
           active={selectedId === ann.id}
           onClick={() => onSelect(ann.id)}
           style={{
-            left: `${ann.x}%`,
-            top: `${ann.y}%`,
+            left: `${ann.x * 100}%`,
+            top: `${ann.y * 100}%`,
             pointerEvents: 'auto',
           }}
         />
