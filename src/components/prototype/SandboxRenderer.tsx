@@ -68,6 +68,8 @@ const BRIDGE_SCRIPT = `<script>
       var el=document.getElementById('page-'+target)||document.getElementById(target);
       if(!el)return;
       if(el.classList.contains('page-section')){
+        _standalone.forEach(function(s){s.style.display='none';});
+        var app=document.getElementById('app');if(app)app.style.display='';
         document.querySelectorAll('.page-section').forEach(function(p){p.classList.remove('active');});
         el.classList.add('active');
         document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
