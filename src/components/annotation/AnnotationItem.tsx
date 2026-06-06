@@ -45,6 +45,11 @@ export function AnnotationItem({ annotation, onUpdate, onDelete, onSelect, activ
           {annotation.markerNumber}
         </div>
 
+        {/* Global indicator */}
+        {annotation.scope === 'global' && (
+          <span className="text-[9px] text-base-content/40 border border-base-content/20 rounded px-1 mt-1 shrink-0">通用</span>
+        )}
+
         {/* Content */}
         <div className="flex-1 min-w-0">
           <textarea

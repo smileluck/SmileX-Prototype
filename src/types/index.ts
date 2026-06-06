@@ -3,6 +3,7 @@ export interface Annotation {
   markerNumber: number
   selector: string
   description: string
+  scope: 'global' | 'page'
   page?: string
   createdAt: number
   updatedAt: number

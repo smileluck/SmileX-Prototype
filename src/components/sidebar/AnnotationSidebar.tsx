@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import type { Annotation, PageInfo } from '../../types'
 import { AnnotationItem } from '../annotation/AnnotationItem'
 import { EmptyState } from '../shared/EmptyState'
@@ -25,24 +25,60 @@ export function AnnotationSidebar({
   onSelect,
   onNavigate,
 }: AnnotationSidebarProps) {
+  const [tab, setTab] = useState<'page' | 'global'>('page')
+
+  const globalAnnotations = useMemo(
+    () => annotations.filter(a => a.scope === 'global'),
+    [annotations],
+  )
+
   const pageAnnotationCounts = useMemo(() => {
     const counts = new Map<string, number>()
     for (const ann of annotations) {
+      if (ann.scope === 'global') continue
       const key = ann.page ?? ''
       counts.set(key, (counts.get(key) ?? 0) + 1)
     }
     return counts
   }, [annotations])
 
-  const currentAnnotations = useMemo(
-    () => activePage ? annotations.filter(a => a.page === activePage) : annotations,
+  const pageAnnotations = useMemo(
+    () => activePage
+      ? annotations.filter(a => a.scope !== 'global' && a.page === activePage)
+      : annotations.filter(a => a.scope !== 'global'),
     [annotations, activePage],
   )
 
+  const displayedAnnotations = tab === 'global' ? globalAnnotations : pageAnnotations
+
   return (
     <div className="flex flex-col h-full bg-base-200">
-      {/* Page navigation dropdown */}
-      {pages.length > 0 && (
+      {/* Tab bar */}
+      <div role="tablist" className="tabs tabs-bordered px-3 pt-2">
+        <button
+          role="tab"
+          className={`tab text-xs ${tab === 'page' ? 'tab-active' : ''}`}
+          onClick={() => setTab('page')}
+        >
+          页面
+          {pageAnnotations.length > 0 && (
+            <span className="badge badge-xs ml-1">{pageAnnotations.length}</span>
+          )}
+        </button>
+        <button
+          role="tab"
+          className={`tab text-xs ${tab === 'global' ? 'tab-active' : ''}`}
+          onClick={() => setTab('global')}
+        >
+          通用
+          {globalAnnotations.length > 0 && (
+            <span className="badge badge-xs ml-1">{globalAnnotations.length}</span>
+          )}
+        </button>
+      </div>
+
+      {/* Page navigation dropdown — only in page tab */}
+      {tab === 'page' && pages.length > 0 && (
         <div className="px-3 py-2.5 border-b border-base-300">
           <label className="flex items-center gap-1.5 text-[11px] font-medium text-base-content/40 uppercase tracking-wider mb-1.5">
             <Layers className="h-3 w-3" />
@@ -62,15 +98,15 @@ export function AnnotationSidebar({
         </div>
       )}
 
-      {/* Annotation list for current page */}
+      {/* Annotation list */}
       <div className="flex-1 overflow-y-auto">
-        {currentAnnotations.length === 0 ? (
+        {displayedAnnotations.length === 0 ? (
           <div className="p-3">
-            <EmptyState text="当前页面暂无标注" />
+            <EmptyState text={tab === 'global' ? '暂无通用标注' : '当前页面暂无标注'} />
           </div>
         ) : (
           <div className="flex flex-col p-2 gap-0.5">
-            {currentAnnotations.map(ann => (
+            {displayedAnnotations.map(ann => (
               <AnnotationItem
                 key={ann.id}
                 annotation={ann}

@@ -42,8 +42,8 @@ export default function App() {
     updatePrototype(p => ({ ...p, mode, updatedAt: Date.now() }))
   }, [updatePrototype])
 
-  const handlePlaceAnnotation = useCallback((selector: string, page?: string) => {
-    addAnnotation(selector, page)
+  const handlePlaceAnnotation = useCallback((selector: string, scope: 'global' | 'page', page?: string) => {
+    addAnnotation(selector, scope, page)
   }, [addAnnotation])
 
   const handleSelectAnnotation = useCallback((id: string) => {

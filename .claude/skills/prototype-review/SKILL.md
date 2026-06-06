@@ -183,12 +183,13 @@ description: "根据需求文档创建 HTML 原型，或对比需求文档与已
 
 **步骤 2：生成标注清单**
 按以下顺序逐页生成标注，确保不遗漏：
-1. 每个页面的 Tab 切换项（每个 Tab 一个标注）
-2. **步骤 1.4 中的每个按钮**（按页面分组逐一标注，不可跳过）
-3. 每个页面内的关键数据展示区（卡片/表格/列表/状态面板）
-4. **每个弹窗至少一个标注**（用弹窗容器 ID 作为 selector）
-5. 表单验证规则和分支逻辑
-6. 搜索框、筛选下拉、滑块等输入控件
+1. **全局元素**：侧边栏导航项、头部操作按钮等跨页面可见元素（`scope: "global"`）
+2. 每个页面的 Tab 切换项（每个 Tab 一个标注）
+3. **步骤 1.4 中的每个按钮**（按页面分组逐一标注，不可跳过）
+4. 每个页面内的关键数据展示区（卡片/表格/列表/状态面板）
+5. **每个弹窗至少一个标注**（用弹窗容器 ID 作为 selector）
+6. 表单验证规则和分支逻辑
+7. 搜索框、筛选下拉、滑块等输入控件
 
 **步骤 3：自查清单**
 生成完毕后逐项确认：
@@ -196,6 +197,7 @@ description: "根据需求文档创建 HTML 原型，或对比需求文档与已
 - [ ] 每个触发弹窗的按钮标注中是否注明了"点击弹出 xxx 弹窗"？
 - [ ] Tab 组中的**每个 Tab 项**是否都有标注？
 - [ ] 每个标注是否都有 `selector` 字段（非 `x`/`y`）？
+- [ ] **侧边栏/头部元素**是否有 `scope: "global"` 的通用标注？
 - [ ] **对比按钮清单**：grep `<button ` 的总数 vs 标注中覆盖的按钮数，差距 > 5 则有遗漏
 - [ ] **对比弹窗清单**：grep `modal-overlay` 的总数 vs 标注中覆盖的弹窗数，每个弹窗至少 1 条
 
@@ -206,6 +208,7 @@ description: "根据需求文档创建 HTML 原型，或对比需求文档与已
   "markerNumber": 1,
   "selector": "#elementId",
   "description": "标注说明",
+  "scope": "page",
   "page": "map",
   "createdAt": 1700000000000,
   "updatedAt": 1700000000000
@@ -214,7 +217,30 @@ description: "根据需求文档创建 HTML 原型，或对比需求文档与已
 
 **字段说明：**
 - `selector`：**必填**，CSS 选择器，平台通过 `container.querySelector(selector)` 定位目标元素来放置 marker。**不要使用 `x`/`y` 坐标**，平台不支持坐标定位。
-- `page`：**必填**，标注所属页面的 ID（如 `"map"`、`"robots"`、`"loginPage"`）
+- `scope`：**必填**，`"page"` 或 `"global"`。页面型标注归属到特定页面；通用型标注适用于跨页面可见的元素（如侧边栏、头部）。
+- `page`：`scope === "page"` 时**必填**，标注所属页面的 ID（如 `"map"`、`"robots"`、`"loginPage"`）。`scope === "global"` 时不需要此字段。
+
+**通用标注规则（scope: "global"）：**
+
+侧边栏、头部以及其他在多个页面中共享可见的跨页面元素应标注为 `scope: "global"`：
+- 通用标注不设 `page` 字段
+- 平台在元素可见的所有页面显示通用标注的 marker——如侧边栏在登录页（`#app` 隐藏）时 marker 自动隐藏，登录后的所有页面间共享显示
+- 典型通用元素：侧边栏导航项（`.sidebar .nav-item`）、头部操作按钮（`.top-bar .user-btn`）、全局通知图标
+- 通用元素的 `selector` 应指向 `#app` 内但在 `.page-section` 外的元素
+- **自查方法**：标注生成后，确认侧边栏的每个导航项和头部操作按钮都有通用标注
+
+**通用标注定数示例：**
+```json
+{
+  "id": "唯一ID",
+  "markerNumber": 10,
+  "selector": ".sidebar .nav-item[data-page='map']",
+  "description": "地图管理导航项：点击切换到地图管理页面",
+  "scope": "global",
+  "createdAt": 1700000000000,
+  "updatedAt": 1700000000000
+}
+```
 
 **selector 编写规则：**
 - 优先使用 ID 选择器：`#loginForm`、`#mapCanvas`
@@ -265,9 +291,10 @@ description: "根据需求文档创建 HTML 原型，或对比需求文档与已
 - **自查方法**：标注生成后，用 `grep -c 'modal-overlay' index.html` 统计弹窗数量，确认标注中覆盖了所有弹窗
 
 **标注 page 字段取值规则：**
-- 登录页的标注：`page: "loginPage"`
-- 标准 page-section 的标注：`page: "map"` / `page: "robots"` 等（不含 `page-` 前缀）
-- 弹窗内的标注：`page` 与弹窗所属页面一致
+- 登录页的标注：`page: "loginPage"`, `scope: "page"`
+- 标准 page-section 的标注：`page: "map"` / `page: "robots"` 等（不含 `page-` 前缀）, `scope: "page"`
+- 弹窗内的标注：`page` 与弹窗所属页面一致, `scope: "page"`
+- 侧边栏/头部等跨页面元素：不设 `page` 字段, `scope: "global"`
 - 必须与 HTML 中的页面 ID 一致
 
 ### Phase 5: 流程图制作
@@ -351,12 +378,14 @@ flowchart TD
 
 #### D. 标注完整性
 - 每个页面是否至少有 2 个标注
+- **通用标注覆盖**：侧边栏导航项、头部操作按钮等跨页面元素是否有 `scope: "global"` 标注
 - **按钮覆盖率**：grep `<button ` 总数 vs 标注中覆盖按钮数，覆盖率应 > 90%
 - **class 含 btn/button 的元素覆盖率**：同上
 - **带 onclick 的元素覆盖率**：同上
 - **Tab 切换项**是否标注（每个 Tab 的筛选逻辑和内容范围）
 - **弹窗覆盖率**：grep `modal-overlay` 总数 vs 标注中覆盖弹窗数，每个弹窗至少 1 条
-- 标注的 `page` 字段是否与 HTML 页面 ID 一致
+- 标注的 `scope` 字段是否正确（全局元素为 `"global"`，页面元素为 `"page"`）
+- 标注的 `page` 字段是否与 HTML 页面 ID 一致（`scope === "page"` 时）
 - 登录页标注的 page 是否为 `"loginPage"`
 - 弹窗内的标注 `selector` 是否指向弹窗 DOM 内的元素
 - 搜索框、筛选下拉、滑块等输入控件是否有标注
@@ -437,7 +466,17 @@ flowchart TD
       "markerNumber": 1,
       "selector": "#elementId",
       "description": "标注说明",
+      "scope": "page",
       "page": "map",
+      "createdAt": 1700000000000,
+      "updatedAt": 1700000000000
+    },
+    {
+      "id": "唯一ID",
+      "markerNumber": 10,
+      "selector": ".sidebar .nav-item[data-page='map']",
+      "description": "地图管理导航项：点击切换到地图管理页面",
+      "scope": "global",
       "createdAt": 1700000000000,
       "updatedAt": 1700000000000
     }
@@ -448,7 +487,7 @@ flowchart TD
 }
 ```
 
-**标注定位机制**：平台通过 `iframe.contentDocument.querySelector(selector)` 找到目标 DOM 元素，然后在其附近放置 marker。如果 selector 匹配不到元素，marker 不会显示。**不支持 `x`/`y` 坐标定位。**
+**标注定位机制**：平台通过 `iframe.contentDocument.querySelector(selector)` 找到目标 DOM 元素，然后在其附近放置 marker。如果 selector 匹配不到元素，marker 不会显示。**不支持 `x`/`y` 坐标定位。** 通用标注（`scope: "global"`）在 `#app` 范围内查找目标元素，marker 在元素可见的所有页面显示。
 
 ### 文件存储结构
 ```

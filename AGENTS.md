@@ -67,7 +67,8 @@ interface Annotation {
   markerNumber: number
   selector: string        // CSS 选择器，平台通过 querySelector 定位目标元素放置 marker（不支持 x/y 坐标）
   description: string     // 标注说明
-  page?: string           // 归属页面 ID（如 "map"、"loginPage"）
+  scope: 'global' | 'page' // 通用型（跨页面元素如侧边栏/头部）或页面型
+  page?: string           // 归属页面 ID（如 "map"、"loginPage"），scope === 'page' 时必填
   createdAt: number
   updatedAt: number
 }

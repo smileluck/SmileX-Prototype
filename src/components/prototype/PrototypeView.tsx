@@ -11,7 +11,7 @@ interface PrototypeViewProps {
   prototype: Prototype
   selectedAnnotationId: string | null
   onSelectAnnotation: (id: string) => void
-  onPlaceAnnotation: (selector: string, page?: string) => void
+  onPlaceAnnotation: (selector: string, scope: 'global' | 'page', page?: string) => void
   onPagesChange?: (pages: PageInfo[]) => void
   onActivePageChange?: (page: string | null) => void
 }
@@ -50,9 +50,9 @@ export const PrototypeView = forwardRef<PrototypeViewHandle, PrototypeViewProps>
       onSelectAnnotation(id)
     }, [onSelectAnnotation])
 
-    const handleAnnotationPlaced = useCallback((selector: string, page: string) => {
+    const handleAnnotationPlaced = useCallback((selector: string, page: string | null, scope: 'global' | 'page') => {
       setIsPlacing(false)
-      onPlaceAnnotation(selector, page)
+      onPlaceAnnotation(selector, scope, page ?? undefined)
     }, [onPlaceAnnotation])
 
     const handleStartPlacing = useCallback(() => {

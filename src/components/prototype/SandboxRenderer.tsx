@@ -7,7 +7,7 @@ interface SandboxRendererProps {
   onPagesDiscovered?: (pages: PageInfo[]) => void
   onActivePageChange?: (page: string | null) => void
   onAnnotationClick?: (id: string) => void
-  onAnnotationPlaced?: (selector: string, page: string) => void
+  onAnnotationPlaced?: (selector: string, page: string | null, scope: 'global' | 'page') => void
 }
 
 export interface SandboxRendererHandle {
@@ -111,8 +111,10 @@ const BRIDGE_SCRIPT = `<script>
     _currentActivePage=activePage;
     _currentSelectedId=selectedId;
 
+    // Render page-scoped annotations (existing logic)
     var byPage={};
     annotations.forEach(function(a){
+      if(a.scope==='global')return;
       var pg=a.page||activePage;
       if(!byPage[pg])byPage[pg]=[];
       byPage[pg].push(a);
@@ -128,13 +130,11 @@ const BRIDGE_SCRIPT = `<script>
         var color=markerColor(a.markerNumber);
         var isActive=a.id===selectedId;
 
-        // Highlight target element with colored border
         target.classList.add('smilex-target-highlight');
         target.style.position='relative';
         target.style.outline=isActive?'3px solid '+color:'2px solid '+color;
         target.style.backgroundColor=isActive?'rgba(0,0,0,0.04)':'';
 
-        // Always create marker (even for hidden targets — modals/tabs may show later)
         var el=document.createElement('div');
         el.className='smilex-marker'+(isActive?' smilex-marker-active':'');
         el.style.position='fixed';
@@ -151,6 +151,35 @@ const BRIDGE_SCRIPT = `<script>
       });
     });
 
+    // Render global annotations — search in #app or document directly
+    annotations.forEach(function(a){
+      if(a.scope!=='global')return;
+      var appEl=document.getElementById('app');
+      var target=appEl?appEl.querySelector(a.selector):document.querySelector(a.selector);
+      if(!target)return;
+      var color=markerColor(a.markerNumber);
+      var isActive=a.id===selectedId;
+
+      target.classList.add('smilex-target-highlight');
+      target.style.position='relative';
+      target.style.outline=isActive?'3px solid '+color:'2px solid '+color;
+      target.style.backgroundColor=isActive?'rgba(0,0,0,0.04)':'';
+
+      var el=document.createElement('div');
+      el.className='smilex-marker'+(isActive?' smilex-marker-active':'');
+      el.style.position='fixed';
+      el.style.zIndex='200';
+      el.style.background=color;
+      el.style.display='none';
+      el.textContent=a.markerNumber;
+      el.setAttribute('data-ann-id',a.id);
+      el.addEventListener('click',function(e){
+        e.stopPropagation();
+        send('smilex-annotation-click',{id:a.id});
+      });
+      document.body.appendChild(el);
+    });
+
     positionMarkers();
   }
 
@@ -162,15 +191,20 @@ const BRIDGE_SCRIPT = `<script>
       var annId=marker.getAttribute('data-ann-id');
       var ann=annotations.find(function(a){return a.id===annId;});
       if(!ann)return;
-      var pg=ann.page||activePage;
-      var container=document.getElementById('page-'+pg)||document.getElementById(pg);
-      if(!container){marker.style.display='none';return;}
-      var target=container.querySelector(ann.selector);
+      var target;
+      if(ann.scope==='global'){
+        var appEl=document.getElementById('app');
+        target=appEl?appEl.querySelector(ann.selector):document.querySelector(ann.selector);
+      }else{
+        var pg=ann.page||activePage;
+        var container=document.getElementById('page-'+pg)||document.getElementById(pg);
+        if(!container){marker.style.display='none';return;}
+        target=container.querySelector(ann.selector);
+      }
       if(!target){marker.style.display='none';return;}
       var r=target.getBoundingClientRect();
       if(r.width===0&&r.height===0){marker.style.display='none';return;}
       marker.style.display='';
-      // Small elements (buttons): place marker outside to preserve click area
       if(r.width<60){
         marker.style.left=(r.right+3)+'px';
         marker.style.top=(r.top+r.height/2-12)+'px';
@@ -211,10 +245,18 @@ const BRIDGE_SCRIPT = `<script>
     }
     if(!el||el===document.body||el===document.documentElement)return;
     var sel=getSelector(el);
-    var page=getActivePage();
-    // Exit placing mode
+    // Detect if element is global (not inside any .page-section or standalone page)
+    var isGlobal=true;
+    var cur=el;
+    while(cur&&cur!==document.body){
+      if(cur.classList&&cur.classList.contains('page-section')){isGlobal=false;break;}
+      if(cur.parentElement===document.body&&cur.hasAttribute&&cur.hasAttribute('data-page-name')){isGlobal=false;break;}
+      if(cur.parentElement===document.body&&cur.id&&cur.id.match(/Page$/i)){isGlobal=false;break;}
+      cur=cur.parentElement;
+    }
+    var page=isGlobal?null:getActivePage();
     exitPlacing();
-    send('smilex-annotation-placed',{selector:sel,page:page});
+    send('smilex-annotation-placed',{selector:sel,page:page,scope:isGlobal?'global':'page'});
   }
   function enterPlacing(){
     _placing=true;
@@ -341,7 +383,7 @@ export const SandboxRenderer = forwardRef<SandboxRendererHandle, SandboxRenderer
         } else if (d.type === 'smilex-annotation-click') {
           onAnnotationClick?.(d.id)
         } else if (d.type === 'smilex-annotation-placed') {
-          onAnnotationPlaced?.(d.selector, d.page)
+          onAnnotationPlaced?.(d.selector, d.page ?? null, d.scope ?? 'page')
         }
       }
       window.addEventListener('message', handler)
