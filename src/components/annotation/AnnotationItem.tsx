@@ -1,3 +1,4 @@
+import { useRef, useEffect } from 'react'
 import type { Annotation } from '../../types'
 
 const COLORS = ['#2563eb', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316']
@@ -12,6 +13,14 @@ interface AnnotationItemProps {
 
 export function AnnotationItem({ annotation, onUpdate, onDelete, onSelect, active }: AnnotationItemProps) {
   const color = COLORS[(annotation.markerNumber - 1) % COLORS.length]
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+  // Newly created annotation (empty description): auto-focus textarea
+  useEffect(() => {
+    if (active && !annotation.description && textareaRef.current) {
+      textareaRef.current.focus()
+    }
+  }, [active, annotation.description])
 
   return (
     <div
@@ -54,6 +63,7 @@ export function AnnotationItem({ annotation, onUpdate, onDelete, onSelect, activ
         {/* Content */}
         <div className="flex-1 min-w-0">
           <textarea
+            ref={textareaRef}
             className="textarea textarea-xs w-full text-xs leading-relaxed border-0 bg-transparent p-0 focus:bg-base-100 focus:outline-none focus:rounded resize-none"
             placeholder="添加说明..."
             rows={annotation.description ? undefined : 1}

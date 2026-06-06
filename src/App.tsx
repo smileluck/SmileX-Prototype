@@ -43,7 +43,8 @@ export default function App() {
   }, [updatePrototype])
 
   const handlePlaceAnnotation = useCallback((selector: string, scope: 'global' | 'page', page?: string) => {
-    addAnnotation(selector, scope, page)
+    const id = addAnnotation(selector, scope, page)
+    if (id) setSelectedAnnotationId(id)
   }, [addAnnotation])
 
   const handleSelectAnnotation = useCallback((id: string) => {

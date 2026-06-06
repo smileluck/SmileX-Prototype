@@ -6,12 +6,13 @@ export function useAnnotations(
   prototype: Prototype | null,
   onUpdate: (updater: (p: Prototype) => Prototype) => void,
 ) {
-  const addAnnotation = useCallback((selector: string, scope: 'global' | 'page', page?: string) => {
+  const addAnnotation = useCallback((selector: string, scope: 'global' | 'page', page?: string): string | undefined => {
     if (!prototype) return
     const maxNum = prototype.annotations.reduce((max, a) => Math.max(max, a.markerNumber), 0)
     const now = Date.now()
+    const id = nanoid()
     const annotation: Annotation = {
-      id: nanoid(),
+      id,
       markerNumber: maxNum + 1,
       selector,
       description: '',
@@ -25,6 +26,7 @@ export function useAnnotations(
       annotations: [...p.annotations, annotation],
       updatedAt: Date.now(),
     }))
+    return id
   }, [prototype, onUpdate])
 
   const updateAnnotation = useCallback((id: string, description: string) => {

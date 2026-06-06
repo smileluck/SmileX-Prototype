@@ -37,13 +37,6 @@ export function AnnotationSidebar({
     if (tab !== correctTab) setTab(correctTab)
   }, [selectedId, annotations, tab])
 
-  // Scroll selected item into view
-  useEffect(() => {
-    if (!selectedId || !listRef.current) return
-    const el = listRef.current.querySelector(`[data-ann-id="${selectedId}"]`)
-    el?.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
-  }, [selectedId, tab])
-
   const globalAnnotations = useMemo(
     () => annotations.filter(a => a.scope === 'global'),
     [annotations],
@@ -67,6 +60,16 @@ export function AnnotationSidebar({
   )
 
   const displayedAnnotations = tab === 'global' ? globalAnnotations : pageAnnotations
+
+  // Scroll selected item into view
+  useEffect(() => {
+    if (!selectedId || !listRef.current) return
+    const frame = requestAnimationFrame(() => {
+      const el = listRef.current?.querySelector(`[data-ann-id="${selectedId}"]`)
+      el?.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+    })
+    return () => cancelAnimationFrame(frame)
+  }, [selectedId, tab, displayedAnnotations.length])
 
   return (
     <div className="flex flex-col h-full bg-base-200">
