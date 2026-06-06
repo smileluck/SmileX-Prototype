@@ -9,13 +9,18 @@ export function usePrototype() {
   const refreshList = useCallback(async () => {
     const list = await listPrototypes()
     setPrototypes(list)
+    return list
   }, [])
-
-  useEffect(() => { refreshList() }, [refreshList])
 
   const selectPrototype = useCallback(async (id: string) => {
     const p = await loadPrototype(id)
     if (p) setActivePrototype(p)
+  }, [])
+
+  useEffect(() => {
+    refreshList().then(list => {
+      if (list.length > 0) selectPrototype(list[0].id)
+    })
   }, [])
 
   const updatePrototype = useCallback(async (updater: (p: Prototype) => Prototype) => {
