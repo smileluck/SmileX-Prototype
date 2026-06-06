@@ -1,7 +1,11 @@
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback, useRef, useImperativeHandle, forwardRef } from 'react'
 import type { Prototype, PageInfo } from '../../types'
 import { SandboxRenderer, type SandboxRendererHandle } from './SandboxRenderer'
 import { AnnotationOverlay } from './AnnotationOverlay'
+
+export interface PrototypeViewHandle {
+  navigateToPage: (page: string) => void
+}
 
 interface PrototypeViewProps {
   prototype: Prototype
@@ -12,57 +16,65 @@ interface PrototypeViewProps {
   onActivePageChange?: (page: string | null) => void
 }
 
-export function PrototypeView({
-  prototype,
-  onPlaceMarker,
-  selectedAnnotationId,
-  onSelectAnnotation,
-  onPagesChange,
-  onActivePageChange: onActivePageChangeProp,
-}: PrototypeViewProps) {
-  const [loaded, setLoaded] = useState(false)
-  const [activePage, setActivePage] = useState<string | null>(null)
-  const sandboxRef = useRef<SandboxRendererHandle>(null)
+export const PrototypeView = forwardRef<PrototypeViewHandle, PrototypeViewProps>(
+  function PrototypeView({
+    prototype,
+    onPlaceMarker,
+    selectedAnnotationId,
+    onSelectAnnotation,
+    onPagesChange,
+    onActivePageChange: onActivePageChangeProp,
+  }, ref) {
+    const [loaded, setLoaded] = useState(false)
+    const [activePage, setActivePage] = useState<string | null>(null)
+    const sandboxRef = useRef<SandboxRendererHandle>(null)
 
-  const handlePagesDiscovered = useCallback((pages: PageInfo[]) => {
-    setLoaded(true)
-    onPagesChange?.(pages)
-  }, [onPagesChange])
+    useImperativeHandle(ref, () => ({
+      navigateToPage(page: string) {
+        sandboxRef.current?.navigateToPage(page)
+      },
+    }))
 
-  const handleActivePageChange = useCallback((page: string | null) => {
-    setActivePage(page)
-    onActivePageChangeProp?.(page)
-  }, [onActivePageChangeProp])
+    const handlePagesDiscovered = useCallback((pages: PageInfo[]) => {
+      setLoaded(true)
+      onPagesChange?.(pages)
+    }, [onPagesChange])
 
-  const handlePlaceMarker = useCallback((x: number, y: number) => {
-    onPlaceMarker(x, y, activePage ?? undefined)
-  }, [onPlaceMarker, activePage])
+    const handleActivePageChange = useCallback((page: string | null) => {
+      setActivePage(page)
+      onActivePageChangeProp?.(page)
+    }, [onActivePageChangeProp])
 
-  const handleSelectAnnotation = useCallback((id: string) => {
-    onSelectAnnotation(id)
-    const ann = prototype.annotations.find(a => a.id === id)
-    if (ann?.page && ann.page !== activePage) {
-      sandboxRef.current?.navigateToPage(ann.page)
-    }
-  }, [onSelectAnnotation, prototype.annotations, activePage])
+    const handlePlaceMarker = useCallback((x: number, y: number) => {
+      onPlaceMarker(x, y, activePage ?? undefined)
+    }, [onPlaceMarker, activePage])
 
-  return (
-    <div className="relative w-full h-full bg-base-300 rounded-lg overflow-hidden">
-      <SandboxRenderer
-        ref={sandboxRef}
-        htmlCode={prototype.generatedCode}
-        onPagesDiscovered={handlePagesDiscovered}
-        onActivePageChange={handleActivePageChange}
-      />
-      {loaded && prototype.mode === 'prototype' && (
-        <AnnotationOverlay
-          annotations={prototype.annotations}
-          activePage={activePage}
-          onPlaceMarker={handlePlaceMarker}
-          selectedId={selectedAnnotationId}
-          onSelect={handleSelectAnnotation}
+    const handleSelectAnnotation = useCallback((id: string) => {
+      onSelectAnnotation(id)
+      const ann = prototype.annotations.find(a => a.id === id)
+      if (ann?.page && ann.page !== activePage) {
+        sandboxRef.current?.navigateToPage(ann.page)
+      }
+    }, [onSelectAnnotation, prototype.annotations, activePage])
+
+    return (
+      <div className="relative w-full h-full bg-base-300 rounded-lg overflow-hidden">
+        <SandboxRenderer
+          ref={sandboxRef}
+          htmlCode={prototype.generatedCode}
+          onPagesDiscovered={handlePagesDiscovered}
+          onActivePageChange={handleActivePageChange}
         />
-      )}
-    </div>
-  )
-}
+        {loaded && prototype.mode === 'prototype' && (
+          <AnnotationOverlay
+            annotations={prototype.annotations}
+            activePage={activePage}
+            onPlaceMarker={handlePlaceMarker}
+            selectedId={selectedAnnotationId}
+            onSelect={handleSelectAnnotation}
+          />
+        )}
+      </div>
+    )
+  },
+)

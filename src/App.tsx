@@ -1,9 +1,9 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import { Header } from './components/layout/Header'
 import { MainLayout } from './components/layout/MainLayout'
 import { ProjectList } from './components/sidebar/ProjectList'
 import { AnnotationSidebar } from './components/sidebar/AnnotationSidebar'
-import { PrototypeView } from './components/prototype/PrototypeView'
+import { PrototypeView, type PrototypeViewHandle } from './components/prototype/PrototypeView'
 import { EmptyState } from './components/shared/EmptyState'
 import { usePrototype } from './hooks/usePrototype'
 import { useAnnotations } from './hooks/useAnnotations'
@@ -16,6 +16,7 @@ export default function App() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const [pages, setPages] = useState<PageInfo[]>([])
   const [activePage, setActivePage] = useState<string | null>(null)
+  const prototypeViewRef = useRef<PrototypeViewHandle>(null)
 
   const {
     activePrototype,
@@ -72,6 +73,10 @@ export default function App() {
     setSelectedAnnotationId(id)
   }, [])
 
+  const handleNavigate = useCallback((page: string) => {
+    prototypeViewRef.current?.navigateToPage(page)
+  }, [])
+
   return (
     <div className="flex flex-col h-full bg-base-100">
       <Header
@@ -99,6 +104,7 @@ export default function App() {
             onUpdate={updateAnnotation}
             onDelete={deleteAnnotation}
             onSelect={handleSelectAnnotation}
+            onNavigate={handleNavigate}
           />
         }
         showRightSidebar={activePrototype?.mode === 'prototype' && !!activePrototype}
@@ -117,6 +123,7 @@ export default function App() {
             <EmptyState text="导入 JSON 文件加载原型" />
           ) : (
             <PrototypeView
+              ref={prototypeViewRef}
               prototype={activePrototype}
               onPlaceMarker={handlePlaceMarker}
               selectedAnnotationId={selectedAnnotationId}

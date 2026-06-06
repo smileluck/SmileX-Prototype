@@ -68,8 +68,14 @@ interface Annotation {
   x: number               // 0~1 相对比例
   y: number               // 0~1 相对比例
   description: string     // 标注说明
+  page?: string           // 归属页面 ID（如 "map"、"loginPage"）
   createdAt: number
   updatedAt: number
+}
+
+interface PageInfo {
+  id: string              // 页面标识
+  name: string            // 页面显示名
 }
 ```
 
@@ -86,7 +92,7 @@ website/{slug}/
 
 - **平台负责**：项目管理、标注工具、预览模式、导入导出、流程图工具
 - **原型负责**：业务页面 UI、交互逻辑、模拟数据、导航表单
-- 原型在 `<iframe sandbox="allow-scripts allow-same-origin">` 中渲染，不依赖平台 JS
+- 原型在 `<iframe sandbox="allow-scripts allow-same-origin allow-forms">` 中渲染，通过桥接脚本与平台通信（页面发现、导航、标注定位）
 
 ## 原型 HTML 规范
 
@@ -96,6 +102,45 @@ website/{slug}/
 - 所有按钮有交互反馈（至少 Toast）
 - 表单有基础验证（必填、字数限制、禁用条件）
 - 无外部 API 调用
+
+### 页面识别规范（标注分页必需）
+
+平台通过注入桥接脚本自动发现原型页面。为确保标注按页分组正确，原型 HTML 需遵循以下规范：
+
+**标准页面（主功能区）：**
+```html
+<div class="page-section active" id="page-map">...</div>
+<div class="page-section" id="page-robots">...</div>
+```
+- 使用 `.page-section` 类 + `id="page-{slug}"` 命名
+- 通过切换 `.active` class 控制可见性
+- 页面名称优先级：`data-page-name` 属性 > JS 中 `pageNames` 对象 > 导航项 `.nav-item[data-page]` 文本 > slug
+
+**独立页面（登录页等）：**
+```html
+<div id="loginPage" data-page-name="登录页">...</div>
+```
+- 作为 `<body>` 直接子元素，不使用 `.page-section` 类
+- **必须添加 `data-page-name` 属性**指定中文显示名
+- 通过 `style.display` 控制显隐
+- ID 建议以 `Page` 结尾以便自动发现
+
+**完整示例：**
+```html
+<body>
+  <div id="loginPage" data-page-name="登录页">
+    <!-- 登录表单 -->
+  </div>
+  <div id="app" style="display: none;">
+    <div class="page-section active" id="page-map">...</div>
+    <div class="page-section" id="page-task">...</div>
+  </div>
+  <script>
+    const pageNames = { 'map': '地图管理', 'task': '任务管理' };
+    function showPage(page) { /* 切换 active class */ }
+  </script>
+</body>
+```
 
 ## 开发命令
 

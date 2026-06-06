@@ -15,24 +15,29 @@ export interface SandboxRendererHandle {
 const BRIDGE_SCRIPT = `<script>
 (function(){
   var _standalone=[];
+  function pageName(el,id){
+    var n=el.getAttribute('data-page-name');if(n)return n;
+    try{if(typeof pageNames!=='undefined'&&pageNames[id])return pageNames[id];}catch(e){}
+    var nav=document.querySelector('.nav-item[data-page="'+id+'"]');
+    if(nav)return nav.textContent.trim();
+    var h=el.querySelector('h1,h2,h3');if(h)return h.textContent.trim();
+    return id;
+  }
   function discoverPages(){
     var pages=[];
-    var names={};
-    try{if(typeof pageNames!=='undefined')names=pageNames;}catch(e){}
-    document.querySelectorAll('.page-section').forEach(function(s){
-      var id=s.id.replace('page-','');
-      var name=names[id];
-      if(!name){var nav=document.querySelector('.nav-item[data-page="'+id+'"]');name=nav?nav.textContent.trim():id;}
-      pages.push({id:id,name:name});
-    });
     _standalone=[];
     document.querySelectorAll('body > [id]').forEach(function(el){
-      if(el.classList.contains('page-section'))return;
       if(el.querySelector('.page-section'))return;
-      var heading=el.querySelector('h1,h2,h3');
-      var name=el.getAttribute('data-page-name')||(heading?heading.textContent.trim():el.id);
-      _standalone.push(el);
-      pages.push({id:el.id,name:name});
+      var isPage=el.classList.contains('page-section')||el.hasAttribute('data-page-name')||el.id.match(/Page$/i);
+      if(!isPage)return;
+      var id=el.classList.contains('page-section')?el.id.replace('page-',''):el.id;
+      pages.push({id:id,name:pageName(el,id)});
+      if(!el.classList.contains('page-section'))_standalone.push(el);
+    });
+    document.querySelectorAll('.page-section').forEach(function(s){
+      var id=s.id.replace('page-','');
+      if(!pages.some(function(p){return p.id===id;}))
+        pages.push({id:id,name:pageName(s,id)});
     });
     return pages;
   }
@@ -70,6 +75,9 @@ const BRIDGE_SCRIPT = `<script>
         if(nav)nav.classList.add('active');
         var title=document.getElementById('pageTitle');
         if(title){try{if(typeof pageNames!=='undefined')title.textContent=pageNames[target]||target;}catch(e){}}
+      }else{
+        el.style.display='';
+        var app=document.getElementById('app');if(app)app.style.display='none';
       }
     }
   });

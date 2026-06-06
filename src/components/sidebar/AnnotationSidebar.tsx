@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import type { Annotation, PageInfo } from '../../types'
 import { AnnotationItem } from '../annotation/AnnotationItem'
 import { EmptyState } from '../shared/EmptyState'
-import { MessageSquare, ChevronDown } from 'lucide-react'
+import { MessageSquare, Layers } from 'lucide-react'
 
 interface AnnotationSidebarProps {
   annotations: Annotation[]
@@ -12,6 +12,7 @@ interface AnnotationSidebarProps {
   onUpdate: (id: string, description: string) => void
   onDelete: (id: string) => void
   onSelect: (id: string) => void
+  onNavigate?: (page: string) => void
 }
 
 export function AnnotationSidebar({
@@ -22,7 +23,17 @@ export function AnnotationSidebar({
   onUpdate,
   onDelete,
   onSelect,
+  onNavigate,
 }: AnnotationSidebarProps) {
+  const pageAnnotationCounts = useMemo(() => {
+    const counts = new Map<string, number>()
+    for (const ann of annotations) {
+      const key = ann.page ?? ''
+      counts.set(key, (counts.get(key) ?? 0) + 1)
+    }
+    return counts
+  }, [annotations])
+
   const groups = useMemo(() => {
     const result: { key: string; name: string; annotations: Annotation[] }[] = []
     const byPage = new Map<string, Annotation[]>()
@@ -71,6 +82,38 @@ export function AnnotationSidebar({
           标注列表 ({annotations.length})
         </h3>
       </div>
+
+      {pages.length > 0 && (
+        <div className="border-b border-base-300">
+          <div className="px-3 py-2 flex items-center gap-1.5 text-xs font-medium text-base-content/50">
+            <Layers className="h-3.5 w-3.5" />
+            页面导航
+          </div>
+          <div className="px-2 pb-2 flex flex-col gap-0.5">
+            {pages.map(page => (
+              <button
+                key={page.id}
+                className={`btn btn-xs justify-start gap-2 font-normal ${
+                  page.id === activePage
+                    ? 'btn-primary'
+                    : 'btn-ghost'
+                }`}
+                onClick={() => onNavigate?.(page.id)}
+              >
+                <span className="truncate">{page.name}</span>
+                {pageAnnotationCounts.has(page.id) && (
+                  <span className={`ml-auto text-[10px] rounded-full px-1.5 ${
+                    page.id === activePage ? 'bg-primary-content/20 text-primary-content' : 'bg-base-300'
+                  }`}>
+                    {pageAnnotationCounts.get(page.id)}
+                  </span>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="flex-1 overflow-y-auto">
         {annotations.length === 0 ? (
           <div className="p-2">
@@ -90,7 +133,6 @@ export function AnnotationSidebar({
                   if (first) onSelect(first.id)
                 }}
               >
-                <ChevronDown className="h-3 w-3" />
                 {group.name}
                 <span className="ml-auto opacity-60">{group.annotations.length}</span>
               </div>
