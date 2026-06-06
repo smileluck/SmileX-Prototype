@@ -12,8 +12,10 @@ async function request(url: string, method: string, body?: unknown): Promise<any
 
 export async function savePrototype(prototype: Prototype): Promise<void> {
   const { generatedCode, ...meta } = prototype
+  const annotations = meta.annotations.filter(a => a.description.trim() !== '')
   await request(`${API}/${encodeURIComponent(prototype.id)}`, 'POST', {
     ...meta,
+    annotations,
     generatedCode,
   })
 }
@@ -21,7 +23,16 @@ export async function savePrototype(prototype: Prototype): Promise<void> {
 export async function loadPrototype(id: string): Promise<Prototype | undefined> {
   try {
     const data = await request(`${API}/${encodeURIComponent(id)}`, 'GET')
-    return data as Prototype
+    return {
+      id: data.id ?? data.slug,
+      name: data.name ?? '',
+      prompt: data.prompt ?? '',
+      generatedCode: data.generatedCode ?? '',
+      annotations: data.annotations ?? [],
+      mode: data.mode ?? 'preview',
+      createdAt: data.createdAt ?? Date.now(),
+      updatedAt: data.updatedAt ?? Date.now(),
+    }
   } catch {
     return undefined
   }
@@ -30,7 +41,7 @@ export async function loadPrototype(id: string): Promise<Prototype | undefined> 
 export async function listPrototypes(): Promise<Prototype[]> {
   const list = await request(API, 'GET')
   return list.map((p: any) => ({
-    id: p.slug,
+    id: p.id ?? p.slug,
     name: p.name,
     prompt: p.prompt ?? '',
     generatedCode: '',
