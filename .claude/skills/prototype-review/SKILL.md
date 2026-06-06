@@ -101,6 +101,22 @@ description: "根据需求文档创建 HTML 原型，或对比需求文档与已
 - JS 中**必须**定义 `pageNames` 对象，覆盖所有 `.page-section` 页面的中文名
 - 默认活动页加 `.active` class
 - 登录→主应用的切换用 `style.display` 控制
+- **桥接导航兼容**：平台通过 `postMessage` 操控页面切换。当原型有独立页面（如 `loginPage`）+ `#app` 容器双层结构时，`showPage` 函数**必须**同时处理独立页面与 `#app` 的显隐切换：
+  ```javascript
+  function showPage(page) {
+    // 隐藏所有独立页面，显示主应用
+    document.querySelectorAll('body > [data-page-name]').forEach(el => el.style.display = 'none');
+    var app = document.getElementById('app');
+    if (app) app.style.display = '';
+
+    document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('page-' + page).classList.add('active');
+    var nav = document.querySelector('.nav-item[data-page="' + page + '"]');
+    if (nav) nav.classList.add('active');
+    document.getElementById('pageTitle').textContent = pageNames[page];
+  }
+  ```
 
 #### 样式规范
 - 所有 CSS 在 `<style>` 标签内
@@ -217,6 +233,21 @@ flowchart TD
 - `pageNames` 对象的 key 是否与页面 ID 一致
 - 默认活动页是否正确标记 `.active`
 
+#### B2. 桥接导航兼容性检查
+平台通过注入桥接脚本操控 iframe 内的页面切换。以下情况会导致平台右侧页面导航失效：
+
+- **独立页面→page-section 跳转不通**：原型有 `loginPage`（独立页面）+ `#app`（含 `.page-section`）两层结构时，未登录时 `#app` 为 `display:none`。桥接脚本导航到 `.page-section` 时必须同时隐藏所有独立页面并显示 `#app`。
+- **检查方法**：用 Playwright 打开原型 iframe，在未登录状态下通过 `postMessage({type:'smilex-navigate', page:'xxx'})` 测试每个页面导航。
+- **修复方法**：确认桥接脚本（`src/components/prototype/SandboxRenderer.tsx` 中的 `BRIDGE_SCRIPT`）的 `smilex-navigate` 处理器包含：
+  ```javascript
+  // 导航到 .page-section 时
+  _standalone.forEach(function(s){s.style.display='none';});
+  var app=document.getElementById('app');if(app)app.style.display='';
+  // 导航到独立页面时（已有逻辑）
+  el.style.display='';
+  var app=document.getElementById('app');if(app)app.style.display='none';
+  ```
+
 #### C. 功能点逐项对照
 - 需求表格每行功能在原型中的实现情况
 - 表单字段验证规则、操作按钮交互反馈
@@ -253,6 +284,7 @@ flowchart TD
 | 独立页面 data-page-name | ✅/❌ | |
 | pageNames 覆盖度 | ✅/❌ | |
 | page-section ID 格式 | ✅/❌ | |
+| 桥接导航兼容性 | ✅/❌ | 独立页面↔page-section 切换时 #app 显隐是否正确 |
 
 ### 标注覆盖检查
 | 页面 | 标注数 | 覆盖关键元素 | 缺失项 |
@@ -272,6 +304,8 @@ flowchart TD
 同模式 A 的 Phase 4-5，根据 `--annotate` / `--flows` / `--full` 参数执行。
 
 审查时如发现页面缺少 `data-page-name` 或 `pageNames` 条目，应自动补全并写回 HTML。
+
+审查时如发现桥接导航不通（独立页面→page-section 跳转后页面空白），应检查并修复桥接脚本（`src/components/prototype/SandboxRenderer.tsx`）中的 `smilex-navigate` 处理器，确保导航到 `.page-section` 时同时隐藏独立页面并显示 `#app`。
 
 ---
 
