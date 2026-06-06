@@ -24,12 +24,19 @@ export function usePrototype() {
   }, [])
 
   const updatePrototype = useCallback(async (updater: (p: Prototype) => Prototype) => {
+    let updated: Prototype | null = null
     setActivePrototype(prev => {
       if (!prev) return prev
-      const updated = updater(prev)
-      savePrototype(updated)
+      updated = updater(prev)
       return updated
     })
+    if (updated) {
+      try {
+        await savePrototype(updated)
+      } catch (e) {
+        console.error('Failed to save prototype:', e)
+      }
+    }
   }, [])
 
   const createPrototype = useCallback(async (name: string) => {
