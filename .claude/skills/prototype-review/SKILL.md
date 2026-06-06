@@ -126,6 +126,24 @@ description: "根据需求文档创建 HTML 原型，或对比需求文档与已
 - 页面切换动画：`.page-section.active { display: block; animation: fadeIn 0.4s ease; }`
 - 页面隐藏：`.page-section { display: none; }`
 
+#### z-index 分层规范（标注兼容性）
+平台在原型 iframe 内注入标注 marker（`position: fixed; z-index: 200`）。原型的 z-index 必须遵循以下分层，避免标注被覆盖或弹窗被标注遮挡：
+
+| 层级 | z-index 范围 | 用途 | 示例 |
+|------|-------------|------|------|
+| 普通内容 | 0–50 | 卡片、表格、表单、地图元素 | `.card { z-index: 1 }` |
+| 固定布局 | 50–100 | 侧边栏、顶栏、底部导航 | `.sidebar { z-index: 100 }` |
+| **标注层（平台保留）** | **199–200** | **marker + 目标高亮** | 平台自动注入，原型勿用 |
+| 弹窗/浮层 | 300–999 | 下拉菜单、tooltip、 popover | `.dropdown { z-index: 500 }` |
+| 模态框 | 1000+ | 对话框、确认弹窗、抽屉 | `.modal { z-index: 1000 }` |
+| 全局通知 | 1100+ | Toast、全局提示 | `.toast { z-index: 1100 }` |
+| 全屏覆盖 | 9999 | 全屏查看器、锁屏 | `.fullscreen { z-index: 9999 }` |
+
+**禁止事项：**
+- 不要使用 `z-index: 199` 或 `z-index: 200`（标注保留）
+- 不要用 `* { ... !important }` 等通配符覆盖标注 marker 样式
+- 不要在 `body` 上设置 `transform`/`filter`/`will-change`（会破坏 `position: fixed` 定位）
+
 #### 模拟数据要求
 **关键原则**：如果需求中存在不同分支/状态，模拟数据必须覆盖所有情况：
 - **多状态同时展示**：任务列表同时出现"待执行""执行中""已完成""已失败"
@@ -261,6 +279,12 @@ flowchart TD
 #### E. 模拟数据覆盖
 - 多状态展示、异常场景、边界值、空状态
 
+#### E2. z-index 合规检查
+- 是否有元素占用 z-index 199–200（标注保留层）
+- 弹窗/模态框 z-index 是否 ≥ 300（避免被标注遮挡）
+- 是否有 `* { !important }` 通配符可能覆盖标注样式
+- `body` 上是否有 `transform`/`filter`/`will-change`（破坏 fixed 定位）
+
 #### F. 流程图完整性
 - 核心流程是否有对应流程图
 - 异常分支是否都有覆盖
@@ -285,6 +309,7 @@ flowchart TD
 | pageNames 覆盖度 | ✅/❌ | |
 | page-section ID 格式 | ✅/❌ | |
 | 桥接导航兼容性 | ✅/❌ | 独立页面↔page-section 切换时 #app 显隐是否正确 |
+| z-index 合规 | ✅/❌ | 无元素占用 199–200，弹窗 ≥ 300 |
 
 ### 标注覆盖检查
 | 页面 | 标注数 | 覆盖关键元素 | 缺失项 |
