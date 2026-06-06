@@ -118,6 +118,8 @@ const BRIDGE_SCRIPT = `<script>
       byPage[pageId].forEach(function(a){
         var target=container.querySelector(a.selector);
         if(!target)return;
+        var br=target.getBoundingClientRect();
+        if(br.width===0&&br.height===0)return;
         var color=markerColor(a.markerNumber);
         var isActive=a.id===selectedId;
 
@@ -166,6 +168,7 @@ const BRIDGE_SCRIPT = `<script>
       var target=container.querySelector(ann.selector);
       if(!target){marker.style.display='none';return;}
       var r=target.getBoundingClientRect();
+      if(r.width===0&&r.height===0){marker.style.display='none';return;}
       marker.style.display='';
       marker.style.left=(r.right-12)+'px';
       marker.style.top=(r.top-12)+'px';
