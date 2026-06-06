@@ -24,8 +24,13 @@ const BRIDGE_SCRIPT = `<script>
 
   // Inject marker styles
   var ms=document.createElement('style');
-  ms.textContent='.smilex-marker{position:absolute;top:-12px;right:-12px;z-index:2147483647;width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%;font-size:11px;font-weight:700;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.25);cursor:pointer;transition:transform .15s,box-shadow .15s;-webkit-user-select:none;user-select:none;font-family:-apple-system,BlinkMacSystemFont,sans-serif;line-height:1}.smilex-marker:hover{transform:scale(1.25);box-shadow:0 4px 16px rgba(0,0,0,0.35)}.smilex-marker-active{outline:2px solid #fff}.smilex-target-highlight{z-index:2147483646!important;position:relative!important;outline-offset:3px;transition:outline-color .2s,background-color .2s}.smilex-placing-active{cursor:crosshair!important;z-index:2147483647!important;position:relative!important}.smilex-placing-active *{cursor:crosshair!important}.smilex-placing-highlight{outline:2px dashed #2563eb!important;outline-offset:2px;background-color:rgba(37,99,235,0.05)!important;z-index:2147483647!important}';
+  ms.textContent='.smilex-marker{position:fixed!important;z-index:2147483647!important;width:24px!important;height:24px!important;display:flex!important;align-items:center!important;justify-content:center!important;border-radius:50%!important;font-size:11px!important;font-weight:700!important;color:#fff!important;box-shadow:0 2px 8px rgba(0,0,0,0.25)!important;cursor:pointer!important;transition:transform .15s,box-shadow .15s;-webkit-user-select:none!important;user-select:none!important;font-family:-apple-system,BlinkMacSystemFont,sans-serif!important;line-height:1!important;pointer-events:auto!important;border:none!important;padding:0!important;margin:0!important}.smilex-marker:hover{transform:scale(1.25);box-shadow:0 4px 16px rgba(0,0,0,0.35)}.smilex-marker-active{outline:2px solid #fff!important}.smilex-target-highlight{z-index:2147483646!important;position:relative!important;outline-offset:3px;transition:outline-color .2s,background-color .2s}.smilex-placing-active{cursor:crosshair!important;z-index:2147483647!important;position:relative!important}.smilex-placing-active *{cursor:crosshair!important}.smilex-placing-highlight{outline:2px dashed #2563eb!important;outline-offset:2px;background-color:rgba(37,99,235,0.05)!important;z-index:2147483647!important}';
   document.head.appendChild(ms);
+
+  // Track current annotation data for repositioning
+  var _currentAnnotations=[];
+  var _currentActivePage=null;
+  var _currentSelectedId=null;
 
   var COLORS=['#2563eb','#10b981','#f59e0b','#ef4444','#8b5cf6','#ec4899','#14b8a6','#f97316'];
   function markerColor(num){return COLORS[(num-1)%COLORS.length];}
@@ -95,6 +100,10 @@ const BRIDGE_SCRIPT = `<script>
     document.querySelectorAll('.smilex-marker').forEach(function(m){m.remove();});
     document.querySelectorAll('.smilex-target-highlight').forEach(function(el){el.classList.remove('smilex-target-highlight');el.style.outline='';el.style.backgroundColor='';el.style.position='';});
 
+    _currentAnnotations=annotations;
+    _currentActivePage=activePage;
+    _currentSelectedId=selectedId;
+
     var byPage={};
     annotations.forEach(function(a){
       var pg=a.page||activePage;
@@ -118,8 +127,11 @@ const BRIDGE_SCRIPT = `<script>
         target.style.outline=isActive?'3px solid '+color:'2px solid '+color;
         target.style.backgroundColor=isActive?'rgba(0,0,0,0.04)':'';
 
+        // Marker on body with fixed positioning
         var el=document.createElement('div');
         el.className='smilex-marker'+(isActive?' smilex-marker-active':'');
+        el.style.position='fixed';
+        el.style.zIndex='2147483647';
         el.style.background=color;
         el.textContent=a.markerNumber;
         el.setAttribute('data-ann-id',a.id);
@@ -127,10 +139,44 @@ const BRIDGE_SCRIPT = `<script>
           e.stopPropagation();
           send('smilex-annotation-click',{id:a.id});
         });
-        target.appendChild(el);
+        document.body.appendChild(el);
       });
     });
+
+    positionMarkers();
   }
+
+  function positionMarkers(){
+    var annotations=_currentAnnotations;
+    var activePage=_currentActivePage;
+    var byPage={};
+    annotations.forEach(function(a){
+      var pg=a.page||activePage;
+      if(!byPage[pg])byPage[pg]=[];
+      byPage[pg].push(a);
+    });
+
+    document.querySelectorAll('.smilex-marker').forEach(function(marker){
+      var annId=marker.getAttribute('data-ann-id');
+      var ann=annotations.find(function(a){return a.id===annId;});
+      if(!ann)return;
+      var pg=ann.page||activePage;
+      var container=document.getElementById('page-'+pg)||document.getElementById(pg);
+      if(!container)return;
+      var target=container.querySelector(ann.selector);
+      if(!target){marker.style.display='none';return;}
+      var r=target.getBoundingClientRect();
+      marker.style.display='';
+      marker.style.left=(r.right-12)+'px';
+      marker.style.top=(r.top-12)+'px';
+    });
+  }
+
+  // Auto-reposition on layout change and scroll
+  var _ro=new ResizeObserver(function(){positionMarkers();});
+  _ro.observe(document.documentElement);
+  window.addEventListener('scroll',function(){positionMarkers();},true);
+  window.addEventListener('resize',function(){positionMarkers();});
 
   // Placing mode: highlight on hover, capture click to get selector
   var _lastHighlight=null;
