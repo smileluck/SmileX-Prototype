@@ -5,10 +5,9 @@ import { ProjectList } from './components/sidebar/ProjectList'
 import { AnnotationSidebar } from './components/sidebar/AnnotationSidebar'
 import { PrototypeView, type PrototypeViewHandle } from './components/prototype/PrototypeView'
 import { EmptyState } from './components/shared/EmptyState'
+import { FlowchartModal } from './components/flowchart/FlowchartModal'
 import { usePrototype } from './hooks/usePrototype'
 import { useAnnotations } from './hooks/useAnnotations'
-import { exportToJSON, importFromJSON } from './services/storage'
-import { downloadJSON, readFileAsText } from './utils/export'
 import type { PageInfo } from './types'
 
 export default function App() {
@@ -16,6 +15,8 @@ export default function App() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const [pages, setPages] = useState<PageInfo[]>([])
   const [activePage, setActivePage] = useState<string | null>(null)
+  const [leftSidebarVisible, setLeftSidebarVisible] = useState(true)
+  const [showFlowchart, setShowFlowchart] = useState(false)
   const prototypeViewRef = useRef<PrototypeViewHandle>(null)
 
   const {
@@ -41,30 +42,6 @@ export default function App() {
     updatePrototype(p => ({ ...p, mode, updatedAt: Date.now() }))
   }, [updatePrototype])
 
-  const handleExport = useCallback(() => {
-    if (!activePrototype) return
-    const json = exportToJSON(activePrototype)
-    downloadJSON(json, `${activePrototype.name}.smilex.json`)
-  }, [activePrototype])
-
-  const handleImport = useCallback(async () => {
-    const input = document.createElement('input')
-    input.type = 'file'
-    input.accept = '.json'
-    input.onchange = async () => {
-      const file = input.files?.[0]
-      if (!file) return
-      try {
-        const text = await readFileAsText(file)
-        const p = await importFromJSON(text)
-        await selectPrototype(p.id)
-      } catch (err) {
-        setErrorMsg(err instanceof Error ? err.message : '导入失败')
-      }
-    }
-    input.click()
-  }, [selectPrototype])
-
   const handlePlaceMarker = useCallback((x: number, y: number, page?: string) => {
     addAnnotation(x, y, page)
   }, [addAnnotation])
@@ -83,6 +60,9 @@ export default function App() {
         mode={activePrototype?.mode ?? 'prototype'}
         onModeChange={handleModeChange}
         projectName={activePrototype?.name}
+        sidebarVisible={leftSidebarVisible}
+        onToggleSidebar={() => setLeftSidebarVisible(v => !v)}
+        onOpenFlowchart={activePrototype ? () => setShowFlowchart(true) : undefined}
       />
 
       <MainLayout
@@ -107,6 +87,7 @@ export default function App() {
             onNavigate={handleNavigate}
           />
         }
+        showLeftSidebar={leftSidebarVisible}
         showRightSidebar={activePrototype?.mode === 'prototype' && !!activePrototype}
       >
         {errorMsg && (
@@ -134,15 +115,14 @@ export default function App() {
           )}
         </div>
 
-        <div className="flex gap-2 p-2 border-t border-base-300">
-          <button className="btn btn-sm btn-ghost" onClick={handleExport}>
-            导出 JSON
-          </button>
-          <button className="btn btn-sm btn-ghost" onClick={handleImport}>
-            导入 JSON
-          </button>
-        </div>
       </MainLayout>
+
+      {showFlowchart && activePrototype && (
+        <FlowchartModal
+          slug={activePrototype.id}
+          onClose={() => setShowFlowchart(false)}
+        />
+      )}
     </div>
   )
 }

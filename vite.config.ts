@@ -35,6 +35,49 @@ function websiteApi(): Plugin {
           return
         }
 
+        // match /api/projects/:slug/images/:filename — serve image file
+        const imageMatch = url.pathname.match(/^\/api\/projects\/([^/]+)\/images\/(.+)$/)
+        if (imageMatch && req.method === 'GET') {
+          const slug = imageMatch[1]
+          const filename = decodeURIComponent(imageMatch[2])
+          const filePath = path.join(WEBSITE_DIR, slug, 'images', filename)
+          if (!fs.existsSync(filePath)) {
+            sendJson(res, { error: 'Not found' }, 404)
+            return
+          }
+          const ext = path.extname(filename).toLowerCase()
+          const mimeMap: Record<string, string> = {
+            '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg',
+            '.gif': 'image/gif', '.svg': 'image/svg+xml', '.webp': 'image/webp',
+          }
+          const data = fs.readFileSync(filePath)
+          res.statusCode = 200
+          res.setHeader('Content-Type', mimeMap[ext] ?? 'application/octet-stream')
+          res.setHeader('Content-Length', data.length)
+          res.end(data)
+          return
+        }
+
+        // match /api/projects/:slug/images — list images
+        const imagesListMatch = url.pathname.match(/^\/api\/projects\/([^/]+)\/images$/)
+        if (imagesListMatch && req.method === 'GET') {
+          const slug = imagesListMatch[1]
+          const imagesDir = path.join(WEBSITE_DIR, slug, 'images')
+          if (!fs.existsSync(imagesDir)) {
+            sendJson(res, { images: [] })
+            return
+          }
+          const files = fs.readdirSync(imagesDir).filter(f =>
+            fs.statSync(path.join(imagesDir, f)).isFile()
+          )
+          const images = files.map(f => ({
+            name: f,
+            url: `/api/projects/${encodeURIComponent(slug)}/images/${encodeURIComponent(f)}`,
+          }))
+          sendJson(res, { images })
+          return
+        }
+
         // match /api/projects/:slug
         const match = url.pathname.match(/^\/api\/projects\/([^/]+)$/)
         if (match) {

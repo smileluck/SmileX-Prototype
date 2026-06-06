@@ -3,16 +3,19 @@ import type { ReactNode } from 'react'
 interface MainLayoutProps {
   leftSidebar: ReactNode
   rightSidebar: ReactNode
+  showLeftSidebar: boolean
   showRightSidebar: boolean
   children: ReactNode
 }
 
-export function MainLayout({ leftSidebar, rightSidebar, showRightSidebar, children }: MainLayoutProps) {
+export function MainLayout({ leftSidebar, rightSidebar, showLeftSidebar, showRightSidebar, children }: MainLayoutProps) {
   return (
     <div className="flex flex-1 overflow-hidden">
-      <div className="w-64 shrink-0 hidden md:block border-r border-base-300">
-        {leftSidebar}
-      </div>
+      {showLeftSidebar && (
+        <div className="w-64 shrink-0 border-r border-base-300">
+          {leftSidebar}
+        </div>
+      )}
       <div className="flex-1 flex flex-col overflow-hidden">
         {children}
       </div>

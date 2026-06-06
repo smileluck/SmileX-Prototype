@@ -62,3 +62,8 @@ export async function importFromJSON(jsonString: string): Promise<Prototype> {
   await savePrototype(prototype)
   return prototype
 }
+
+export async function listImages(slug: string): Promise<{ name: string; url: string }[]> {
+  const data = await request(`${API}/${encodeURIComponent(slug)}/images`, 'GET')
+  return data.images ?? []
+}
