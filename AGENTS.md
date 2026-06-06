@@ -65,8 +65,7 @@ interface Prototype {
 interface Annotation {
   id: string
   markerNumber: number
-  x: number               // 0~1 相对比例
-  y: number               // 0~1 相对比例
+  selector: string        // CSS 选择器，平台通过 querySelector 定位目标元素放置 marker（不支持 x/y 坐标）
   description: string     // 标注说明
   page?: string           // 归属页面 ID（如 "map"、"loginPage"）
   createdAt: number

@@ -165,8 +165,7 @@ description: "根据需求文档创建 HTML 原型，或对比需求文档与已
 {
   "id": "唯一ID",
   "markerNumber": 1,
-  "x": 0.5,
-  "y": 0.3,
+  "selector": "#elementId",
   "description": "标注说明",
   "page": "map",
   "createdAt": 1700000000000,
@@ -175,8 +174,17 @@ description: "根据需求文档创建 HTML 原型，或对比需求文档与已
 ```
 
 **字段说明：**
-- `x` / `y`：0~1 相对比例，指向目标元素的视觉位置
+- `selector`：**必填**，CSS 选择器，平台通过 `container.querySelector(selector)` 定位目标元素来放置 marker。**不要使用 `x`/`y` 坐标**，平台不支持坐标定位。
 - `page`：**必填**，标注所属页面的 ID（如 `"map"`、`"robots"`、`"loginPage"`）
+
+**selector 编写规则：**
+- 优先使用 ID 选择器：`#loginForm`、`#mapCanvas`
+- 有 `data-*` 属性的使用属性选择器：`[data-robot-name='G1-001']`、`[data-task-id='2']`
+- Tab 按钮使用 `.tab-class:nth-of-type(N)` 或 `.tab-class[data-tab='xxx']`：`.task-tab:nth-of-type(1)`、`.logs-tab[data-tab='user']`
+- 列表/表格区域使用容器 ID：`#logs-user .data-table`、`#robotBindList`
+- 弹窗元素指向弹窗内的 DOM：`#addPointModal .modal-body`
+- **禁止使用纯文本内容选择器**（如 `:contains()`），不兼容 querySelector
+- **selector 必须在对应 page 的 HTML 中能匹配到可见元素**，否则 marker 不会显示
 
 **标注覆盖要求（逐按钮标注）：**
 
@@ -374,8 +382,7 @@ flowchart TD
     {
       "id": "唯一ID",
       "markerNumber": 1,
-      "x": 0.5,
-      "y": 0.3,
+      "selector": "#elementId",
       "description": "标注说明",
       "page": "map",
       "createdAt": 1700000000000,
@@ -387,6 +394,8 @@ flowchart TD
   "updatedAt": 1700000000000
 }
 ```
+
+**标注定位机制**：平台通过 `iframe.contentDocument.querySelector(selector)` 找到目标 DOM 元素，然后在其附近放置 marker。如果 selector 匹配不到元素，marker 不会显示。**不支持 `x`/`y` 坐标定位。**
 
 ### 文件存储结构
 ```
@@ -406,4 +415,5 @@ website/
 - 独立页面用 `data-page-name` 标识 + `style.display` 切换
 - 不依赖外部文件，无外部 API 调用
 - 目录名用英文 slug，中文项目名存 index.json
-- 所有标注必须包含 `page` 字段
+- 所有标注必须包含 `page` 字段和 `selector` 字段（CSS 选择器，用于 querySelector 定位）
+- **标注使用 `selector` 定位，不是 `x`/`y` 坐标**——平台通过 `querySelector(selector)` 找到目标元素放置 marker
