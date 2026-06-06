@@ -1,4 +1,3 @@
-
 interface AnnotationOverlayProps {
   isPlacing: boolean
   onStartPlacing: () => void
@@ -8,19 +7,19 @@ interface AnnotationOverlayProps {
 export function AnnotationOverlay({
   isPlacing,
   onStartPlacing,
-  onCancelPlacing,
 }: AnnotationOverlayProps) {
+  if (isPlacing) return null
+
   return (
     <button
       onClick={(e) => {
         e.stopPropagation()
-        if (isPlacing) onCancelPlacing()
-        else onStartPlacing()
+        onStartPlacing()
       }}
       style={{ pointerEvents: 'auto' }}
-      className={`btn btn-sm absolute top-2 right-2 z-20 ${isPlacing ? 'btn-primary' : 'btn-ghost bg-base-100/80'}`}
+      className="btn btn-sm absolute top-2 right-2 z-20 btn-ghost bg-base-100/80"
     >
-      {isPlacing ? '取消标注' : '添加标注'}
+      添加标注
     </button>
   )
 }

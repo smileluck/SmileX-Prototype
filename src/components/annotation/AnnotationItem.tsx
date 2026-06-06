@@ -8,14 +8,15 @@ interface AnnotationItemProps {
   onUpdate: (id: string, description: string) => void
   onDelete: (id: string) => void
   onSelect: (id: string) => void
+  onConfirm: () => void
   active: boolean
+  pending: boolean
 }
 
-export function AnnotationItem({ annotation, onUpdate, onDelete, onSelect, active }: AnnotationItemProps) {
+export function AnnotationItem({ annotation, onUpdate, onDelete, onSelect, onConfirm, active, pending }: AnnotationItemProps) {
   const color = COLORS[(annotation.markerNumber - 1) % COLORS.length]
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
-  // Newly created annotation (empty description): auto-focus textarea
   useEffect(() => {
     if (active && !annotation.description && textareaRef.current) {
       textareaRef.current.focus()
@@ -33,18 +34,31 @@ export function AnnotationItem({ annotation, onUpdate, onDelete, onSelect, activ
       }`}
       style={active ? { borderColor: color + '40' } : undefined}
     >
-      {/* Delete button - top right */}
-      <button
-        className={`absolute -top-2 -right-2 flex items-center justify-center w-5 h-5 rounded-full bg-base-300 text-base-content/50 hover:bg-error hover:text-white text-xs font-bold leading-none shadow-sm z-10 transition-colors ${
-          active ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
-        }`}
-        onClick={(e) => {
-          e.stopPropagation()
-          onDelete(annotation.id)
-        }}
-      >
-        ✕
-      </button>
+      {/* Action buttons - top right */}
+      <div className="absolute -top-2 -right-2 flex items-center gap-0.5 z-10">
+        {pending && (
+          <button
+            className="flex items-center justify-center w-5 h-5 rounded-full bg-success text-white text-xs font-bold leading-none shadow-sm transition-colors"
+            onClick={(e) => {
+              e.stopPropagation()
+              onConfirm()
+            }}
+          >
+            ✓
+          </button>
+        )}
+        <button
+          className={`flex items-center justify-center w-5 h-5 rounded-full bg-base-300 text-base-content/50 hover:bg-error hover:text-white text-xs font-bold leading-none shadow-sm transition-colors ${
+            active || pending ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+          }`}
+          onClick={(e) => {
+            e.stopPropagation()
+            onDelete(annotation.id)
+          }}
+        >
+          ✕
+        </button>
+      </div>
 
       <div className="flex items-start gap-2.5 p-2.5 pr-6">
         {/* Number badge */}

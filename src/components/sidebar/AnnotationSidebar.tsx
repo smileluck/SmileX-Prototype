@@ -9,9 +9,11 @@ interface AnnotationSidebarProps {
   pages: PageInfo[]
   activePage: string | null
   selectedId: string | null
+  pendingId: string | null
   onUpdate: (id: string, description: string) => void
   onDelete: (id: string) => void
   onSelect: (id: string) => void
+  onConfirm: () => void
   onNavigate?: (page: string) => void
 }
 
@@ -20,9 +22,11 @@ export function AnnotationSidebar({
   pages,
   activePage,
   selectedId,
+  pendingId,
   onUpdate,
   onDelete,
   onSelect,
+  onConfirm,
   onNavigate,
 }: AnnotationSidebarProps) {
   const [tab, setTab] = useState<'page' | 'global'>('page')
@@ -133,7 +137,9 @@ export function AnnotationSidebar({
                 onUpdate={onUpdate}
                 onDelete={onDelete}
                 onSelect={onSelect}
+                onConfirm={onConfirm}
                 active={selectedId === ann.id}
+                pending={pendingId === ann.id}
               />
             ))}
           </div>

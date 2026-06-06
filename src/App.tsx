@@ -8,10 +8,12 @@ import { EmptyState } from './components/shared/EmptyState'
 import { FlowchartModal } from './components/flowchart/FlowchartModal'
 import { usePrototype } from './hooks/usePrototype'
 import { useAnnotations } from './hooks/useAnnotations'
+import { savePrototype } from './services/storage'
 import type { PageInfo } from './types'
 
 export default function App() {
   const [selectedAnnotationId, setSelectedAnnotationId] = useState<string | null>(null)
+  const [pendingAnnotationId, setPendingAnnotationId] = useState<string | null>(null)
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const [pages, setPages] = useState<PageInfo[]>([])
   const [activePage, setActivePage] = useState<string | null>(null)
@@ -44,8 +46,21 @@ export default function App() {
 
   const handlePlaceAnnotation = useCallback((selector: string, scope: 'global' | 'page', page?: string) => {
     const id = addAnnotation(selector, scope, page)
-    if (id) setSelectedAnnotationId(id)
+    if (id) {
+      setSelectedAnnotationId(id)
+      setPendingAnnotationId(id)
+    }
   }, [addAnnotation])
+
+  const prototypeRef = useRef(activePrototype)
+  prototypeRef.current = activePrototype
+
+  const handleConfirmAnnotation = useCallback(async () => {
+    setPendingAnnotationId(null)
+    if (prototypeRef.current) {
+      await savePrototype(prototypeRef.current)
+    }
+  }, [])
 
   const handleSelectAnnotation = useCallback((id: string) => {
     setSelectedAnnotationId(id)
@@ -82,9 +97,11 @@ export default function App() {
             pages={pages}
             activePage={activePage}
             selectedId={selectedAnnotationId}
+            pendingId={pendingAnnotationId}
             onUpdate={updateAnnotation}
             onDelete={deleteAnnotation}
             onSelect={handleSelectAnnotation}
+            onConfirm={handleConfirmAnnotation}
             onNavigate={handleNavigate}
           />
         }
