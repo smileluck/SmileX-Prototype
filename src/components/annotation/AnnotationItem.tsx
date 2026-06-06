@@ -15,6 +15,7 @@ export function AnnotationItem({ annotation, onUpdate, onDelete, onSelect, activ
 
   return (
     <div
+      data-ann-id={annotation.id}
       onClick={() => onSelect(annotation.id)}
       className={`group relative rounded-lg border transition-all cursor-pointer ${
         active

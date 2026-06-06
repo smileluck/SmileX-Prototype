@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect, useRef } from 'react'
 import type { Annotation, PageInfo } from '../../types'
 import { AnnotationItem } from '../annotation/AnnotationItem'
 import { EmptyState } from '../shared/EmptyState'
@@ -26,6 +26,23 @@ export function AnnotationSidebar({
   onNavigate,
 }: AnnotationSidebarProps) {
   const [tab, setTab] = useState<'page' | 'global'>('page')
+  const listRef = useRef<HTMLDivElement>(null)
+
+  // Auto-switch tab when selectedId changes (e.g. marker click in iframe)
+  useEffect(() => {
+    if (!selectedId) return
+    const ann = annotations.find(a => a.id === selectedId)
+    if (!ann) return
+    const correctTab = ann.scope === 'global' ? 'global' : 'page'
+    if (tab !== correctTab) setTab(correctTab)
+  }, [selectedId, annotations, tab])
+
+  // Scroll selected item into view
+  useEffect(() => {
+    if (!selectedId || !listRef.current) return
+    const el = listRef.current.querySelector(`[data-ann-id="${selectedId}"]`)
+    el?.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+  }, [selectedId, tab])
 
   const globalAnnotations = useMemo(
     () => annotations.filter(a => a.scope === 'global'),
@@ -105,7 +122,7 @@ export function AnnotationSidebar({
             <EmptyState text={tab === 'global' ? '暂无通用标注' : '当前页面暂无标注'} />
           </div>
         ) : (
-          <div className="flex flex-col p-2 gap-0.5">
+          <div className="flex flex-col p-2 gap-0.5" ref={listRef}>
             {displayedAnnotations.map(ann => (
               <AnnotationItem
                 key={ann.id}
