@@ -170,8 +170,8 @@ const BRIDGE_SCRIPT = `<script>
       var r=target.getBoundingClientRect();
       if(r.width===0&&r.height===0){marker.style.display='none';return;}
       marker.style.display='';
-      marker.style.left=(r.right-12)+'px';
-      marker.style.top=(r.top-12)+'px';
+      marker.style.left=(r.right-15)+'px';
+      marker.style.top=(r.top-9)+'px';
     });
   }
 
