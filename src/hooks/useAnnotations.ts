@@ -6,15 +6,14 @@ export function useAnnotations(
   prototype: Prototype | null,
   onUpdate: (updater: (p: Prototype) => Prototype) => void,
 ) {
-  const addAnnotation = useCallback((x: number, y: number, page?: string) => {
+  const addAnnotation = useCallback((selector: string, page?: string) => {
     if (!prototype) return
     const maxNum = prototype.annotations.reduce((max, a) => Math.max(max, a.markerNumber), 0)
     const now = Date.now()
     const annotation: Annotation = {
       id: nanoid(),
       markerNumber: maxNum + 1,
-      x,
-      y,
+      selector,
       description: '',
       page,
       createdAt: now,
@@ -45,15 +44,10 @@ export function useAnnotations(
     }))
   }, [onUpdate])
 
-  const selectAnnotation = useCallback((_id: string) => {
-    // highlight logic can be added later
-  }, [])
-
   return {
     annotations: prototype?.annotations ?? [],
     addAnnotation,
     updateAnnotation,
     deleteAnnotation,
-    selectAnnotation,
   }
 }

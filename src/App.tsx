@@ -42,8 +42,8 @@ export default function App() {
     updatePrototype(p => ({ ...p, mode, updatedAt: Date.now() }))
   }, [updatePrototype])
 
-  const handlePlaceMarker = useCallback((x: number, y: number, page?: string) => {
-    addAnnotation(x, y, page)
+  const handlePlaceAnnotation = useCallback((selector: string, page?: string) => {
+    addAnnotation(selector, page)
   }, [addAnnotation])
 
   const handleSelectAnnotation = useCallback((id: string) => {
@@ -106,7 +106,7 @@ export default function App() {
             <PrototypeView
               ref={prototypeViewRef}
               prototype={activePrototype}
-              onPlaceMarker={handlePlaceMarker}
+              onPlaceAnnotation={handlePlaceAnnotation}
               selectedAnnotationId={selectedAnnotationId}
               onSelectAnnotation={handleSelectAnnotation}
               onPagesChange={setPages}

@@ -1,8 +1,7 @@
 export interface Annotation {
   id: string
   markerNumber: number
-  x: number
-  y: number
+  selector: string
   description: string
   page?: string
   createdAt: number
