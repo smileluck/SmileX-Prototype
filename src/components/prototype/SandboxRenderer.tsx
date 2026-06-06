@@ -24,7 +24,7 @@ const BRIDGE_SCRIPT = `<script>
 
   // Inject marker styles
   var ms=document.createElement('style');
-  ms.textContent='.smilex-marker{position:fixed!important;z-index:2147483647!important;width:24px!important;height:24px!important;display:flex!important;align-items:center!important;justify-content:center!important;border-radius:50%!important;font-size:11px!important;font-weight:700!important;color:#fff!important;box-shadow:0 2px 8px rgba(0,0,0,0.25)!important;cursor:pointer!important;transition:transform .15s,box-shadow .15s;-webkit-user-select:none!important;user-select:none!important;font-family:-apple-system,BlinkMacSystemFont,sans-serif!important;line-height:1!important;pointer-events:auto!important;border:none!important;padding:0!important;margin:0!important}.smilex-marker:hover{transform:scale(1.25);box-shadow:0 4px 16px rgba(0,0,0,0.35)}.smilex-marker-active{outline:2px solid #fff!important}.smilex-target-highlight{z-index:2147483646!important;position:relative!important;outline-offset:3px;transition:outline-color .2s,background-color .2s}.smilex-placing-active{cursor:crosshair!important;z-index:2147483647!important;position:relative!important}.smilex-placing-active *{cursor:crosshair!important}.smilex-placing-highlight{outline:2px dashed #2563eb!important;outline-offset:2px;background-color:rgba(37,99,235,0.05)!important;z-index:2147483647!important}';
+  ms.textContent='.smilex-marker{position:fixed!important;z-index:200!important;width:24px!important;height:24px!important;display:flex!important;align-items:center!important;justify-content:center!important;border-radius:50%!important;font-size:11px!important;font-weight:700!important;color:#fff!important;box-shadow:0 2px 8px rgba(0,0,0,0.25)!important;cursor:pointer!important;transition:transform .15s,box-shadow .15s;-webkit-user-select:none!important;user-select:none!important;font-family:-apple-system,BlinkMacSystemFont,sans-serif!important;line-height:1!important;pointer-events:auto!important;border:none!important;padding:0!important;margin:0!important}.smilex-marker:hover{transform:scale(1.25);box-shadow:0 4px 16px rgba(0,0,0,0.35)}.smilex-marker-active{outline:2px solid #fff!important}.smilex-target-highlight{z-index:199!important;position:relative!important;outline-offset:3px;transition:outline-color .2s,background-color .2s}.smilex-placing-active{cursor:crosshair!important;z-index:200!important;position:relative!important}.smilex-placing-active *{cursor:crosshair!important}.smilex-placing-highlight{outline:2px dashed #2563eb!important;outline-offset:2px;background-color:rgba(37,99,235,0.05)!important;z-index:200!important}';
   document.head.appendChild(ms);
 
   // Track current annotation data for repositioning
@@ -133,7 +133,7 @@ const BRIDGE_SCRIPT = `<script>
         var el=document.createElement('div');
         el.className='smilex-marker'+(isActive?' smilex-marker-active':'');
         el.style.position='fixed';
-        el.style.zIndex='2147483647';
+        el.style.zIndex='200';
         el.style.background=color;
         el.textContent=a.markerNumber;
         el.setAttribute('data-ann-id',a.id);
