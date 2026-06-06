@@ -1,5 +1,6 @@
-import { Trash2 } from 'lucide-react'
 import type { Annotation } from '../../types'
+
+const COLORS = ['#2563eb', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316']
 
 interface AnnotationItemProps {
   annotation: Annotation
@@ -10,36 +11,51 @@ interface AnnotationItemProps {
 }
 
 export function AnnotationItem({ annotation, onUpdate, onDelete, onSelect, active }: AnnotationItemProps) {
+  const color = COLORS[(annotation.markerNumber - 1) % COLORS.length]
+
   return (
     <div
       onClick={() => onSelect(annotation.id)}
-      className={`card card-compact bg-base-200 cursor-pointer transition-all ${
-        active ? 'ring-2 ring-primary' : 'hover:bg-base-300'
+      className={`group relative rounded-lg border transition-all cursor-pointer ${
+        active
+          ? 'border-current/30 bg-base-100 shadow-sm'
+          : 'border-transparent hover:bg-base-200/60'
       }`}
+      style={active ? { borderColor: color + '40' } : undefined}
     >
-      <div className="card-body flex-row items-start gap-3">
-        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">
+      {/* Delete button - top right, X icon */}
+      <button
+        className={`absolute -top-1 -right-1 btn btn-circle btn-ghost btn-xs h-5 w-5 p-0 text-base-content/20 hover:text-error hover:bg-error/10 z-10 ${
+          active ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+        }`}
+        onClick={(e) => {
+          e.stopPropagation()
+          onDelete(annotation.id)
+        }}
+      >
+        ✕
+      </button>
+
+      <div className="flex items-start gap-2.5 p-2.5 pr-6">
+        {/* Number badge */}
+        <div
+          className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-bold text-white mt-0.5"
+          style={{ backgroundColor: color }}
+        >
           {annotation.markerNumber}
         </div>
-        <div className="flex-1">
+
+        {/* Content */}
+        <div className="flex-1 min-w-0">
           <textarea
-            className="textarea textarea-bordered textarea-sm w-full text-sm"
-            placeholder="输入注解说明..."
-            rows={2}
+            className="textarea textarea-xs w-full text-xs leading-relaxed border-0 bg-transparent p-0 focus:bg-base-100 focus:outline-none focus:rounded resize-none"
+            placeholder="添加说明..."
+            rows={annotation.description ? undefined : 1}
             value={annotation.description}
             onChange={(e) => onUpdate(annotation.id, e.target.value)}
             onClick={(e) => e.stopPropagation()}
           />
         </div>
-        <button
-          className="btn btn-ghost btn-xs text-error"
-          onClick={(e) => {
-            e.stopPropagation()
-            onDelete(annotation.id)
-          }}
-        >
-          <Trash2 className="h-3.5 w-3.5" />
-        </button>
       </div>
     </div>
   )
