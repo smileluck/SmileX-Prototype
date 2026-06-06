@@ -23,9 +23,9 @@ export function AnnotationItem({ annotation, onUpdate, onDelete, onSelect, activ
       }`}
       style={active ? { borderColor: color + '40' } : undefined}
     >
-      {/* Delete button - top right, X icon */}
+      {/* Delete button - top right */}
       <button
-        className={`absolute -top-1 -right-1 btn btn-circle btn-ghost btn-xs h-5 w-5 p-0 text-base-content/20 hover:text-error hover:bg-error/10 z-10 ${
+        className={`absolute -top-2 -right-2 flex items-center justify-center w-5 h-5 rounded-full bg-base-300 text-base-content/50 hover:bg-error hover:text-white text-xs font-bold leading-none shadow-sm z-10 transition-colors ${
           active ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
         }`}
         onClick={(e) => {
