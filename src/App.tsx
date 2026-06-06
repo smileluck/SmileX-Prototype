@@ -9,10 +9,13 @@ import { usePrototype } from './hooks/usePrototype'
 import { useAnnotations } from './hooks/useAnnotations'
 import { exportToJSON, importFromJSON } from './services/storage'
 import { downloadJSON, readFileAsText } from './utils/export'
+import type { PageInfo } from './types'
 
 export default function App() {
   const [selectedAnnotationId, setSelectedAnnotationId] = useState<string | null>(null)
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
+  const [pages, setPages] = useState<PageInfo[]>([])
+  const [activePage, setActivePage] = useState<string | null>(null)
 
   const {
     activePrototype,
@@ -61,6 +64,14 @@ export default function App() {
     input.click()
   }, [selectPrototype])
 
+  const handlePlaceMarker = useCallback((x: number, y: number, page?: string) => {
+    addAnnotation(x, y, page)
+  }, [addAnnotation])
+
+  const handleSelectAnnotation = useCallback((id: string) => {
+    setSelectedAnnotationId(id)
+  }, [])
+
   return (
     <div className="flex flex-col h-full bg-base-100">
       <Header
@@ -82,10 +93,12 @@ export default function App() {
         rightSidebar={
           <AnnotationSidebar
             annotations={annotations}
+            pages={pages}
+            activePage={activePage}
             selectedId={selectedAnnotationId}
             onUpdate={updateAnnotation}
             onDelete={deleteAnnotation}
-            onSelect={setSelectedAnnotationId}
+            onSelect={handleSelectAnnotation}
           />
         }
         showRightSidebar={activePrototype?.mode === 'prototype' && !!activePrototype}
@@ -105,9 +118,11 @@ export default function App() {
           ) : (
             <PrototypeView
               prototype={activePrototype}
-              onPlaceMarker={addAnnotation}
+              onPlaceMarker={handlePlaceMarker}
               selectedAnnotationId={selectedAnnotationId}
-              onSelectAnnotation={setSelectedAnnotationId}
+              onSelectAnnotation={handleSelectAnnotation}
+              onPagesChange={setPages}
+              onActivePageChange={setActivePage}
             />
           )}
         </div>

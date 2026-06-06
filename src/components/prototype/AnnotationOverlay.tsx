@@ -1,9 +1,10 @@
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback, useRef, useMemo } from 'react'
 import type { Annotation } from '../../types'
 import { MarkerPin } from '../annotation/MarkerPin'
 
 interface AnnotationOverlayProps {
   annotations: Annotation[]
+  activePage: string | null
   onPlaceMarker: (x: number, y: number) => void
   selectedId: string | null
   onSelect: (id: string) => void
@@ -11,12 +12,18 @@ interface AnnotationOverlayProps {
 
 export function AnnotationOverlay({
   annotations,
+  activePage,
   onPlaceMarker,
   selectedId,
   onSelect,
 }: AnnotationOverlayProps) {
   const [isPlacing, setIsPlacing] = useState(false)
   const overlayRef = useRef<HTMLDivElement>(null)
+
+  const visibleAnnotations = useMemo(
+    () => annotations.filter(ann => !ann.page || ann.page === activePage),
+    [annotations, activePage],
+  )
 
   const handleClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     if (!isPlacing || !overlayRef.current) return
@@ -42,7 +49,6 @@ export function AnnotationOverlay({
         pointerEvents: isPlacing ? 'auto' : 'none',
       }}
     >
-      {/* Toggle placing mode button */}
       <button
         onClick={(e) => {
           e.stopPropagation()
@@ -54,7 +60,7 @@ export function AnnotationOverlay({
         {isPlacing ? '取消标注' : '添加标注'}
       </button>
 
-      {annotations.map(ann => (
+      {visibleAnnotations.map(ann => (
         <MarkerPin
           key={ann.id}
           number={ann.markerNumber}

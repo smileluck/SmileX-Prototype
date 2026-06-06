@@ -4,8 +4,14 @@ export interface Annotation {
   x: number
   y: number
   description: string
+  page?: string
   createdAt: number
   updatedAt: number
+}
+
+export interface PageInfo {
+  id: string
+  name: string
 }
 
 export interface Prototype {

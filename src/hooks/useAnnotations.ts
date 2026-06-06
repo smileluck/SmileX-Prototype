@@ -6,7 +6,7 @@ export function useAnnotations(
   prototype: Prototype | null,
   onUpdate: (updater: (p: Prototype) => Prototype) => void,
 ) {
-  const addAnnotation = useCallback((x: number, y: number) => {
+  const addAnnotation = useCallback((x: number, y: number, page?: string) => {
     if (!prototype) return
     const maxNum = prototype.annotations.reduce((max, a) => Math.max(max, a.markerNumber), 0)
     const now = Date.now()
@@ -16,6 +16,7 @@ export function useAnnotations(
       x,
       y,
       description: '',
+      page,
       createdAt: now,
       updatedAt: now,
     }
