@@ -14,53 +14,63 @@ export interface SandboxRendererHandle {
 
 const BRIDGE_SCRIPT = `<script>
 (function(){
+  var _standalone=[];
   function discoverPages(){
-    var sections=document.querySelectorAll('.page-section');
-    if(!sections.length)return [];
+    var pages=[];
     var names={};
     try{if(typeof pageNames!=='undefined')names=pageNames;}catch(e){}
-    return Array.from(sections).map(function(s){
+    document.querySelectorAll('.page-section').forEach(function(s){
       var id=s.id.replace('page-','');
       var name=names[id];
-      if(!name){
-        var nav=document.querySelector('.nav-item[data-page="'+id+'"]');
-        name=nav?nav.textContent.trim():id;
-      }
-      return {id:id,name:name};
+      if(!name){var nav=document.querySelector('.nav-item[data-page="'+id+'"]');name=nav?nav.textContent.trim():id;}
+      pages.push({id:id,name:name});
     });
+    _standalone=[];
+    document.querySelectorAll('body > [id]').forEach(function(el){
+      if(el.classList.contains('page-section'))return;
+      if(el.querySelector('.page-section'))return;
+      var heading=el.querySelector('h1,h2,h3');
+      var name=el.getAttribute('data-page-name')||(heading?heading.textContent.trim():el.id);
+      _standalone.push(el);
+      pages.push({id:el.id,name:name});
+    });
+    return pages;
   }
+  function isVisible(el){return el.style.display!=='none'&&el.offsetWidth>0;}
   function getActivePage(){
+    for(var i=0;i<_standalone.length;i++){if(isVisible(_standalone[i]))return _standalone[i].id;}
     var el=document.querySelector('.page-section.active');
     return el?el.id.replace('page-',''):null;
   }
-  function send(type,data){
-    try{window.parent.postMessage(Object.assign({type:type},data),'*');}catch(e){}
-  }
+  function send(type,data){try{window.parent.postMessage(Object.assign({type:type},data),'*');}catch(e){}}
+  function report(){send('smilex-page-change',{activePage:getActivePage()});}
   function setup(){
     var pages=discoverPages();
     send('smilex-bridge-init',{pages:pages,activePage:getActivePage()});
     document.querySelectorAll('.page-section').forEach(function(s){
-      new MutationObserver(function(){
-        send('smilex-page-change',{activePage:getActivePage()});
-      }).observe(s,{attributes:true,attributeFilter:['class']});
+      new MutationObserver(report).observe(s,{attributes:true,attributeFilter:['class']});
+    });
+    _standalone.forEach(function(el){
+      new MutationObserver(report).observe(el,{attributes:true,attributeFilter:['style']});
     });
   }
-  if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded',setup);
-  }else{setup();}
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',setup);}
+  else{setup();}
   window.addEventListener('message',function(e){
     if(!e.data||!e.data.type)return;
     if(e.data.type==='smilex-navigate'){
       var target=e.data.page;
-      var el=document.getElementById('page-'+target);
+      var el=document.getElementById('page-'+target)||document.getElementById(target);
       if(!el)return;
-      document.querySelectorAll('.page-section').forEach(function(p){p.classList.remove('active');});
-      el.classList.add('active');
-      document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
-      var nav=document.querySelector('.nav-item[data-page="'+target+'"]');
-      if(nav)nav.classList.add('active');
-      var title=document.getElementById('pageTitle');
-      if(title){try{if(typeof pageNames!=='undefined')title.textContent=pageNames[target]||target;}catch(e){}}
+      if(el.classList.contains('page-section')){
+        document.querySelectorAll('.page-section').forEach(function(p){p.classList.remove('active');});
+        el.classList.add('active');
+        document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
+        var nav=document.querySelector('.nav-item[data-page="'+target+'"]');
+        if(nav)nav.classList.add('active');
+        var title=document.getElementById('pageTitle');
+        if(title){try{if(typeof pageNames!=='undefined')title.textContent=pageNames[target]||target;}catch(e){}}
+      }
     }
   });
 })();
