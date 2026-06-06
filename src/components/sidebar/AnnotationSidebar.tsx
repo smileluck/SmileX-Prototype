@@ -84,73 +84,49 @@ export function AnnotationSidebar({
       </div>
 
       {pages.length > 0 && (
-        <div className="border-b border-base-300">
-          <div className="px-3 py-2 flex items-center gap-1.5 text-xs font-medium text-base-content/50">
+        <div className="border-b border-base-300 px-3 py-2">
+          <div className="flex items-center gap-1.5 text-xs font-medium text-base-content/50 mb-1.5">
             <Layers className="h-3.5 w-3.5" />
             页面导航
           </div>
-          <div className="px-2 pb-2 flex flex-col gap-0.5">
+          <select
+            className="select select-sm select-bordered w-full text-sm"
+            value={activePage ?? ''}
+            onChange={(e) => onNavigate?.(e.target.value)}
+          >
             {pages.map(page => (
-              <button
-                key={page.id}
-                className={`btn btn-xs justify-start gap-2 font-normal ${
-                  page.id === activePage
-                    ? 'btn-primary'
-                    : 'btn-ghost'
-                }`}
-                onClick={() => onNavigate?.(page.id)}
-              >
-                <span className="truncate">{page.name}</span>
-                {pageAnnotationCounts.has(page.id) && (
-                  <span className={`ml-auto text-[10px] rounded-full px-1.5 ${
-                    page.id === activePage ? 'bg-primary-content/20 text-primary-content' : 'bg-base-300'
-                  }`}>
-                    {pageAnnotationCounts.get(page.id)}
-                  </span>
-                )}
-              </button>
+              <option key={page.id} value={page.id}>
+                {page.name}{pageAnnotationCounts.has(page.id) ? ` (${pageAnnotationCounts.get(page.id)})` : ''}
+              </option>
             ))}
-          </div>
+          </select>
         </div>
       )}
 
       <div className="flex-1 overflow-y-auto">
-        {annotations.length === 0 ? (
-          <div className="p-2">
-            <EmptyState text="点击「添加标注」按钮，然后在界面上点击放置标记" />
-          </div>
-        ) : (
-          groups.map(group => (
-            <div key={group.key} className="px-2 pt-2">
-              <div
-                className={`flex items-center gap-1.5 px-2 py-1.5 rounded-md text-xs font-medium cursor-pointer transition-colors ${
-                  group.key === activePage
-                    ? 'bg-primary/10 text-primary'
-                    : 'text-base-content/50 hover:bg-base-300'
-                }`}
-                onClick={() => {
-                  const first = group.annotations[0]
-                  if (first) onSelect(first.id)
-                }}
-              >
-                {group.name}
-                <span className="ml-auto opacity-60">{group.annotations.length}</span>
-              </div>
-              <div className="space-y-1.5 mt-1">
-                {group.annotations.map(ann => (
-                  <AnnotationItem
-                    key={ann.id}
-                    annotation={ann}
-                    onUpdate={onUpdate}
-                    onDelete={onDelete}
-                    onSelect={onSelect}
-                    active={selectedId === ann.id}
-                  />
-                ))}
-              </div>
+        {(() => {
+          const currentAnnotations = activePage
+            ? annotations.filter(a => a.page === activePage)
+            : annotations
+          return currentAnnotations.length === 0 ? (
+            <div className="p-2">
+              <EmptyState text="当前页面暂无标注，点击「添加标注」按钮开始" />
             </div>
-          ))
-        )}
+          ) : (
+            <div className="space-y-1.5 p-2">
+              {currentAnnotations.map(ann => (
+                <AnnotationItem
+                  key={ann.id}
+                  annotation={ann}
+                  onUpdate={onUpdate}
+                  onDelete={onDelete}
+                  onSelect={onSelect}
+                  active={selectedId === ann.id}
+                />
+              ))}
+            </div>
+          )
+        })()}
       </div>
     </div>
   )
