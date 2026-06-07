@@ -37,6 +37,41 @@ const BRIDGE_SCRIPT = `<script>
   var COLORS=['#2563eb','#10b981','#f59e0b','#ef4444','#8b5cf6','#ec4899','#14b8a6','#f97316'];
   function markerColor(num){return COLORS[(num-1)%COLORS.length];}
 
+  function isPopupEl(el){
+    if(!el||el===document.body)return false;
+    var cls=(el.className||'').toString();var id=(el.id||'').toString();
+    return/(?:modal|dialog|popup|drawer)/i.test(id)||/(?:modal|dialog|popup|drawer)[-_]?overlay/i.test(cls);
+  }
+  function findHiddenPopup(el){
+    var cur=el;
+    while(cur&&cur!==document.body){
+      if(isPopupEl(cur)&&!cur.classList.contains('active'))return cur;
+      cur=cur.parentElement;
+    }
+    return null;
+  }
+  function openPopupFor(el){
+    var cur=el;
+    while(cur&&cur!==document.body){
+      if(isPopupEl(cur)){
+        var id=(cur.id||'').toString();
+        if(id){
+          try{if(typeof window.openModal==='function'){window.openModal(id);return;}}catch(e){}
+          try{if(typeof window.openDrawer==='function'){window.openDrawer(id);return;}}catch(e){}
+        }
+        if(!cur.classList.contains('active'))cur.classList.add('active');
+        return;
+      }
+      cur=cur.parentElement;
+    }
+  }
+  function querySelectorInPage(selector,container){
+    if(!selector)return null;
+    var el=container?container.querySelector(selector):null;
+    if(!el)el=document.querySelector(selector);
+    return el;
+  }
+
   function pageName(el,id){
     var n=el.getAttribute('data-page-name');if(n)return n;
     try{if(typeof pageNames!=='undefined'&&pageNames[id])return pageNames[id];}catch(e){}
@@ -127,8 +162,8 @@ const BRIDGE_SCRIPT = `<script>
       if(!container)return;
 
       byPage[pageId].forEach(function(a){
-        var target=container.querySelector(a.selector);
-        if(!target)return;
+        var target=querySelectorInPage(a.selector,container);
+        if(!target||findHiddenPopup(target))return;
         var color=markerColor(a.markerNumber);
         var isActive=a.id===selectedId;
 
@@ -157,8 +192,8 @@ const BRIDGE_SCRIPT = `<script>
     annotations.forEach(function(a){
       if(a.scope!=='global')return;
       var appEl=document.getElementById('app');
-      var target=appEl?appEl.querySelector(a.selector):document.querySelector(a.selector);
-      if(!target)return;
+      var target=querySelectorInPage(a.selector,appEl);
+      if(!target||findHiddenPopup(target))return;
       var color=markerColor(a.markerNumber);
       var isActive=a.id===selectedId;
 
@@ -204,14 +239,14 @@ const BRIDGE_SCRIPT = `<script>
       var target;
       if(ann.scope==='global'){
         var appEl=document.getElementById('app');
-        target=appEl?appEl.querySelector(ann.selector):document.querySelector(ann.selector);
+        target=querySelectorInPage(ann.selector,appEl);
       }else{
         var pg=ann.page||activePage;
         var container=document.getElementById('page-'+pg)||document.getElementById(pg);
-        if(!container){marker.style.display='none';return;}
-        target=container.querySelector(ann.selector);
+        target=querySelectorInPage(ann.selector,container);
       }
       if(!target){marker.style.display='none';return;}
+      if(findHiddenPopup(target)){marker.style.display='none';return;}
       var r=target.getBoundingClientRect();
       if(r.width===0&&r.height===0){marker.style.display='none';return;}
       marker.style.display='';
@@ -233,13 +268,14 @@ const BRIDGE_SCRIPT = `<script>
     var targetEl;
     if(ann.scope==='global'){
       var appE=document.getElementById('app');
-      targetEl=appE?appE.querySelector(ann.selector):document.querySelector(ann.selector);
+      targetEl=querySelectorInPage(ann.selector,appE);
     }else{
       var pg=ann.page||_currentActivePage;
       var container=document.getElementById('page-'+pg)||document.getElementById(pg);
-      if(container)targetEl=container.querySelector(ann.selector);
+      targetEl=querySelectorInPage(ann.selector,container);
     }
     if(!targetEl)return;
+    openPopupFor(targetEl);
     targetEl.scrollIntoView({behavior:'smooth',block:'center'});
     targetEl.classList.add('smilex-focus-pulse');
     setTimeout(function(){targetEl.classList.remove('smilex-focus-pulse');},3200);
@@ -282,7 +318,24 @@ const BRIDGE_SCRIPT = `<script>
   _ro.observe(document.documentElement);
   window.addEventListener('scroll',function(){schedulePosition();},true);
   window.addEventListener('resize',function(){schedulePosition();});
-  new MutationObserver(function(){schedulePosition();}).observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['style','class']});
+  new MutationObserver(function(mutations){
+    schedulePosition();
+    for(var i=0;i<mutations.length;i++){
+      var m=mutations[i];
+      if(m.type==='attributes'&&m.attributeName==='class'&&m.target&&m.target.classList){
+        var el=m.target;
+        if(isPopupEl(el)){
+          var oldCls=m.oldValue||'';
+          var hadActive=oldCls.indexOf('active')>=0;
+          var hasActive=el.classList.contains('active');
+          if(hadActive!==hasActive){
+            renderMarkers(_currentAnnotations,_currentActivePage,_currentSelectedId);
+            break;
+          }
+        }
+      }
+    }
+  }).observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['style','class'],attributeOldValue:true});
 
   // Placing mode: highlight on hover, capture click to get selector
   var _lastHighlight=null;
