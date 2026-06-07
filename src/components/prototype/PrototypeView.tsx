@@ -5,6 +5,7 @@ import { AnnotationOverlay } from './AnnotationOverlay'
 
 export interface PrototypeViewHandle {
   navigateToPage: (page: string) => void
+  focusAnnotation: (id: string) => void
 }
 
 interface PrototypeViewProps {
@@ -35,6 +36,9 @@ export const PrototypeView = forwardRef<PrototypeViewHandle, PrototypeViewProps>
     useImperativeHandle(ref, () => ({
       navigateToPage(page: string) {
         sandboxRef.current?.navigateToPage(page)
+      },
+      focusAnnotation(id: string) {
+        sandboxRef.current?.focusAnnotation(id)
       },
     }))
 

@@ -15,16 +15,18 @@ export interface SandboxRendererHandle {
   renderAnnotations: (annotations: Annotation[], activePage: string | null, selectedId: string | null) => void
   startPlacing: () => void
   cancelPlacing: () => void
+  focusAnnotation: (id: string) => void
 }
 
 const BRIDGE_SCRIPT = `<script>
 (function(){
   var _standalone=[];
   var _placing=false;
+  var _focusRequested=false;
 
   // Inject marker styles
   var ms=document.createElement('style');
-  ms.textContent='.smilex-marker{position:fixed!important;z-index:200!important;width:24px!important;height:24px!important;display:flex!important;align-items:center!important;justify-content:center!important;border-radius:50%!important;font-size:11px!important;font-weight:700!important;color:#fff!important;box-shadow:0 2px 8px rgba(0,0,0,0.25)!important;cursor:pointer!important;transition:transform .15s,box-shadow .15s;-webkit-user-select:none!important;user-select:none!important;font-family:-apple-system,BlinkMacSystemFont,sans-serif!important;line-height:1!important;pointer-events:auto!important;border:none!important;padding:0!important;margin:0!important}.smilex-marker:hover{transform:scale(1.25);box-shadow:0 4px 16px rgba(0,0,0,0.35)}.smilex-marker-active{outline:2px solid #fff!important}.smilex-target-highlight{z-index:199!important;position:relative!important;outline-offset:3px;transition:outline-color .2s,background-color .2s}.smilex-placing-active{cursor:crosshair!important;z-index:200!important;position:relative!important}.smilex-placing-active *{cursor:crosshair!important}.smilex-placing-highlight{outline:2px dashed #2563eb!important;outline-offset:2px;background-color:rgba(37,99,235,0.05)!important;z-index:200!important}';
+  ms.textContent='.smilex-marker{position:fixed!important;z-index:200!important;width:24px!important;height:24px!important;display:flex!important;align-items:center!important;justify-content:center!important;border-radius:50%!important;font-size:11px!important;font-weight:700!important;color:#fff!important;box-shadow:0 2px 8px rgba(0,0,0,0.25)!important;cursor:pointer!important;transition:transform .15s,box-shadow .15s;-webkit-user-select:none!important;user-select:none!important;font-family:-apple-system,BlinkMacSystemFont,sans-serif!important;line-height:1!important;pointer-events:auto!important;border:none!important;padding:0!important;margin:0!important}.smilex-marker:hover{transform:scale(1.25);box-shadow:0 4px 16px rgba(0,0,0,0.35)}.smilex-marker-active{outline:2px solid #fff!important}.smilex-target-highlight{z-index:199!important;position:relative!important;outline-offset:3px;transition:outline-color .2s,background-color .2s}.smilex-placing-active{cursor:crosshair!important;z-index:200!important;position:relative!important}.smilex-placing-active *{cursor:crosshair!important}.smilex-placing-highlight{outline:2px dashed #2563eb!important;outline-offset:2px;background-color:rgba(37,99,235,0.05)!important;z-index:200!important}.smilex-tip{position:fixed!important;z-index:201!important;background:#1e293b!important;color:#fff!important;padding:8px 14px!important;border-radius:8px!important;max-width:260px!important;box-shadow:0 4px 16px rgba(0,0,0,0.25)!important;pointer-events:none!important;opacity:0!important;transform:translateY(6px)!important;transition:opacity .2s ease,transform .2s ease!important;font-family:-apple-system,BlinkMacSystemFont,sans-serif!important;font-size:12px!important;line-height:1.4!important;white-space:normal!important;border:none!important;margin:0!important}.smilex-tip-visible{opacity:1!important;transform:translateY(0)!important}@keyframes smilex-pulse{0%,100%{outline-offset:3px}50%{outline-offset:8px}}.smilex-focus-pulse{animation:smilex-pulse 1s ease-in-out 3}';
   document.head.appendChild(ms);
 
   // Track current annotation data for repositioning
@@ -181,6 +183,14 @@ const BRIDGE_SCRIPT = `<script>
     });
 
     positionMarkers();
+    if(_focusRequested&&selectedId){
+      _focusRequested=false;
+      var focusId=selectedId,focusAnns=annotations;
+      requestAnimationFrame(function(){
+        positionMarkers();
+        setTimeout(function(){doFocus(focusId,focusAnns);},100);
+      });
+    }
   }
 
   function positionMarkers(){
@@ -213,6 +223,58 @@ const BRIDGE_SCRIPT = `<script>
         marker.style.top=(r.top-6)+'px';
       }
     });
+  }
+
+  function doFocus(annId,annotations){
+    var oldTip=document.querySelector('.smilex-tip');if(oldTip)oldTip.remove();
+    document.querySelectorAll('.smilex-focus-pulse').forEach(function(el){el.classList.remove('smilex-focus-pulse');});
+    var ann=annotations.find(function(a){return a.id===annId;});
+    if(!ann)return;
+    var targetEl;
+    if(ann.scope==='global'){
+      var appE=document.getElementById('app');
+      targetEl=appE?appE.querySelector(ann.selector):document.querySelector(ann.selector);
+    }else{
+      var pg=ann.page||_currentActivePage;
+      var container=document.getElementById('page-'+pg)||document.getElementById(pg);
+      if(container)targetEl=container.querySelector(ann.selector);
+    }
+    if(!targetEl)return;
+    targetEl.scrollIntoView({behavior:'smooth',block:'center'});
+    targetEl.classList.add('smilex-focus-pulse');
+    setTimeout(function(){targetEl.classList.remove('smilex-focus-pulse');},3200);
+    setTimeout(function(){
+      var existingTip=document.querySelector('.smilex-tip');if(existingTip)existingTip.remove();
+      var marker=document.querySelector('.smilex-marker[data-ann-id="'+annId+'"]');
+      if(!marker||marker.style.display==='none')return;
+      var tip=document.createElement('div');
+      tip.className='smilex-tip';
+      var color=markerColor(ann.markerNumber);
+      var desc=ann.description||'未添加说明';
+      tip.innerHTML='<div style="display:flex;align-items:flex-start;gap:8px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;border-radius:50%;background:'+color+';font-size:10px;font-weight:700;color:#fff;line-height:18px">'+ann.markerNumber+'</span><span>'+desc+'</span></div>';
+      document.body.appendChild(tip);
+      var mRect=marker.getBoundingClientRect();
+      var tipH=tip.offsetHeight,tipW=tip.offsetWidth;
+      var left=mRect.left+mRect.width/2-tipW/2;
+      var top=mRect.bottom+8;
+      if(top+tipH>window.innerHeight-8){top=mRect.top-tipH-8;}
+      left=Math.max(8,Math.min(left,window.innerWidth-tipW-8));
+      tip.style.left=left+'px';
+      tip.style.top=top+'px';
+      requestAnimationFrame(function(){tip.classList.add('smilex-tip-visible');});
+      var tipTimer=setTimeout(function(){
+        tip.classList.remove('smilex-tip-visible');
+        setTimeout(function(){tip.remove();},200);
+      },4000);
+      setTimeout(function(){
+        window.addEventListener('scroll',function handler(){
+          clearTimeout(tipTimer);
+          tip.classList.remove('smilex-tip-visible');
+          setTimeout(function(){tip.remove();},200);
+          window.removeEventListener('scroll',handler,true);
+        },{capture:true,once:true});
+      },500);
+    },400);
   }
 
   // Auto-reposition on layout change, scroll, and DOM mutations
@@ -323,6 +385,9 @@ const BRIDGE_SCRIPT = `<script>
     if(e.data.type==='smilex-cancel-placing'){
       exitPlacing();
     }
+    if(e.data.type==='smilex-focus-annotation'){
+      _focusRequested=true;
+    }
   });
 })();
 </script>`
@@ -353,6 +418,12 @@ export const SandboxRenderer = forwardRef<SandboxRendererHandle, SandboxRenderer
       cancelPlacing() {
         iframeRef.current?.contentWindow?.postMessage(
           { type: 'smilex-cancel-placing' },
+          '*',
+        )
+      },
+      focusAnnotation(id: string) {
+        iframeRef.current?.contentWindow?.postMessage(
+          { type: 'smilex-focus-annotation', id },
           '*',
         )
       },

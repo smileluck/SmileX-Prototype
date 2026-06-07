@@ -80,6 +80,11 @@ export default function App() {
 
   const handleSelectAnnotation = useCallback((id: string) => {
     setSelectedAnnotationId(id)
+    const ann = prototypeRef.current?.annotations.find(a => a.id === id)
+    if (ann && ann.scope === 'page' && ann.page) {
+      prototypeViewRef.current?.navigateToPage(ann.page)
+    }
+    prototypeViewRef.current?.focusAnnotation(id)
   }, [])
 
   const handleNavigate = useCallback((page: string) => {
