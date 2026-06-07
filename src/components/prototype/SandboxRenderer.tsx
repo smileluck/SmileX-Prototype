@@ -341,11 +341,22 @@ export const BRIDGE_SCRIPT = `<script>
   _ro.observe(document.documentElement);
   window.addEventListener('scroll',function(){schedulePosition();},true);
   window.addEventListener('resize',function(){schedulePosition();});
+  var _visTimer=null;
+  function scheduleVisibilityRender(){
+    if(_rendering)return;
+    clearTimeout(_visTimer);
+    _visTimer=setTimeout(function(){renderMarkers(_currentAnnotations,_currentActivePage,_currentSelectedId);},400);
+  }
+  function isSmilexEl(el){
+    if(!el||!el.classList)return false;
+    return el.classList.contains('smilex-marker')||el.classList.contains('smilex-target-highlight')||el.classList.contains('smilex-tip');
+  }
   new MutationObserver(function(mutations){
     if(_rendering)return;
     schedulePosition();
     for(var i=0;i<mutations.length;i++){
       var m=mutations[i];
+      if(isSmilexEl(m.target))continue;
       if(m.type==='attributes'&&m.attributeName==='class'&&m.target&&m.target.classList){
         var el=m.target;
         if(isPopupEl(el)){
@@ -356,11 +367,15 @@ export const BRIDGE_SCRIPT = `<script>
             renderMarkers(_currentAnnotations,_currentActivePage,_currentSelectedId);
             break;
           }
+        }else{
+          scheduleVisibilityRender();
         }
+      }
+      if(m.type==='attributes'&&m.attributeName==='style'){
+        scheduleVisibilityRender();
       }
     }
   }).observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['style','class'],attributeOldValue:true});
-  setInterval(function(){if(!_rendering&&_currentAnnotations.length)renderMarkers(_currentAnnotations,_currentActivePage,_currentSelectedId);},1000);
 
   // Placing mode: highlight on hover, capture click to get selector
   var _lastHighlight=null;
