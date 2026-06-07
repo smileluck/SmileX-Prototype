@@ -26,7 +26,7 @@ const BRIDGE_SCRIPT = `<script>
 
   // Inject marker styles
   var ms=document.createElement('style');
-  ms.textContent='.smilex-marker{position:fixed!important;z-index:200!important;width:24px!important;height:24px!important;display:flex!important;align-items:center!important;justify-content:center!important;border-radius:50%!important;font-size:11px!important;font-weight:700!important;color:#fff!important;box-shadow:0 2px 8px rgba(0,0,0,0.25)!important;cursor:pointer!important;transition:transform .15s,box-shadow .15s;-webkit-user-select:none!important;user-select:none!important;font-family:-apple-system,BlinkMacSystemFont,sans-serif!important;line-height:1!important;pointer-events:auto!important;border:none!important;padding:0!important;margin:0!important}.smilex-marker:hover{transform:scale(1.25);box-shadow:0 4px 16px rgba(0,0,0,0.35)}.smilex-marker-active{outline:2px solid #fff!important}.smilex-target-highlight{z-index:199!important;position:relative!important;outline-offset:3px;transition:outline-color .2s,background-color .2s}.smilex-placing-active{cursor:crosshair!important;z-index:200!important;position:relative!important}.smilex-placing-active *{cursor:crosshair!important}.smilex-placing-highlight{outline:2px dashed #2563eb!important;outline-offset:2px;background-color:rgba(37,99,235,0.05)!important;z-index:200!important}.smilex-tip{position:fixed!important;z-index:201!important;background:#1e293b!important;color:#fff!important;padding:8px 14px!important;border-radius:8px!important;max-width:260px!important;box-shadow:0 4px 16px rgba(0,0,0,0.25)!important;pointer-events:none!important;opacity:0!important;transform:translateY(6px)!important;transition:opacity .2s ease,transform .2s ease!important;font-family:-apple-system,BlinkMacSystemFont,sans-serif!important;font-size:12px!important;line-height:1.4!important;white-space:normal!important;border:none!important;margin:0!important}.smilex-tip-visible{opacity:1!important;transform:translateY(0)!important}@keyframes smilex-pulse{0%,100%{outline-offset:3px}50%{outline-offset:8px}}.smilex-focus-pulse{animation:smilex-pulse 1s ease-in-out 3}';
+  ms.textContent='.smilex-marker{position:fixed!important;z-index:200!important;width:24px!important;height:24px!important;display:flex!important;align-items:center!important;justify-content:center!important;border-radius:50%!important;font-size:11px!important;font-weight:700!important;color:#fff!important;box-shadow:0 2px 8px rgba(0,0,0,0.25)!important;cursor:pointer!important;transition:transform .15s,box-shadow .15s;-webkit-user-select:none!important;user-select:none!important;font-family:-apple-system,BlinkMacSystemFont,sans-serif!important;line-height:1!important;pointer-events:auto!important;border:none!important;padding:0!important;margin:0!important}.smilex-marker:hover{transform:scale(1.25);box-shadow:0 4px 16px rgba(0,0,0,0.35)}.smilex-marker-active{outline:2px solid #fff!important}.smilex-target-highlight{outline-offset:3px;transition:outline-color .2s,background-color .2s}.smilex-placing-active{cursor:crosshair!important;z-index:200!important;position:relative!important}.smilex-placing-active *{cursor:crosshair!important}.smilex-placing-highlight{outline:2px dashed #2563eb!important;outline-offset:2px;background-color:rgba(37,99,235,0.05)!important;z-index:200!important}.smilex-tip{position:fixed!important;z-index:201!important;background:#1e293b!important;color:#fff!important;padding:8px 14px!important;border-radius:8px!important;max-width:260px!important;box-shadow:0 4px 16px rgba(0,0,0,0.25)!important;pointer-events:none!important;opacity:0!important;transform:translateY(6px)!important;transition:opacity .2s ease,transform .2s ease!important;font-family:-apple-system,BlinkMacSystemFont,sans-serif!important;font-size:12px!important;line-height:1.4!important;white-space:normal!important;border:none!important;margin:0!important}.smilex-tip-visible{opacity:1!important;transform:translateY(0)!important}@keyframes smilex-pulse{0%,100%{outline-offset:3px}50%{outline-offset:8px}}.smilex-focus-pulse{animation:smilex-pulse 1s ease-in-out 3}';
   document.head.appendChild(ms);
 
   // Track current annotation data for repositioning
@@ -140,9 +140,19 @@ const BRIDGE_SCRIPT = `<script>
     _posTimer=setTimeout(function(){_posTimer=null;positionMarkers();},16);
   }
 
+  function applyHighlight(target,isActive,color){
+    target.classList.add('smilex-target-highlight');
+    var cs=window.getComputedStyle(target);
+    if(cs.position==='static')target.style.position='relative';
+    var curZ=parseInt(cs.zIndex)||0;
+    if(curZ<199)target.style.zIndex='199';
+    target.style.outline=isActive?'3px solid '+color:'2px solid '+color;
+    target.style.backgroundColor=isActive?'rgba(0,0,0,0.04)':'';
+  }
+
   function renderMarkers(annotations,activePage,selectedId){
     document.querySelectorAll('.smilex-marker').forEach(function(m){m.remove();});
-    document.querySelectorAll('.smilex-target-highlight').forEach(function(el){el.classList.remove('smilex-target-highlight');el.style.outline='';el.style.backgroundColor='';el.style.position='';});
+    document.querySelectorAll('.smilex-target-highlight').forEach(function(el){el.classList.remove('smilex-target-highlight');el.style.outline='';el.style.backgroundColor='';el.style.position='';el.style.zIndex='';});
 
     _currentAnnotations=annotations;
     _currentActivePage=activePage;
@@ -167,10 +177,7 @@ const BRIDGE_SCRIPT = `<script>
         var color=markerColor(a.markerNumber);
         var isActive=a.id===selectedId;
 
-        target.classList.add('smilex-target-highlight');
-        target.style.position='relative';
-        target.style.outline=isActive?'3px solid '+color:'2px solid '+color;
-        target.style.backgroundColor=isActive?'rgba(0,0,0,0.04)':'';
+        applyHighlight(target,isActive,color);
 
         var el=document.createElement('div');
         el.className='smilex-marker'+(isActive?' smilex-marker-active':'');
@@ -197,10 +204,7 @@ const BRIDGE_SCRIPT = `<script>
       var color=markerColor(a.markerNumber);
       var isActive=a.id===selectedId;
 
-      target.classList.add('smilex-target-highlight');
-      target.style.position='relative';
-      target.style.outline=isActive?'3px solid '+color:'2px solid '+color;
-      target.style.backgroundColor=isActive?'rgba(0,0,0,0.04)':'';
+      applyHighlight(target,isActive,color);
 
       var el=document.createElement('div');
       el.className='smilex-marker'+(isActive?' smilex-marker-active':'');
