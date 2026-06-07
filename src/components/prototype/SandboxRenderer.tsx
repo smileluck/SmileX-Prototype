@@ -50,6 +50,14 @@ export const BRIDGE_SCRIPT = `<script>
     }
     return null;
   }
+  function isHiddenEl(el){
+    var cur=el;
+    while(cur&&cur!==document.body){
+      try{var s=window.getComputedStyle(cur);if(s.display==='none'||s.visibility==='hidden')return true;}catch(e){}
+      cur=cur.parentElement;
+    }
+    return false;
+  }
   function openPopupFor(el){
     var cur=el;
     while(cur&&cur!==document.body){
@@ -173,23 +181,7 @@ export const BRIDGE_SCRIPT = `<script>
 
       byPage[pageId].forEach(function(a){
         var target=querySelectorInPage(a.selector,container);
-        if(!target||findHiddenPopup(target))return;
-        var color=markerColor(a.markerNumber);
-        var isActive=a.id===selectedId;
-
-        applyHighlight(target,isActive,color);
-
-        var el=document.createElement('div');
-        el.className='smilex-marker'+(isActive?' smilex-marker-active':'');
-        el.style.position='fixed';
-        el.style.zIndex='200';
-        el.style.background=color;
-        el.style.display='none';
-        el.textContent=a.markerNumber;
-        el.setAttribute('data-ann-id',a.id);
-        el.addEventListener('click',function(e){
-          e.stopPropagation();
-          send('smilex-annotation-click',{id:a.id});
+        if(!target||findHiddenPopup(target)||isHiddenEl(target))return;
         });
         document.body.appendChild(el);
       });
