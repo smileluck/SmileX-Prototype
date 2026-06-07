@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npx vite *)"
+      "Bash(npx vite *)",
+      "Bash(node -e \"const fs=require\\('fs'\\); const s=fs.readFileSync\\('d:/project/SmileX/SmileX-Prototype/website/robot-mgmt-v2/images/flow-auth.md','utf8'\\); const m=s.match\\(/提示\\(.{2}\\)/\\); if\\(m\\) console.log\\('char:', m[1], 'codepoints:', [...m[1]].map\\(c=>c.codePointAt\\(0\\).toString\\(16\\)\\).join\\(' '\\)\\)\")"
     ]
   }
 }

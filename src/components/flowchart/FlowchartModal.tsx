@@ -17,7 +17,16 @@ interface DiagramItem {
 
 function extractMermaidCode(md: string): string {
   const match = md.match(/```mermaid\n([\s\S]*?)```/)
-  return match ? match[1].trim() : ''
+  if (!match) return ''
+  // Double quotes inside node labels break Mermaid parser — replace with corner brackets
+  let code = match[1].trim()
+  let isOpen = true
+  code = code.replace(/["""]/g, () => {
+    const ch = isOpen ? '「' : '」'
+    isOpen = !isOpen
+    return ch
+  })
+  return code
 }
 
 function extractTitle(md: string): string {
@@ -82,11 +91,11 @@ function MermaidDiagram({ code }: { code: string }) {
   }
 
   return (
-    <div className="w-full flex justify-center">
+    <div className="w-full min-h-0">
       {loading && <span className="loading loading-spinner loading-md" />}
       <div
         ref={containerRef}
-        className={loading ? 'hidden' : 'w-full flex justify-center [&>svg]:max-w-full [&>svg]:h-auto'}
+        className={loading ? 'hidden' : '[&>svg]:w-full [&>svg]:h-auto'}
       />
     </div>
   )
@@ -150,26 +159,28 @@ export function FlowchartModal({ slug, onClose }: FlowchartModalProps) {
           </button>
         </div>
 
-        <div className="flex-1 overflow-auto flex items-center justify-center relative">
+        <div className="flex-1 overflow-auto relative min-h-0">
           {loading ? (
-            <span className="loading loading-spinner loading-lg" />
+            <div className="flex items-center justify-center h-full">
+              <span className="loading loading-spinner loading-lg" />
+            </div>
           ) : items.length === 0 ? (
-            <div className="text-center text-base-content/50">
-              <p className="text-lg">暂无流程图</p>
-              <p className="text-sm mt-1">将流程图（.md 或图片）放入 website/{slug}/images/ 目录</p>
+            <div className="flex items-center justify-center h-full text-base-content/50">
+              <div className="text-center">
+                <p className="text-lg">暂无流程图</p>
+                <p className="text-sm mt-1">将流程图（.md 或图片）放入 website/{slug}/images/ 目录</p>
+              </div>
             </div>
           ) : (
-            <>
+            <div className="relative min-h-full flex flex-col items-center p-4">
               {items.length > 1 && (
-                <button className="btn btn-circle btn-sm btn-ghost absolute left-2 z-10" onClick={prev}>
+                <button className="btn btn-circle btn-sm btn-ghost absolute left-1 top-1/2 -translate-y-1/2 z-10" onClick={prev}>
                   <ChevronLeft className="h-5 w-5" />
                 </button>
               )}
-              <div className="flex flex-col items-center gap-2 px-8 w-full">
+              <div className="flex flex-col items-center gap-2 w-full max-w-full px-6">
                 {items[current].type === 'mermaid' ? (
-                  <div className="w-full flex justify-center">
-                    <MermaidDiagram code={items[current].mermaidCode!} />
-                  </div>
+                  <MermaidDiagram code={items[current].mermaidCode!} />
                 ) : (
                   <img
                     src={items[current].url}
@@ -182,11 +193,11 @@ export function FlowchartModal({ slug, onClose }: FlowchartModalProps) {
                 </span>
               </div>
               {items.length > 1 && (
-                <button className="btn btn-circle btn-sm btn-ghost absolute right-2 z-10" onClick={next}>
+                <button className="btn btn-circle btn-sm btn-ghost absolute right-1 top-1/2 -translate-y-1/2 z-10" onClick={next}>
                   <ChevronRight className="h-5 w-5" />
                 </button>
               )}
-            </>
+            </div>
           )}
         </div>
       </div>
