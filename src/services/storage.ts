@@ -29,7 +29,7 @@ export async function loadPrototype(id: string): Promise<Prototype | undefined> 
       prompt: data.prompt ?? '',
       generatedCode: data.generatedCode ?? '',
       annotations: data.annotations ?? [],
-      mode: data.mode ?? 'preview',
+      mode: 'prototype',
       createdAt: data.createdAt ?? Date.now(),
       updatedAt: data.updatedAt ?? Date.now(),
     }

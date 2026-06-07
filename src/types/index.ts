@@ -20,7 +20,6 @@ export interface Prototype {
   prompt: string
   generatedCode: string
   annotations: Annotation[]
-  mode: 'prototype' | 'preview'
   createdAt: number
   updatedAt: number
 }

@@ -40,10 +40,6 @@ export default function App() {
     if (name) await createPrototype(name)
   }, [createPrototype])
 
-  const handleModeChange = useCallback((mode: 'prototype' | 'preview') => {
-    updatePrototype(p => ({ ...p, mode, updatedAt: Date.now() }))
-  }, [updatePrototype])
-
   const handlePlaceAnnotation = useCallback((selector: string, scope: 'global' | 'page', page?: string) => {
     const id = addAnnotation(selector, scope, page)
     if (id) {
@@ -94,8 +90,6 @@ export default function App() {
   return (
     <div className="flex flex-col h-full bg-base-100">
       <Header
-        mode={activePrototype?.mode ?? 'prototype'}
-        onModeChange={handleModeChange}
         projectName={activePrototype?.name}
         sidebarVisible={leftSidebarVisible}
         onToggleSidebar={() => setLeftSidebarVisible(v => !v)}
@@ -127,7 +121,7 @@ export default function App() {
           />
         }
         showLeftSidebar={leftSidebarVisible}
-        showRightSidebar={activePrototype?.mode === 'prototype' && !!activePrototype}
+        showRightSidebar={!!activePrototype}
       >
         {errorMsg && (
           <div className="alert alert-error alert-sm mx-3 mt-2">

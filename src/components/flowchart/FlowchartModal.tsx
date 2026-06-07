@@ -51,7 +51,7 @@ function loadMermaid(): Promise<void> {
   })
 }
 
-function MermaidDiagram({ code }: { code: string }) {
+function MermaidDiagram({ code, onRendered }: { code: string; onRendered?: () => void }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
@@ -79,7 +79,10 @@ function MermaidDiagram({ code }: { code: string }) {
         if (!cancelled) setError('无法加载 Mermaid 库，请检查网络连接')
       })
       .finally(() => {
-        if (!cancelled) setLoading(false)
+        if (!cancelled) {
+          setLoading(false)
+          onRendered?.()
+        }
       })
 
     return () => { cancelled = true }
@@ -100,6 +103,52 @@ function MermaidDiagram({ code }: { code: string }) {
   )
 }
 
+/** Hidden pre-renderer to warm up adjacent Mermaid diagrams */
+function MermaidPreload({ code }: { code: string }) {
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    let cancelled = false
+    loadMermaid().then(async () => {
+      if (cancelled || !ref.current) return
+      const mermaid = (window as any).mermaid
+      const id = `mermaid-pre-${Math.random().toString(36).slice(2, 10)}`
+      try {
+        const { svg } = await mermaid.render(id, code)
+        if (!cancelled && ref.current) {
+          ref.current.innerHTML = svg
+        }
+      } catch { /* ignore preload errors */ }
+    })
+    return () => { cancelled = true }
+  }, [code])
+
+  return <div ref={ref} className="hidden" />
+}
+
+function ImageWithLoading({ src, alt, onLoaded }: { src: string; alt: string; onLoaded?: () => void }) {
+  const [loading, setLoading] = useState(true)
+
+  return (
+    <div className="relative">
+      {loading && (
+        <div className="flex items-center justify-center py-20">
+          <span className="loading loading-spinner loading-md" />
+        </div>
+      )}
+      <img
+        src={src}
+        alt={alt}
+        className={`max-w-full rounded-lg transition-opacity duration-200 ${loading ? 'opacity-0 absolute' : 'opacity-100'}`}
+        onLoad={() => {
+          setLoading(false)
+          onLoaded?.()
+        }}
+      />
+    </div>
+  )
+}
+
 const MIN_SCALE = 0.2
 const MAX_SCALE = 5
 const ZOOM_STEP = 0.15
@@ -108,6 +157,7 @@ export function FlowchartModal({ slug, onClose }: FlowchartModalProps) {
   const [items, setItems] = useState<DiagramItem[]>([])
   const [current, setCurrent] = useState(0)
   const [loading, setLoading] = useState(true)
+  const [rendering, setRendering] = useState(true)
   const [scale, setScale] = useState(1)
   const [translate, setTranslate] = useState({ x: 0, y: 0 })
   const dragging = useRef(false)
@@ -155,11 +205,18 @@ export function FlowchartModal({ slug, onClose }: FlowchartModalProps) {
 
   useEffect(() => { loadItems() }, [loadItems])
 
-  // Reset zoom when switching diagrams
-  useEffect(() => { resetView() }, [current, resetView])
+  const onItemRendered = useCallback(() => {
+    setRendering(false)
+  }, [])
 
-  const prev = () => setCurrent(i => (i > 0 ? i - 1 : items.length - 1))
-  const next = () => setCurrent(i => (i < items.length - 1 ? i + 1 : 0))
+  const switchTo = useCallback((index: number) => {
+    setRendering(true)
+    resetView()
+    setCurrent(index)
+  }, [resetView])
+
+  const prev = () => switchTo(current > 0 ? current - 1 : items.length - 1)
+  const next = () => switchTo(current < items.length - 1 ? current + 1 : 0)
 
   const zoomTo = useCallback((newScale: number, pivotX?: number, pivotY?: number) => {
     setScale(prev => {
@@ -285,16 +342,17 @@ export function FlowchartModal({ slug, onClose }: FlowchartModalProps) {
               >
                 <div className="flex flex-col items-center gap-2 w-full p-4">
                   {items[current].type === 'mermaid' ? (
-                    <MermaidDiagram code={items[current].mermaidCode!} />
+                    <MermaidDiagram code={items[current].mermaidCode!} onRendered={onItemRendered} />
                   ) : (
-                    <img
-                      src={items[current].url}
-                      alt={items[current].name}
-                      className="max-w-full rounded-lg"
-                    />
+                    <ImageWithLoading src={items[current].url} alt={items[current].name} onLoaded={onItemRendered} />
                   )}
                 </div>
               </div>
+              {rendering && (
+                <div className="absolute inset-0 flex items-center justify-center bg-base-100/40 z-10 pointer-events-none">
+                  <span className="loading loading-spinner loading-lg" />
+                </div>
+              )}
               {items.length > 1 && (
                 <button
                   className="btn btn-circle btn-sm btn-ghost absolute right-2 top-1/2 -translate-y-1/2 z-20 bg-base-100/60"
@@ -306,6 +364,13 @@ export function FlowchartModal({ slug, onClose }: FlowchartModalProps) {
               <span className="absolute bottom-2 left-1/2 -translate-x-1/2 text-sm text-base-content/60 z-20 bg-base-100/60 px-2 rounded">
                 {current + 1} / {items.length} — {displayName(items[current])}
               </span>
+              {/* Preload adjacent items */}
+              {items.length > 1 && items[current > 0 ? current - 1 : items.length - 1]?.type === 'mermaid' && (
+                <MermaidPreload code={items[current > 0 ? current - 1 : items.length - 1].mermaidCode!} />
+              )}
+              {items.length > 1 && items[current < items.length - 1 ? current + 1 : 0]?.type === 'mermaid' && (
+                <MermaidPreload code={items[current < items.length - 1 ? current + 1 : 0].mermaidCode!} />
+              )}
             </>
           )}
         </div>

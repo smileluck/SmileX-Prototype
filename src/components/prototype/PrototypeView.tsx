@@ -91,7 +91,7 @@ export const PrototypeView = forwardRef<PrototypeViewHandle, PrototypeViewProps>
           onAnnotationClick={handleAnnotationClick}
           onAnnotationPlaced={handleAnnotationPlaced}
         />
-        {loaded && prototype.mode === 'prototype' && !hasPending && (
+        {loaded && !hasPending && (
           <AnnotationOverlay
             isPlacing={isPlacing}
             onStartPlacing={handleStartPlacing}
