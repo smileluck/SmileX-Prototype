@@ -41,6 +41,10 @@ export function AnnotationItem({ annotation, onUpdate, onDelete, onSelect, onCon
             className="flex items-center justify-center w-5 h-5 rounded-full bg-success text-white text-xs font-bold leading-none shadow-sm transition-colors"
             onClick={(e) => {
               e.stopPropagation()
+              if (!annotation.description.trim()) {
+                alert('请先填写标注说明')
+                return
+              }
               onConfirm()
             }}
           >

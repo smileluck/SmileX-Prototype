@@ -10,6 +10,7 @@ export interface PrototypeViewHandle {
 interface PrototypeViewProps {
   prototype: Prototype
   selectedAnnotationId: string | null
+  hasPending: boolean
   onSelectAnnotation: (id: string) => void
   onPlaceAnnotation: (selector: string, scope: 'global' | 'page', page?: string) => void
   onPagesChange?: (pages: PageInfo[]) => void
@@ -20,6 +21,7 @@ export const PrototypeView = forwardRef<PrototypeViewHandle, PrototypeViewProps>
   function PrototypeView({
     prototype,
     selectedAnnotationId,
+    hasPending,
     onSelectAnnotation,
     onPlaceAnnotation,
     onPagesChange,
@@ -85,7 +87,7 @@ export const PrototypeView = forwardRef<PrototypeViewHandle, PrototypeViewProps>
           onAnnotationClick={handleAnnotationClick}
           onAnnotationPlaced={handleAnnotationPlaced}
         />
-        {loaded && prototype.mode === 'prototype' && (
+        {loaded && prototype.mode === 'prototype' && !hasPending && (
           <AnnotationOverlay
             isPlacing={isPlacing}
             onStartPlacing={handleStartPlacing}

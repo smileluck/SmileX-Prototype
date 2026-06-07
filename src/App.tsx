@@ -56,11 +56,27 @@ export default function App() {
   prototypeRef.current = activePrototype
 
   const handleConfirmAnnotation = useCallback(async () => {
+    if (!prototypeRef.current) return
+    const pending = prototypeRef.current.annotations.find(a => a.id === pendingAnnotationId)
+    if (!pending?.description.trim()) return
     setPendingAnnotationId(null)
-    if (prototypeRef.current) {
-      await savePrototype(prototypeRef.current)
+    await savePrototype(prototypeRef.current)
+  }, [pendingAnnotationId])
+
+  const handleDeleteAnnotation = useCallback(async (id: string) => {
+    if (id === pendingAnnotationId) {
+      setPendingAnnotationId(null)
     }
-  }, [])
+    deleteAnnotation(id)
+    if (prototypeRef.current) {
+      const updated = {
+        ...prototypeRef.current,
+        annotations: prototypeRef.current.annotations.filter(a => a.id !== id),
+        updatedAt: Date.now(),
+      }
+      await savePrototype(updated)
+    }
+  }, [deleteAnnotation, pendingAnnotationId])
 
   const handleSelectAnnotation = useCallback((id: string) => {
     setSelectedAnnotationId(id)
@@ -99,7 +115,7 @@ export default function App() {
             selectedId={selectedAnnotationId}
             pendingId={pendingAnnotationId}
             onUpdate={updateAnnotation}
-            onDelete={deleteAnnotation}
+            onDelete={handleDeleteAnnotation}
             onSelect={handleSelectAnnotation}
             onConfirm={handleConfirmAnnotation}
             onNavigate={handleNavigate}
@@ -126,6 +142,7 @@ export default function App() {
               prototype={activePrototype}
               onPlaceAnnotation={handlePlaceAnnotation}
               selectedAnnotationId={selectedAnnotationId}
+              hasPending={!!pendingAnnotationId}
               onSelectAnnotation={handleSelectAnnotation}
               onPagesChange={setPages}
               onActivePageChange={setActivePage}
