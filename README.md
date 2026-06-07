@@ -11,7 +11,7 @@ npm run share        # 启动开发服务器 + 生成外网访问链接（localt
 npm run build        # 构建
 ```
 
-`npm run share` 会在终端输出一个 `https://xxx.loca.lt` 地址，发给他人即可在线查看原型。
+`npm run share` 会在终端输出一个 `https://xxx.trycloudflare.com` 地址，发给他人即可在线查看原型。
 
 ## AI 工作流
 

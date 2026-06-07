@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "share": "npx concurrently \"npm run dev\" \"npx localtunnel --port 5173\""
+    "share": "npx concurrently \"npm run dev\" \"cloudflared tunnel --url http://localhost:5173\""
   },
   "dependencies": {
     "lucide-react": "^0.511.0",

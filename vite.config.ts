@@ -163,6 +163,6 @@ function readBody(req: any): Promise<string> {
 export default defineConfig({
   plugins: [react(), tailwindcss(), websiteApi()],
   server: {
-    allowedHosts: ['.loca.lt'],
+    allowedHosts: ['.loca.lt', '.trycloudflare.com'],
   },
 })
