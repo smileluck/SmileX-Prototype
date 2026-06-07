@@ -38,8 +38,8 @@ export function AnnotationSidebar({
     const ann = annotations.find(a => a.id === selectedId)
     if (!ann) return
     const correctTab = ann.scope === 'global' ? 'global' : 'page'
-    if (tab !== correctTab) setTab(correctTab)
-  }, [selectedId, annotations, tab])
+    setTab(correctTab)
+  }, [selectedId, annotations])
 
   const globalAnnotations = useMemo(
     () => annotations.filter(a => a.scope === 'global'),
