@@ -13,6 +13,21 @@ npm run build        # 构建
 
 `npm run share` 会在终端输出一个 `https://xxx.trycloudflare.com` 地址，发给他人即可在线查看原型。
 
+**前置条件 — 安装 cloudflared：**
+
+```bash
+# Windows
+winget install Cloudflare.cloudflared
+
+# macOS
+brew install cloudflared
+
+# Linux
+curl -L https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -o /usr/local/bin/cloudflared && chmod +x /usr/local/bin/cloudflared
+```
+
+安装后重启终端，确认 `cloudflared --version` 可执行。
+
 ## AI 工作流
 
 本项目使用 Claude Code 的 `/prototype-review` 技能与 AI 协作，支持两个方向的工作流。
