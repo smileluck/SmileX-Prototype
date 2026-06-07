@@ -1,4 +1,5 @@
 import type { Prototype } from '../types'
+import { BRIDGE_SCRIPT } from '../components/prototype/SandboxRenderer'
 
 const COLORS = ['#2563eb', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316']
 
@@ -12,179 +13,21 @@ function extractHeadContent(html: string): string {
   return headMatch[1].replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
 }
 
-// Simplified bridge script for published HTML — only marker rendering + tooltip, no placement
-function bridgeScript(): string {
-  return `<script>
-(function(){
-  var COLORS=['#2563eb','#10b981','#f59e0b','#ef4444','#8b5cf6','#ec4899','#14b8a6','#f97316'];
-  function markerColor(n){return COLORS[(n-1)%COLORS.length];}
-  var _currentAnnotations=[],_currentActivePage=null,_currentSelectedId=null;
-  var _posTimer=null;
-  function schedulePosition(){if(_posTimer)return;_posTimer=setTimeout(function(){_posTimer=null;positionMarkers();},16);}
-  function isPopupEl(el){
-    if(!el||el===document.body)return false;
-    var cls=(el.className||'').toString();var id=(el.id||'').toString();
-    return/(?:modal|dialog|popup|drawer)/i.test(id)||/(?:modal|dialog|popup|drawer)[-_]?overlay/i.test(cls);
-  }
-  function findHiddenPopup(el){var cur=el;while(cur&&cur!==document.body){if(isPopupEl(cur)&&!cur.classList.contains('active'))return cur;cur=cur.parentElement;}return null;}
-  function openPopupFor(el){var cur=el;while(cur&&cur!==document.body){if(isPopupEl(cur)){var id=(cur.id||'').toString();if(id){try{if(typeof window.openModal==='function'){window.openModal(id);return;}}catch(e){}try{if(typeof window.openDrawer==='function'){window.openDrawer(id);return;}}catch(e){}}if(!cur.classList.contains('active'))cur.classList.add('active');return;}cur=cur.parentElement;}}
-  function querySelectorInPage(selector,container){if(!selector)return null;var el=container?container.querySelector(selector):null;if(!el)el=document.querySelector(selector);return el;}
-  function pageName(el,id){var n=el.getAttribute('data-page-name');if(n)return n;try{if(typeof pageNames!=='undefined'&&pageNames[id])return pageNames[id];}catch(e){}var nav=document.querySelector('.nav-item[data-page="'+id+'"]');if(nav)return nav.textContent.trim();var h=el.querySelector('h1,h2,h3');if(h)return h.textContent.trim();return id;}
-  function discoverPages(){
-    var pages=[];var standalone=[];
-    document.querySelectorAll('body > [id]').forEach(function(el){
-      if(el.querySelector('.page-section'))return;
-      var isPage=el.classList.contains('page-section')||el.hasAttribute('data-page-name')||el.id.match(/Page$/i);
-      if(!isPage)return;
-      var id=el.classList.contains('page-section')?el.id.replace('page-',''):el.id;
-      pages.push({id:id,name:pageName(el,id)});
-      if(!el.classList.contains('page-section'))standalone.push(el);
-    });
-    document.querySelectorAll('.page-section').forEach(function(s){
-      var id=s.id.replace('page-','');
-      if(!pages.some(function(p){return p.id===id;}))
-        pages.push({id:id,name:pageName(s,id)});
-    });
-    return {pages:pages,standalone:standalone};
-  }
-  function isVisible(el){return el.style.display!=='none'&&el.offsetWidth>0;}
-  function getActivePage(standalone){
-    for(var i=0;i<standalone.length;i++){if(isVisible(standalone[i]))return standalone[i].id;}
-    var el=document.querySelector('.page-section.active');
-    return el?el.id.replace('page-',''):null;
-  }
-  function send(type,data){try{window.parent.postMessage(Object.assign({type:type},data),'*');}catch(e){}}
-  function report(standalone){send('smilex-page-change',{activePage:getActivePage(standalone)});}
-  function applyHighlight(target,isActive,color){
-    target.classList.add('smilex-target-highlight');
-    var cs=window.getComputedStyle(target);
-    if(cs.position==='static')target.style.position='relative';
-    var curZ=parseInt(cs.zIndex)||0;if(curZ<199)target.style.zIndex='199';
-    target.style.outline=isActive?'3px solid '+color:'2px solid '+color;
-    target.style.backgroundColor=isActive?'rgba(0,0,0,0.04)':'';
-  }
-  function renderMarkers(annotations,activePage,selectedId){
-    document.querySelectorAll('.smilex-marker,.smilex-tip').forEach(function(m){m.remove();});
-    document.querySelectorAll('.smilex-target-highlight').forEach(function(el){el.classList.remove('smilex-target-highlight');el.style.outline='';el.style.backgroundColor='';el.style.position='';el.style.zIndex='';});
-    _currentAnnotations=annotations;_currentActivePage=activePage;_currentSelectedId=selectedId;
-    var byPage={};
-    annotations.forEach(function(a){if(a.scope==='global')return;var pg=a.page||activePage;if(!byPage[pg])byPage[pg]=[];byPage[pg].push(a);});
-    Object.keys(byPage).forEach(function(pageId){
-      var container=document.getElementById('page-'+pageId)||document.getElementById(pageId);
-      if(!container)return;
-      byPage[pageId].forEach(function(a){
-        var target=querySelectorInPage(a.selector,container);
-        if(!target||findHiddenPopup(target))return;
-        var color=markerColor(a.markerNumber);var isActive=a.id===selectedId;
-        applyHighlight(target,isActive,color);
-        var el=document.createElement('div');el.className='smilex-marker'+(isActive?' smilex-marker-active':'');
-        el.style.cssText='position:fixed;z-index:200;background:'+color+';display:none;width:24px;height:24px;border-radius:50%;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.25);cursor:pointer;pointer-events:auto;border:none;padding:0;margin:0;font-family:-apple-system,BlinkMacSystemFont,sans-serif;line-height:1;';
-        el.textContent=a.markerNumber;el.setAttribute('data-ann-id',a.id);
-        el.addEventListener('click',function(e){e.stopPropagation();send('smilex-annotation-click',{id:a.id});showTip(a,el);});
-        document.body.appendChild(el);
-      });
-    });
-    annotations.forEach(function(a){
-      if(a.scope!=='global')return;
-      var appEl=document.getElementById('app');var target=querySelectorInPage(a.selector,appEl);
-      if(!target||findHiddenPopup(target))return;
-      var color=markerColor(a.markerNumber);var isActive=a.id===selectedId;
-      applyHighlight(target,isActive,color);
-      var el=document.createElement('div');el.className='smilex-marker'+(isActive?' smilex-marker-active':'');
-      el.style.cssText='position:fixed;z-index:200;background:'+color+';display:none;width:24px;height:24px;border-radius:50%;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.25);cursor:pointer;pointer-events:auto;border:none;padding:0;margin:0;font-family:-apple-system,BlinkMacSystemFont,sans-serif;line-height:1;';
-      el.textContent=a.markerNumber;el.setAttribute('data-ann-id',a.id);
-      el.addEventListener('click',function(e){e.stopPropagation();send('smilex-annotation-click',{id:a.id});showTip(a,el);});
-      document.body.appendChild(el);
-    });
-    positionMarkers();
-  }
-  function showTip(ann,marker){
-    var old=document.querySelector('.smilex-tip');if(old)old.remove();
-    var tip=document.createElement('div');tip.className='smilex-tip';
-    tip.style.cssText='position:fixed;z-index:10010;background:#1e293b;color:#fff;padding:8px 14px;border-radius:8px;max-width:260px;box-shadow:0 4px 16px rgba(0,0,0,0.25);pointer-events:none;opacity:0;transform:translateY(6px);transition:opacity .2s,transform .2s;font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;line-height:1.4;white-space:normal;border:none;margin:0;';
-    var color=markerColor(ann.markerNumber);
-    tip.innerHTML='<div style="display:flex;align-items:flex-start;gap:8px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;border-radius:50%;background:'+color+';font-size:10px;font-weight:700;color:#fff;line-height:18px">'+ann.markerNumber+'</span><span>'+ann.description+'</span></div>';
-    document.body.appendChild(tip);
-    var mRect=marker.getBoundingClientRect();var tipH=tip.offsetHeight,tipW=tip.offsetWidth;
-    var left=mRect.left+mRect.width/2-tipW/2;var top=mRect.bottom+8;
-    if(top+tipH>window.innerHeight-8)top=mRect.top-tipH-8;
-    left=Math.max(8,Math.min(left,window.innerWidth-tipW-8));
-    tip.style.left=left+'px';tip.style.top=top+'px';
-    requestAnimationFrame(function(){tip.style.opacity='1';tip.style.transform='translateY(0)';});
-    setTimeout(function(){tip.style.opacity='0';tip.style.transform='translateY(6px)';setTimeout(function(){tip.remove();},200);},3000);
-  }
-  function positionMarkers(){
-    var annotations=_currentAnnotations,activePage=_currentActivePage;
-    document.querySelectorAll('.smilex-marker').forEach(function(marker){
-      var annId=marker.getAttribute('data-ann-id');var ann=annotations.find(function(a){return a.id===annId;});
-      if(!ann)return;var target;
-      if(ann.scope==='global'){target=querySelectorInPage(ann.selector,document.getElementById('app'));}
-      else{var pg=ann.page||activePage;var container=document.getElementById('page-'+pg)||document.getElementById(pg);target=querySelectorInPage(ann.selector,container);}
-      if(!target){marker.style.display='none';return;}
-      if(findHiddenPopup(target)){marker.style.display='none';return;}
-      var r=target.getBoundingClientRect();if(r.width===0&&r.height===0){marker.style.display='none';return;}
-      marker.style.display='flex';
-      if(r.width<60){marker.style.left=(r.right+3)+'px';marker.style.top=(r.top+r.height/2-12)+'px';}
-      else{marker.style.left=(r.right-15)+'px';marker.style.top=(r.top-6)+'px';}
-    });
-  }
-  var _standalone=[];
-  function setup(){
-    var result=discoverPages();var pages=result.pages;_standalone=result.standalone;
-    send('smilex-bridge-init',{pages:pages,activePage:getActivePage(_standalone)});
-    document.querySelectorAll('.page-section').forEach(function(s){new MutationObserver(function(){report(_standalone);}).observe(s,{attributes:true,attributeFilter:['class']});});
-    _standalone.forEach(function(el){new MutationObserver(function(){report(_standalone);}).observe(el,{attributes:true,attributeFilter:['style']});});
-  }
-  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',setup);}else{setup();}
-  window.addEventListener('message',function(e){
-    if(!e.data||!e.data.type)return;
-    if(e.data.type==='smilex-navigate'){
-      var target=e.data.page;var el=document.getElementById('page-'+target)||document.getElementById(target);if(!el)return;
-      if(el.classList.contains('page-section')){
-        _standalone.forEach(function(s){s.style.display='none';});var app=document.getElementById('app');if(app)app.style.display='';
-        document.querySelectorAll('.page-section').forEach(function(p){p.classList.remove('active');});el.classList.add('active');
-      }else{el.style.display='';var app=document.getElementById('app');if(app)app.style.display='none';}
-    }
-    if(e.data.type==='smilex-render-annotations'){renderMarkers(e.data.annotations||[],e.data.activePage,e.data.selectedId||null);}
-    if(e.data.type==='smilex-focus-annotation'){
-      var annId=e.data.id;var ann=_currentAnnotations.find(function(a){return a.id===annId;});if(!ann)return;
-      var targetEl;
-      if(ann.scope==='global'){targetEl=querySelectorInPage(ann.selector,document.getElementById('app'));}
-      else{var pg=ann.page||_currentActivePage;var container=document.getElementById('page-'+pg)||document.getElementById(pg);targetEl=querySelectorInPage(ann.selector,container);}
-      if(!targetEl)return;openPopupFor(targetEl);
-      targetEl.scrollIntoView({behavior:'smooth',block:'center'});
-    }
-  });
-  var _ro=new ResizeObserver(function(){schedulePosition();});_ro.observe(document.documentElement);
-  window.addEventListener('scroll',function(){schedulePosition();},true);
-  window.addEventListener('resize',function(){schedulePosition();});
-  new MutationObserver(function(mutations){
-    schedulePosition();
-    for(var i=0;i<mutations.length;i++){
-      var m=mutations[i];if(m.type==='attributes'&&m.attributeName==='class'&&m.target&&m.target.classList){
-        var el=m.target;if(isPopupEl(el)){var oldCls=m.oldValue||'';var hadActive=oldCls.indexOf('active')>=0;var hasActive=el.classList.contains('active');
-        if(hadActive!==hasActive){renderMarkers(_currentAnnotations,_currentActivePage,_currentSelectedId);break;}}
-      }
-    }
-  }).observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['style','class'],attributeOldValue:true});
-})();
-<` + `/script>`
+function safeJsString(value: unknown): string {
+  return JSON.stringify(value).replace(/<\/script/gi, '<\\/script')
 }
 
 export function generatePublishedHTML(prototype: Prototype): string {
   const annotations = prototype.annotations.filter(a => a.description.trim())
   const headContent = extractHeadContent(prototype.generatedCode)
 
-  // Pre-inject bridge script into prototype HTML
-  const bridge = bridgeScript()
-  const protoWithBridge = prototype.generatedCode.replace('</head>', bridge + '</head>')
-  // JSON.stringify then escape </script so HTML parser doesn't break the outer <script> block
-  const protoJson = JSON.stringify(protoWithBridge).replace(/<\/script/gi, '<\\/script')
+  // Inject the same bridge script used by the platform
+  const protoWithBridge = prototype.generatedCode.replace('</head>', BRIDGE_SCRIPT + '</head>')
+  const protoJson = safeJsString(protoWithBridge)
+  const annotationsJson = safeJsString(annotations)
+  const colorsJson = safeJsString(COLORS)
 
-  const colorsJson = JSON.stringify(COLORS)
-  const annotationsJson = JSON.stringify(annotations).replace(/<\/script/gi, '<\\/script')
-
-  // Build outer script as plain string (no nested template literals)
+  // Build outer script as plain string to avoid nested template literal issues
   const outerScript = [
     '<script>',
     'var _ANNOTATIONS=' + annotationsJson + ';',

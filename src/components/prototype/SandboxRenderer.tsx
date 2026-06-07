@@ -18,7 +18,7 @@ export interface SandboxRendererHandle {
   focusAnnotation: (id: string) => void
 }
 
-const BRIDGE_SCRIPT = `<script>
+export const BRIDGE_SCRIPT = `<script>
 (function(){
   var _standalone=[];
   var _placing=false;
