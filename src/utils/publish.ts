@@ -178,11 +178,11 @@ export function generatePublishedHTML(prototype: Prototype): string {
   // Pre-inject bridge script into prototype HTML
   const bridge = bridgeScript()
   const protoWithBridge = prototype.generatedCode.replace('</head>', bridge + '</head>')
-  // JSON.stringify to safely embed as JS string inside the outer script
-  const protoJson = JSON.stringify(protoWithBridge)
+  // JSON.stringify then escape </script so HTML parser doesn't break the outer <script> block
+  const protoJson = JSON.stringify(protoWithBridge).replace(/<\/script/gi, '<\\/script')
 
   const colorsJson = JSON.stringify(COLORS)
-  const annotationsJson = JSON.stringify(annotations)
+  const annotationsJson = JSON.stringify(annotations).replace(/<\/script/gi, '<\\/script')
 
   // Build outer script as plain string (no nested template literals)
   const outerScript = [
@@ -192,6 +192,7 @@ export function generatePublishedHTML(prototype: Prototype): string {
     'var _PAGES=[];',
     'var _ACTIVE_PAGE=null;',
     'var _SELECTED_ID=null;',
+    'var _TAB="page";',
     '',
     'function init(){',
     '  var frame=document.getElementById("prototype-frame");',
@@ -202,13 +203,14 @@ export function generatePublishedHTML(prototype: Prototype): string {
     '    if(e.data.type==="smilex-bridge-init"){',
     '      _PAGES=e.data.pages||[];',
     '      _ACTIVE_PAGE=e.data.activePage||null;',
-    '      renderPageTabs();',
+    '      renderPageDropdown();',
     '      renderAnnotationList();',
+    '      updateCounts();',
     '      frame.contentWindow.postMessage({type:"smilex-render-annotations",annotations:_ANNOTATIONS,activePage:_ACTIVE_PAGE,selectedId:null},"*");',
     '    }',
     '    if(e.data.type==="smilex-page-change"){',
     '      _ACTIVE_PAGE=e.data.activePage||null;',
-    '      updatePageTabs();',
+    '      updatePageDropdown();',
     '      renderAnnotationList();',
     '    }',
     '    if(e.data.type==="smilex-annotation-click"){',
@@ -220,26 +222,39 @@ export function generatePublishedHTML(prototype: Prototype): string {
     '  });',
     '}',
     '',
-    'function renderPageTabs(){',
-    '  var container=document.getElementById("page-tabs");',
-    '  if(!_PAGES.length){container.style.display="none";return;}',
-    '  container.style.display="flex";',
-    '  container.innerHTML="";',
+    'function renderPageDropdown(){',
+    '  var sel=document.getElementById("page-select");',
+    '  if(!_PAGES.length){document.getElementById("page-dropdown").style.display="none";return;}',
+    '  document.getElementById("page-dropdown").style.display="";',
+    '  sel.innerHTML="";',
     '  _PAGES.forEach(function(p){',
-    '    var btn=document.createElement("button");',
-    '    btn.className="page-tab"+(p.id===_ACTIVE_PAGE?" active":"");',
-    '    btn.textContent=p.name;',
-    '    btn.setAttribute("data-page",p.id);',
-    '    btn.addEventListener("click",function(){navigateToPage(p.id);});',
-    '    container.appendChild(btn);',
+    '    var opt=document.createElement("option");',
+    '    opt.value=p.id;opt.textContent=p.name;',
+    '    if(p.id===_ACTIVE_PAGE)opt.selected=true;',
+    '    sel.appendChild(opt);',
     '  });',
     '}',
     '',
-    'function updatePageTabs(){',
-    '  document.querySelectorAll(".page-tab").forEach(function(btn){',
-    '    btn.classList.toggle("active",btn.getAttribute("data-page")===_ACTIVE_PAGE);',
-    '  });',
+    'function updatePageDropdown(){',
+    '  var sel=document.getElementById("page-select");',
+    '  sel.value=_ACTIVE_PAGE||"";',
     '  renderAnnotationList();',
+    '}',
+    '',
+    'function switchTab(tab){',
+    '  _TAB=tab;',
+    '  document.querySelectorAll(".tab-btn").forEach(function(btn){',
+    '    btn.classList.toggle("active",btn.getAttribute("data-tab")===tab);',
+    '  });',
+    '  document.getElementById("page-dropdown").style.display=(tab==="page"&&_PAGES.length)?"":"none";',
+    '  renderAnnotationList();',
+    '}',
+    '',
+    'function updateCounts(){',
+    '  var pageAnns=_ANNOTATIONS.filter(function(a){return a.scope!=="global";});',
+    '  var globalAnns=_ANNOTATIONS.filter(function(a){return a.scope==="global";});',
+    '  document.getElementById("page-count").textContent=pageAnns.length;',
+    '  document.getElementById("global-count").textContent=globalAnns.length;',
     '}',
     '',
     'function navigateToPage(pageId){',
@@ -249,10 +264,15 @@ export function generatePublishedHTML(prototype: Prototype): string {
     '',
     'function renderAnnotationList(){',
     '  var container=document.getElementById("annotation-list");',
-    '  var filtered=_ACTIVE_PAGE?_ANNOTATIONS.filter(function(a){',
-    '    return a.scope==="global"||a.page===_ACTIVE_PAGE||(!a.page&&a.scope!=="global");',
-    '  }):_ANNOTATIONS;',
-    '  if(!filtered.length){container.innerHTML="<div class=\\"empty-msg\\">暂无标注</div>";return;}',
+    '  var filtered;',
+    '  if(_TAB==="global"){',
+    '    filtered=_ANNOTATIONS.filter(function(a){return a.scope==="global";});',
+    '  }else{',
+    '    filtered=_ACTIVE_PAGE?_ANNOTATIONS.filter(function(a){',
+    '      return a.scope!=="global"&&(a.page===_ACTIVE_PAGE||(!a.page&&a.scope!=="global"));',
+    '    }):_ANNOTATIONS.filter(function(a){return a.scope!=="global";});',
+    '  }',
+    '  if(!filtered.length){container.innerHTML="<div class=\\"empty-msg\\">"+(_TAB==="global"?"暂无通用标注":"当前页面暂无标注")+"</div>";return;}',
     '  container.innerHTML="";',
     '  filtered.forEach(function(a){',
     '    var color=_COLORS[(a.markerNumber-1)%_COLORS.length];',
@@ -305,10 +325,15 @@ html, body { height: 100%; font-family: -apple-system, BlinkMacSystemFont, 'Sego
 #panel-header { padding: 12px 16px; border-bottom: 1px solid #e0e0e0; display: flex; align-items: center; justify-content: space-between; }
 #panel-header h3 { font-size: 14px; font-weight: 600; color: #1a1a1a; }
 #panel-header span { font-size: 12px; color: #888; }
-#page-tabs { display: flex; flex-wrap: wrap; gap: 4px; padding: 8px 12px; border-bottom: 1px solid #eee; }
-.page-tab { padding: 4px 10px; border-radius: 4px; font-size: 12px; cursor: pointer; border: 1px solid #ddd; background: #fff; color: #555; transition: all .15s; }
-.page-tab:hover { background: #f5f5f5; }
-.page-tab.active { background: #2563eb; color: #fff; border-color: #2563eb; }
+.tab-bar { display: flex; border-bottom: 1px solid #e0e0e0; padding: 0 12px; }
+.tab-btn { padding: 8px 12px; font-size: 12px; cursor: pointer; border: none; background: none; color: #888; border-bottom: 2px solid transparent; transition: all .15s; }
+.tab-btn:hover { color: #333; }
+.tab-btn.active { color: #1a1a1a; border-bottom-color: #2563eb; font-weight: 500; }
+.tab-badge { font-size: 10px; background: #e5e7eb; color: #555; border-radius: 8px; padding: 0 5px; margin-left: 4px; }
+.page-dropdown { padding: 8px 12px; border-bottom: 1px solid #eee; }
+.page-dropdown label { display: block; font-size: 10px; font-weight: 500; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.page-dropdown select { width: 100%; padding: 4px 8px; font-size: 12px; border: 1px solid #ddd; border-radius: 4px; background: #fff; cursor: pointer; outline: none; }
+.page-dropdown select:focus { border-color: #2563eb; }
 #annotation-list { flex: 1; overflow-y: auto; padding: 8px; }
 .ann-item { display: flex; align-items: flex-start; gap: 8px; padding: 8px; border-radius: 6px; cursor: pointer; transition: background .15s; margin-bottom: 4px; }
 .ann-item:hover { background: #f5f5f5; }
@@ -333,7 +358,14 @@ html, body { height: 100%; font-family: -apple-system, BlinkMacSystemFont, 'Sego
       <h3>${escapeHtml(prototype.name)}</h3>
       <span>${annotations.length} 个标注</span>
     </div>
-    <div id="page-tabs"></div>
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab="page" onclick="switchTab('page')">页面<span class="tab-badge" id="page-count">0</span></button>
+      <button class="tab-btn" data-tab="global" onclick="switchTab('global')">通用<span class="tab-badge" id="global-count">0</span></button>
+    </div>
+    <div class="page-dropdown" id="page-dropdown">
+      <label>页面</label>
+      <select id="page-select" onchange="navigateToPage(this.value)"></select>
+    </div>
     <div id="annotation-list"></div>
   </div>
 </div>
