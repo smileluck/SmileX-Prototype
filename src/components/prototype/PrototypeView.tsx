@@ -16,6 +16,7 @@ interface PrototypeViewProps {
   onPlaceAnnotation: (selector: string, scope: 'global' | 'page', page?: string) => void
   onPagesChange?: (pages: PageInfo[]) => void
   onActivePageChange?: (page: string | null) => void
+  publishMode?: boolean
 }
 
 export const PrototypeView = forwardRef<PrototypeViewHandle, PrototypeViewProps>(
@@ -27,6 +28,7 @@ export const PrototypeView = forwardRef<PrototypeViewHandle, PrototypeViewProps>
     onPlaceAnnotation,
     onPagesChange,
     onActivePageChange: onActivePageChangeProp,
+    publishMode,
   }, ref) {
     const [loaded, setLoaded] = useState(false)
     const [activePage, setActivePage] = useState<string | null>(null)
@@ -91,7 +93,7 @@ export const PrototypeView = forwardRef<PrototypeViewHandle, PrototypeViewProps>
           onAnnotationClick={handleAnnotationClick}
           onAnnotationPlaced={handleAnnotationPlaced}
         />
-        {loaded && !hasPending && (
+        {loaded && !hasPending && !publishMode && (
           <AnnotationOverlay
             isPlacing={isPlacing}
             onStartPlacing={handleStartPlacing}

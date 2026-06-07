@@ -15,6 +15,7 @@ interface AnnotationSidebarProps {
   onSelect: (id: string) => void
   onConfirm: () => void
   onNavigate?: (page: string) => void
+  readOnly?: boolean
 }
 
 export function AnnotationSidebar({
@@ -28,6 +29,7 @@ export function AnnotationSidebar({
   onSelect,
   onConfirm,
   onNavigate,
+  readOnly,
 }: AnnotationSidebarProps) {
   const [tab, setTab] = useState<'page' | 'global'>('page')
   const listRef = useRef<HTMLDivElement>(null)
@@ -140,6 +142,7 @@ export function AnnotationSidebar({
                 onConfirm={onConfirm}
                 active={selectedId === ann.id}
                 pending={pendingId === ann.id}
+                readOnly={readOnly}
               />
             ))}
           </div>

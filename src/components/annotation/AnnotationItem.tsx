@@ -11,9 +11,10 @@ interface AnnotationItemProps {
   onConfirm: () => void
   active: boolean
   pending: boolean
+  readOnly?: boolean
 }
 
-export function AnnotationItem({ annotation, onUpdate, onDelete, onSelect, onConfirm, active, pending }: AnnotationItemProps) {
+export function AnnotationItem({ annotation, onUpdate, onDelete, onSelect, onConfirm, active, pending, readOnly }: AnnotationItemProps) {
   const color = COLORS[(annotation.markerNumber - 1) % COLORS.length]
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
@@ -35,34 +36,36 @@ export function AnnotationItem({ annotation, onUpdate, onDelete, onSelect, onCon
       style={active ? { borderColor: color + '40' } : undefined}
     >
       {/* Action buttons - top right */}
-      <div className="absolute -top-2 -right-2 flex items-center gap-0.5 z-10">
-        {pending && (
+      {!readOnly && (
+        <div className="absolute -top-2 -right-2 flex items-center gap-0.5 z-10">
+          {pending && (
+            <button
+              className="flex items-center justify-center w-5 h-5 rounded-full bg-success text-white text-xs font-bold leading-none shadow-sm transition-colors"
+              onClick={(e) => {
+                e.stopPropagation()
+                if (!annotation.description.trim()) {
+                  alert('请先填写标注说明')
+                  return
+                }
+                onConfirm()
+              }}
+            >
+              ✓
+            </button>
+          )}
           <button
-            className="flex items-center justify-center w-5 h-5 rounded-full bg-success text-white text-xs font-bold leading-none shadow-sm transition-colors"
+            className={`flex items-center justify-center w-5 h-5 rounded-full bg-base-300 text-base-content/50 hover:bg-error hover:text-white text-xs font-bold leading-none shadow-sm transition-colors ${
+              active || pending ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+            }`}
             onClick={(e) => {
               e.stopPropagation()
-              if (!annotation.description.trim()) {
-                alert('请先填写标注说明')
-                return
-              }
-              onConfirm()
+              onDelete(annotation.id)
             }}
           >
-            ✓
+            ✕
           </button>
-        )}
-        <button
-          className={`flex items-center justify-center w-5 h-5 rounded-full bg-base-300 text-base-content/50 hover:bg-error hover:text-white text-xs font-bold leading-none shadow-sm transition-colors ${
-            active || pending ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
-          }`}
-          onClick={(e) => {
-            e.stopPropagation()
-            onDelete(annotation.id)
-          }}
-        >
-          ✕
-        </button>
-      </div>
+        </div>
+      )}
 
       <div className="flex items-start gap-2.5 p-2.5 pr-6">
         {/* Number badge */}
@@ -80,15 +83,21 @@ export function AnnotationItem({ annotation, onUpdate, onDelete, onSelect, onCon
 
         {/* Content */}
         <div className="flex-1 min-w-0">
-          <textarea
-            ref={textareaRef}
-            className="textarea textarea-xs w-full text-xs leading-relaxed border-0 bg-transparent p-0 focus:bg-base-100 focus:outline-none focus:rounded resize-none"
-            placeholder="添加说明..."
-            rows={annotation.description ? undefined : 1}
-            value={annotation.description}
-            onChange={(e) => onUpdate(annotation.id, e.target.value)}
-            onClick={(e) => e.stopPropagation()}
-          />
+          {readOnly ? (
+            <p className="text-xs leading-relaxed text-base-content/80 whitespace-pre-wrap">
+              {annotation.description || '未添加说明'}
+            </p>
+          ) : (
+            <textarea
+              ref={textareaRef}
+              className="textarea textarea-xs w-full text-xs leading-relaxed border-0 bg-transparent p-0 focus:bg-base-100 focus:outline-none focus:rounded resize-none"
+              placeholder="添加说明..."
+              rows={annotation.description ? undefined : 1}
+              value={annotation.description}
+              onChange={(e) => onUpdate(annotation.id, e.target.value)}
+              onClick={(e) => e.stopPropagation()}
+            />
+          )}
         </div>
       </div>
     </div>
