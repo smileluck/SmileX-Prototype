@@ -49,6 +49,7 @@ function websiteApi(): Plugin {
           const mimeMap: Record<string, string> = {
             '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg',
             '.gif': 'image/gif', '.svg': 'image/svg+xml', '.webp': 'image/webp',
+            '.md': 'text/plain; charset=utf-8',
           }
           const data = fs.readFileSync(filePath)
           res.statusCode = 200
