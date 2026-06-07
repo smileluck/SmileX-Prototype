@@ -23,6 +23,7 @@ export const BRIDGE_SCRIPT = `<script>
   var _standalone=[];
   var _placing=false;
   var _focusRequested=false;
+  var _rendering=false;
 
   // Inject marker styles
   var ms=document.createElement('style');
@@ -51,9 +52,17 @@ export const BRIDGE_SCRIPT = `<script>
     return null;
   }
   function isHiddenEl(el){
-    var cur=el;
+    if(!el)return true;
+    if(el.offsetWidth===0&&el.offsetHeight===0)return true;
+    var cur=el.parentElement;
     while(cur&&cur!==document.body){
-      try{var s=window.getComputedStyle(cur);if(s.display==='none'||s.visibility==='hidden')return true;}catch(e){}
+      if(cur.hasAttribute&&cur.hasAttribute('hidden'))return true;
+      try{
+        var s=window.getComputedStyle(cur);
+        if(s.display==='none'||s.visibility==='hidden'||s.opacity==='0'||s.clipPath==='inset(100%)')return true;
+        var cr=cur.getBoundingClientRect();
+        if(cr.width<=0||cr.height<=0)return true;
+      }catch(e){}
       cur=cur.parentElement;
     }
     return false;
@@ -159,6 +168,7 @@ export const BRIDGE_SCRIPT = `<script>
   }
 
   function renderMarkers(annotations,activePage,selectedId){
+    _rendering=true;
     document.querySelectorAll('.smilex-marker').forEach(function(m){m.remove();});
     document.querySelectorAll('.smilex-target-highlight').forEach(function(el){el.classList.remove('smilex-target-highlight');el.style.outline='';el.style.backgroundColor='';el.style.position='';el.style.zIndex='';});
 
@@ -182,6 +192,22 @@ export const BRIDGE_SCRIPT = `<script>
       byPage[pageId].forEach(function(a){
         var target=querySelectorInPage(a.selector,container);
         if(!target||findHiddenPopup(target)||isHiddenEl(target))return;
+        var color=markerColor(a.markerNumber);
+        var isActive=a.id===selectedId;
+
+        applyHighlight(target,isActive,color);
+
+        var el=document.createElement('div');
+        el.className='smilex-marker'+(isActive?' smilex-marker-active':'');
+        el.style.position='fixed';
+        el.style.zIndex='200';
+        el.style.background=color;
+        el.style.display='none';
+        el.textContent=a.markerNumber;
+        el.setAttribute('data-ann-id',a.id);
+        el.addEventListener('click',function(e){
+          e.stopPropagation();
+          send('smilex-annotation-click',{id:a.id});
         });
         document.body.appendChild(el);
       });
@@ -192,7 +218,7 @@ export const BRIDGE_SCRIPT = `<script>
       if(a.scope!=='global')return;
       var appEl=document.getElementById('app');
       var target=querySelectorInPage(a.selector,appEl);
-      if(!target||findHiddenPopup(target))return;
+      if(!target||findHiddenPopup(target)||isHiddenEl(target))return;
       var color=markerColor(a.markerNumber);
       var isActive=a.id===selectedId;
 
@@ -222,6 +248,7 @@ export const BRIDGE_SCRIPT = `<script>
         setTimeout(function(){doFocus(focusId,focusAnns);},100);
       });
     }
+    _rendering=false;
   }
 
   function positionMarkers(){
@@ -242,9 +269,9 @@ export const BRIDGE_SCRIPT = `<script>
         target=querySelectorInPage(ann.selector,container);
       }
       if(!target){marker.style.display='none';return;}
-      if(findHiddenPopup(target)){marker.style.display='none';return;}
+      if(findHiddenPopup(target)||isHiddenEl(target)){marker.style.display='none';return;}
       var r=target.getBoundingClientRect();
-      if(r.width===0&&r.height===0){marker.style.display='none';return;}
+      if(r.width===0||r.height===0){marker.style.display='none';return;}
       marker.style.display='';
       if(r.width<60){
         marker.style.left=(r.right+3)+'px';
@@ -315,6 +342,7 @@ export const BRIDGE_SCRIPT = `<script>
   window.addEventListener('scroll',function(){schedulePosition();},true);
   window.addEventListener('resize',function(){schedulePosition();});
   new MutationObserver(function(mutations){
+    if(_rendering)return;
     schedulePosition();
     for(var i=0;i<mutations.length;i++){
       var m=mutations[i];
@@ -332,6 +360,7 @@ export const BRIDGE_SCRIPT = `<script>
       }
     }
   }).observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['style','class'],attributeOldValue:true});
+  setInterval(function(){if(!_rendering&&_currentAnnotations.length)renderMarkers(_currentAnnotations,_currentActivePage,_currentSelectedId);},1000);
 
   // Placing mode: highlight on hover, capture click to get selector
   var _lastHighlight=null;
