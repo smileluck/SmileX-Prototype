@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "share": "npx concurrently \"npm run dev\" \"npx localtunnel --port 5173\""
   },
   "dependencies": {
     "lucide-react": "^0.511.0",
