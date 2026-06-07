@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { X, ChevronLeft, ChevronRight } from 'lucide-react'
+import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, Maximize } from 'lucide-react'
 import { listImages } from '../../services/storage'
 
 interface FlowchartModalProps {
@@ -18,7 +18,6 @@ interface DiagramItem {
 function extractMermaidCode(md: string): string {
   const match = md.match(/```mermaid\n([\s\S]*?)```/)
   if (!match) return ''
-  // Double quotes inside node labels break Mermaid parser — replace with corner brackets
   let code = match[1].trim()
   let isOpen = true
   code = code.replace(/["""]/g, () => {
@@ -101,10 +100,24 @@ function MermaidDiagram({ code }: { code: string }) {
   )
 }
 
+const MIN_SCALE = 0.2
+const MAX_SCALE = 5
+const ZOOM_STEP = 0.15
+
 export function FlowchartModal({ slug, onClose }: FlowchartModalProps) {
   const [items, setItems] = useState<DiagramItem[]>([])
   const [current, setCurrent] = useState(0)
   const [loading, setLoading] = useState(true)
+  const [scale, setScale] = useState(1)
+  const [translate, setTranslate] = useState({ x: 0, y: 0 })
+  const dragging = useRef(false)
+  const lastPos = useRef({ x: 0, y: 0 })
+  const viewportRef = useRef<HTMLDivElement>(null)
+
+  const resetView = useCallback(() => {
+    setScale(1)
+    setTranslate({ x: 0, y: 0 })
+  }, [])
 
   const loadItems = useCallback(async () => {
     const imgs = await listImages(slug)
@@ -131,7 +144,6 @@ export function FlowchartModal({ slug, onClose }: FlowchartModalProps) {
       }
     }
 
-    // Sort: mermaid diagrams first (by name), then images
     result.sort((a, b) => {
       if (a.type !== b.type) return a.type === 'mermaid' ? -1 : 1
       return a.name.localeCompare(b.name)
@@ -143,8 +155,52 @@ export function FlowchartModal({ slug, onClose }: FlowchartModalProps) {
 
   useEffect(() => { loadItems() }, [loadItems])
 
+  // Reset zoom when switching diagrams
+  useEffect(() => { resetView() }, [current, resetView])
+
   const prev = () => setCurrent(i => (i > 0 ? i - 1 : items.length - 1))
   const next = () => setCurrent(i => (i < items.length - 1 ? i + 1 : 0))
+
+  const zoomTo = useCallback((newScale: number, pivotX?: number, pivotY?: number) => {
+    setScale(prev => {
+      const clamped = Math.min(MAX_SCALE, Math.max(MIN_SCALE, newScale))
+      if (pivotX !== undefined && pivotY !== undefined) {
+        const ratio = clamped / prev
+        setTranslate(t => ({
+          x: pivotX - ratio * (pivotX - t.x),
+          y: pivotY - ratio * (pivotY - t.y),
+        }))
+      }
+      return clamped
+    })
+  }, [])
+
+  const handleWheel = useCallback((e: React.WheelEvent) => {
+    e.preventDefault()
+    const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect()
+    const pivotX = e.clientX - rect.left
+    const pivotY = e.clientY - rect.top
+    const delta = e.deltaY > 0 ? -ZOOM_STEP : ZOOM_STEP
+    zoomTo(scale * (1 + delta), pivotX, pivotY)
+  }, [scale, zoomTo])
+
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    if (e.button !== 0) return
+    dragging.current = true
+    lastPos.current = { x: e.clientX, y: e.clientY }
+  }, [])
+
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (!dragging.current) return
+    const dx = e.clientX - lastPos.current.x
+    const dy = e.clientY - lastPos.current.y
+    lastPos.current = { x: e.clientX, y: e.clientY }
+    setTranslate(t => ({ x: t.x + dx, y: t.y + dy }))
+  }, [])
+
+  const handleMouseUp = useCallback(() => {
+    dragging.current = false
+  }, [])
 
   const displayName = (item: DiagramItem) =>
     item.title || item.name.replace(/\.(md|png|jpg|jpeg|gif|svg|webp)$/i, '')
@@ -154,12 +210,51 @@ export function FlowchartModal({ slug, onClose }: FlowchartModalProps) {
       <div className="modal-box max-w-6xl w-full h-[85vh] flex flex-col p-0">
         <div className="flex items-center justify-between px-4 py-3 border-b border-base-300">
           <h3 className="font-bold text-lg">流程图预览</h3>
-          <button className="btn btn-sm btn-circle btn-ghost" onClick={onClose}>
-            <X className="h-4 w-4" />
-          </button>
+          <div className="flex items-center gap-1">
+            <div className="join mr-2">
+              <button
+                className="join-item btn btn-sm btn-ghost"
+                onClick={() => zoomTo(scale * (1 + ZOOM_STEP))}
+                disabled={scale >= MAX_SCALE}
+                title="放大"
+              >
+                <ZoomIn className="h-4 w-4" />
+              </button>
+              <button className="join-item btn btn-sm btn-ghost no-animation w-16" disabled>
+                {Math.round(scale * 100)}%
+              </button>
+              <button
+                className="join-item btn btn-sm btn-ghost"
+                onClick={() => zoomTo(scale / (1 + ZOOM_STEP))}
+                disabled={scale <= MIN_SCALE}
+                title="缩小"
+              >
+                <ZoomOut className="h-4 w-4" />
+              </button>
+              <button
+                className="join-item btn btn-sm btn-ghost"
+                onClick={resetView}
+                title="重置"
+              >
+                <Maximize className="h-4 w-4" />
+              </button>
+            </div>
+            <button className="btn btn-sm btn-circle btn-ghost" onClick={onClose}>
+              <X className="h-4 w-4" />
+            </button>
+          </div>
         </div>
 
-        <div className="flex-1 overflow-auto relative min-h-0">
+        <div
+          ref={viewportRef}
+          className="flex-1 overflow-hidden relative min-h-0"
+          style={{ cursor: dragging.current ? 'grabbing' : 'grab' }}
+          onWheel={handleWheel}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
+        >
           {loading ? (
             <div className="flex items-center justify-center h-full">
               <span className="loading loading-spinner loading-lg" />
@@ -172,32 +267,46 @@ export function FlowchartModal({ slug, onClose }: FlowchartModalProps) {
               </div>
             </div>
           ) : (
-            <div className="relative min-h-full flex flex-col items-center p-4">
+            <>
               {items.length > 1 && (
-                <button className="btn btn-circle btn-sm btn-ghost absolute left-1 top-1/2 -translate-y-1/2 z-10" onClick={prev}>
+                <button
+                  className="btn btn-circle btn-sm btn-ghost absolute left-2 top-1/2 -translate-y-1/2 z-20 bg-base-100/60"
+                  onClick={prev}
+                >
                   <ChevronLeft className="h-5 w-5" />
                 </button>
               )}
-              <div className="flex flex-col items-center gap-2 w-full max-w-full px-6">
-                {items[current].type === 'mermaid' ? (
-                  <MermaidDiagram code={items[current].mermaidCode!} />
-                ) : (
-                  <img
-                    src={items[current].url}
-                    alt={items[current].name}
-                    className="max-w-full max-h-[70vh] object-contain rounded-lg"
-                  />
-                )}
-                <span className="text-sm text-base-content/60">
-                  {current + 1} / {items.length} — {displayName(items[current])}
-                </span>
+              <div
+                className="w-full h-full"
+                style={{
+                  transform: `translate(${translate.x}px, ${translate.y}px) scale(${scale})`,
+                  transformOrigin: '0 0',
+                }}
+              >
+                <div className="flex flex-col items-center gap-2 w-full p-4">
+                  {items[current].type === 'mermaid' ? (
+                    <MermaidDiagram code={items[current].mermaidCode!} />
+                  ) : (
+                    <img
+                      src={items[current].url}
+                      alt={items[current].name}
+                      className="max-w-full rounded-lg"
+                    />
+                  )}
+                </div>
               </div>
               {items.length > 1 && (
-                <button className="btn btn-circle btn-sm btn-ghost absolute right-1 top-1/2 -translate-y-1/2 z-10" onClick={next}>
+                <button
+                  className="btn btn-circle btn-sm btn-ghost absolute right-2 top-1/2 -translate-y-1/2 z-20 bg-base-100/60"
+                  onClick={next}
+                >
                   <ChevronRight className="h-5 w-5" />
                 </button>
               )}
-            </div>
+              <span className="absolute bottom-2 left-1/2 -translate-x-1/2 text-sm text-base-content/60 z-20 bg-base-100/60 px-2 rounded">
+                {current + 1} / {items.length} — {displayName(items[current])}
+              </span>
+            </>
           )}
         </div>
       </div>
