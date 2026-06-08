@@ -2,6 +2,59 @@
 
 HTML 原型管理与展示平台。导入需求文档后，系统生成可交互的 HTML 原型，支持标注、预览、导出。
 
+## 前置条件
+
+### Node.js 安装
+
+本项目需要 **Node.js 18+**。推荐使用 LTS 版本。
+
+**Windows：**
+
+```bash
+# 方式一：winget（推荐）
+winget install OpenJS.NodeJS.LTS
+
+# 方式二：从官网下载安装包
+# https://nodejs.org/ → 下载 LTS 版本 MSI 安装包，双击安装
+```
+
+**macOS：**
+
+```bash
+# 方式一：Homebrew（推荐）
+brew install node@22
+
+# 方式二：从官网下载安装包
+# https://nodejs.org/ → 下载 LTS 版本 PKG 安装包，双击安装
+
+# 方式三：nvm（方便管理多版本）
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+nvm install --lts
+```
+
+**Linux：**
+
+```bash
+# Ubuntu / Debian
+curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+# Fedora / RHEL
+curl -fsSL https://rpm.nodesource.com/setup_22.x | sudo bash -
+sudo dnf install -y nodejs
+
+# 通用方式：nvm
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+nvm install --lts
+```
+
+安装后重启终端，确认版本：
+
+```bash
+node -v      # 应显示 v18+ 或更高
+npm -v       # 应显示 9+ 或更高
+```
+
 ## 快速开始
 
 ```bash
