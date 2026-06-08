@@ -58,7 +58,7 @@ npm -v       # 应显示 9+ 或更高
 ## 快速开始
 
 ```bash
-npm install
+npm install          # 安装依赖（必要）
 npm run dev          # 启动开发服务器 → http://localhost:5173
 npm run share        # 启动开发服务器 + 生成外网访问链接（localtunnel）
 npm run build        # 构建
