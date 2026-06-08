@@ -35,6 +35,11 @@ export const PrototypeView = forwardRef<PrototypeViewHandle, PrototypeViewProps>
     const [isPlacing, setIsPlacing] = useState(false)
     const sandboxRef = useRef<SandboxRendererHandle>(null)
 
+    // Reset loaded state when prototype changes so annotations wait for new iframe
+    useEffect(() => {
+      setLoaded(false)
+    }, [prototype.id])
+
     useImperativeHandle(ref, () => ({
       navigateToPage(page: string) {
         sandboxRef.current?.navigateToPage(page)
