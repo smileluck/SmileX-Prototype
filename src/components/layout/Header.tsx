@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { PanelLeft, PanelLeftClose, GitBranch, Share2 } from 'lucide-react'
+import { PanelLeft, PanelLeftClose, GitBranch, Share2, FileText } from 'lucide-react'
 
 interface HeaderProps {
   projectName?: string
@@ -7,10 +7,13 @@ interface HeaderProps {
   onToggleSidebar?: () => void
   onOpenFlowchart?: () => void
   onPublish?: () => void
+  onOpenDocuments?: () => void
   hasPrototype?: boolean
+  hasSrs?: boolean
+  hasHandbook?: boolean
 }
 
-export function Header({ projectName, sidebarVisible, onToggleSidebar, onOpenFlowchart, onPublish, hasPrototype }: HeaderProps) {
+export function Header({ projectName, sidebarVisible, onToggleSidebar, onOpenFlowchart, onPublish, onOpenDocuments, hasPrototype, hasSrs, hasHandbook }: HeaderProps) {
   const [showPublishMenu, setShowPublishMenu] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
 
@@ -39,6 +42,11 @@ export function Header({ projectName, sidebarVisible, onToggleSidebar, onOpenFlo
         )}
       </div>
       <div className="flex-none flex items-center gap-2">
+        {onOpenDocuments && (hasSrs || hasHandbook) && (
+          <button className="btn btn-sm btn-ghost" onClick={onOpenDocuments}>
+            <FileText className="h-4 w-4" /> 文档
+          </button>
+        )}
         {onOpenFlowchart && (
           <button className="btn btn-sm btn-ghost" onClick={onOpenFlowchart}>
             <GitBranch className="h-4 w-4" /> 流程图

@@ -6,6 +6,7 @@ import { AnnotationSidebar } from './components/sidebar/AnnotationSidebar'
 import { PrototypeView, type PrototypeViewHandle } from './components/prototype/PrototypeView'
 import { EmptyState } from './components/shared/EmptyState'
 import { FlowchartModal } from './components/flowchart/FlowchartModal'
+import { DocumentsModal } from './components/documents/DocumentsModal'
 import { PublishedView } from './components/published/PublishedView'
 import { usePrototype } from './hooks/usePrototype'
 import { useAnnotations } from './hooks/useAnnotations'
@@ -28,6 +29,7 @@ export default function App() {
   const [activePage, setActivePage] = useState<string | null>(null)
   const [leftSidebarVisible, setLeftSidebarVisible] = useState(true)
   const [showFlowchart, setShowFlowchart] = useState(false)
+  const [showDocuments, setShowDocuments] = useState(false)
   const [showPublishModal, setShowPublishModal] = useState(false)
   const [copied, setCopied] = useState(false)
   const prototypeViewRef = useRef<PrototypeViewHandle>(null)
@@ -145,7 +147,10 @@ export default function App() {
         onToggleSidebar={() => setLeftSidebarVisible(v => !v)}
         onOpenFlowchart={activePrototype ? () => setShowFlowchart(true) : undefined}
         onPublish={activePrototype?.generatedCode ? handlePublish : undefined}
+        onOpenDocuments={activePrototype ? () => setShowDocuments(true) : undefined}
         hasPrototype={!!activePrototype?.generatedCode}
+        hasSrs={activePrototype?.hasSrs}
+        hasHandbook={activePrototype?.hasHandbook}
       />
 
       <MainLayout
@@ -207,6 +212,15 @@ export default function App() {
         <FlowchartModal
           slug={activePrototype.id}
           onClose={() => setShowFlowchart(false)}
+        />
+      )}
+
+      {showDocuments && activePrototype && (
+        <DocumentsModal
+          slug={activePrototype.id}
+          hasSrs={!!activePrototype.hasSrs}
+          hasHandbook={!!activePrototype.hasHandbook}
+          onClose={() => setShowDocuments(false)}
         />
       )}
 

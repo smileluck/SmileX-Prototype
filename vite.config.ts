@@ -35,6 +35,40 @@ function websiteApi(): Plugin {
           return
         }
 
+        // GET /api/projects/:slug/srs.md — serve SRS document
+        const srsMatch = url.pathname.match(/^\/api\/projects\/([^/]+)\/srs\.md$/)
+        if (srsMatch && req.method === 'GET') {
+          const slug = srsMatch[1]
+          const filePath = path.join(WEBSITE_DIR, slug, 'srs.md')
+          if (!fs.existsSync(filePath)) {
+            sendJson(res, { error: 'Not found' }, 404)
+            return
+          }
+          const data = fs.readFileSync(filePath)
+          res.statusCode = 200
+          res.setHeader('Content-Type', 'text/plain; charset=utf-8')
+          res.setHeader('Content-Length', data.length)
+          res.end(data)
+          return
+        }
+
+        // GET /api/projects/:slug/handbook.md — serve handbook document
+        const handbookMatch = url.pathname.match(/^\/api\/projects\/([^/]+)\/handbook\.md$/)
+        if (handbookMatch && req.method === 'GET') {
+          const slug = handbookMatch[1]
+          const filePath = path.join(WEBSITE_DIR, slug, 'handbook.md')
+          if (!fs.existsSync(filePath)) {
+            sendJson(res, { error: 'Not found' }, 404)
+            return
+          }
+          const data = fs.readFileSync(filePath)
+          res.statusCode = 200
+          res.setHeader('Content-Type', 'text/plain; charset=utf-8')
+          res.setHeader('Content-Length', data.length)
+          res.end(data)
+          return
+        }
+
         // match /api/projects/:slug/images/:filename — serve image file
         const imageMatch = url.pathname.match(/^\/api\/projects\/([^/]+)\/images\/(.+)$/)
         if (imageMatch && req.method === 'GET') {
@@ -99,7 +133,9 @@ function websiteApi(): Plugin {
               if (fs.existsSync(htmlPath)) {
                 generatedCode = fs.readFileSync(htmlPath, 'utf-8')
               }
-              sendJson(res, { ...meta, generatedCode })
+              const hasSrs = fs.existsSync(path.join(projectDir, 'srs.md'))
+              const hasHandbook = fs.existsSync(path.join(projectDir, 'handbook.md'))
+              sendJson(res, { ...meta, generatedCode, hasSrs, hasHandbook })
             } catch (e) {
               sendJson(res, { error: String(e) }, 500)
             }

@@ -30,6 +30,8 @@ export async function loadPrototype(id: string): Promise<Prototype | undefined> 
       generatedCode: data.generatedCode ?? '',
       annotations: data.annotations ?? [],
       mode: 'prototype',
+      hasSrs: data.hasSrs ?? false,
+      hasHandbook: data.hasHandbook ?? false,
       createdAt: data.createdAt ?? Date.now(),
       updatedAt: data.updatedAt ?? Date.now(),
     }
@@ -77,4 +79,24 @@ export async function importFromJSON(jsonString: string): Promise<Prototype> {
 export async function listImages(slug: string): Promise<{ name: string; url: string }[]> {
   const data = await request(`${API}/${encodeURIComponent(slug)}/images`, 'GET')
   return data.images ?? []
+}
+
+export async function loadSrs(slug: string): Promise<string | null> {
+  try {
+    const res = await fetch(`${API}/${encodeURIComponent(slug)}/srs.md`)
+    if (!res.ok) return null
+    return res.text()
+  } catch {
+    return null
+  }
+}
+
+export async function loadHandbook(slug: string): Promise<string | null> {
+  try {
+    const res = await fetch(`${API}/${encodeURIComponent(slug)}/handbook.md`)
+    if (!res.ok) return null
+    return res.text()
+  } catch {
+    return null
+  }
 }

@@ -20,6 +20,8 @@ export interface Prototype {
   prompt: string
   generatedCode: string
   annotations: Annotation[]
+  hasSrs?: boolean
+  hasHandbook?: boolean
   createdAt: number
   updatedAt: number
 }

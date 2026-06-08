@@ -31,6 +31,7 @@ src/
     annotation/MarkerPin.tsx       # 标注钉
     shared/EmptyState.tsx          # 空状态
     shared/LoadingSpinner.tsx      # 加载态
+    documents/DocumentsModal.tsx   # SRS/手册文档查看
   utils/export.ts                  # JSON 下载、文件读取
   utils/id.ts                      # nanoid
 ```
@@ -41,12 +42,15 @@ src/
 website/{slug}/          →  Vite middleware  →  /api/projects/:slug  →  storage.ts  →  React 组件
   index.html                  (vite.config.ts)     (GET/POST/DELETE)
   index.json
+  srs.md
+  handbook.md
   images/
 ```
 
-- **读取**：`GET /api/projects` 扫描 `website/*/index.json` 返回列表；`GET /api/projects/:slug` 返回 index.json + index.html
+- **读取**：`GET /api/projects` 扫描 `website/*/index.json` 返回列表；`GET /api/projects/:slug` 返回 index.json + index.html + hasSrs + hasHandbook
 - **写入**：`POST /api/projects/:slug` 写 index.html + index.json
 - **删除**：`DELETE /api/projects/:slug` 删除整个目录
+- **文档**：`GET /api/projects/:slug/srs.md` 返回需求规格说明书；`GET /api/projects/:slug/handbook.md` 返回用户手册
 
 ## 关键类型
 
@@ -58,6 +62,8 @@ interface Prototype {
   generatedCode: string   // 原型 HTML 全文
   annotations: Annotation[]
   mode: 'prototype' | 'preview'
+  hasSrs?: boolean        // 是否有需求规格说明书
+  hasHandbook?: boolean   // 是否有用户手册
   createdAt: number
   updatedAt: number
 }
@@ -85,7 +91,9 @@ interface PageInfo {
 website/{slug}/
   index.html      # 单文件 HTML 原型（CSS+JS 内联，模拟数据，无外部依赖）
   index.json      # { slug, name, prompt, annotations, mode, createdAt, updatedAt }
-  images/         # 流程图等图片（flow-auth.png, flow-core.png 等）
+  srs.md          # 软件需求规格说明书（prototype-review 技能生成）
+  handbook.md     # 用户手册（prototype-review 技能生成）
+  images/         # 流程图等图片（flow-auth.md, flow-core.md 等）
 ```
 
 ## 平台边界
