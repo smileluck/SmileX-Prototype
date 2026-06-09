@@ -81,7 +81,7 @@ function tableToTable(token: Tokens.Table): Table {
     tableHeader: true,
     children: token.header.map(cell =>
       new TableCell({
-        children: [new Paragraph({ children: [new TextRun({ text: textRuns(cell.tokens ?? []).map(r => (r as unknown as { text: string }).text ?? '').join(''), bold: true, font: FONT })] })],
+        children: [new Paragraph({ children: [new TextRun({ text: cell.text, bold: true, font: FONT })] })],
         borders,
         width: { size: colWidth, type: WidthType.DXA },
         shading: { type: ShadingType.CLEAR, fill: 'f5f5f5' },
@@ -91,15 +91,13 @@ function tableToTable(token: Tokens.Table): Table {
 
   const rows = token.rows.map(row =>
     new TableRow({
-      children: row.map(cell => {
-        const cellRuns = textRuns(cell.tokens ?? [])
-        const text = cellRuns.map(r => (r as unknown as { text: string }).text ?? '').join('')
-        return new TableCell({
-          children: [new Paragraph({ children: [new TextRun({ text, font: FONT })] })],
+      children: row.map(cell =>
+        new TableCell({
+          children: [new Paragraph({ children: textRuns(cell.tokens ?? []) })],
           borders,
           width: { size: colWidth, type: WidthType.DXA },
         })
-      }),
+      ),
     })
   )
 
