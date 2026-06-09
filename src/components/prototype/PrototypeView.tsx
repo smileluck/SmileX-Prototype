@@ -1,7 +1,8 @@
 import { useState, useCallback, useRef, useImperativeHandle, forwardRef, useEffect } from 'react'
-import type { Prototype, PageInfo } from '../../types'
+import type { Prototype, PageInfo, Annotation } from '../../types'
+import type { HistoryEntry } from '../../hooks/useUndoHistory'
 import { SandboxRenderer, type SandboxRendererHandle } from './SandboxRenderer'
-import { AnnotationOverlay } from './AnnotationOverlay'
+import { OperationToolbar } from './OperationToolbar'
 
 export interface PrototypeViewHandle {
   navigateToPage: (page: string) => void
@@ -17,6 +18,12 @@ interface PrototypeViewProps {
   onPagesChange?: (pages: PageInfo[]) => void
   onActivePageChange?: (page: string | null) => void
   publishMode?: boolean
+  canUndo?: boolean
+  canRedo?: boolean
+  undoHistory?: HistoryEntry<Annotation[]>[]
+  onUndo?: () => void
+  onRedo?: () => void
+  onJumpTo?: (index: number) => void
 }
 
 export const PrototypeView = forwardRef<PrototypeViewHandle, PrototypeViewProps>(
@@ -29,13 +36,18 @@ export const PrototypeView = forwardRef<PrototypeViewHandle, PrototypeViewProps>
     onPagesChange,
     onActivePageChange: onActivePageChangeProp,
     publishMode,
+    canUndo,
+    canRedo,
+    undoHistory,
+    onUndo,
+    onRedo,
+    onJumpTo,
   }, ref) {
     const [loaded, setLoaded] = useState(false)
     const [activePage, setActivePage] = useState<string | null>(null)
     const [isPlacing, setIsPlacing] = useState(false)
     const sandboxRef = useRef<SandboxRendererHandle>(null)
 
-    // Reset loaded state when prototype changes so annotations wait for new iframe
     useEffect(() => {
       setLoaded(false)
     }, [prototype.id])
@@ -78,7 +90,6 @@ export const PrototypeView = forwardRef<PrototypeViewHandle, PrototypeViewProps>
       sandboxRef.current?.cancelPlacing()
     }, [])
 
-    // Sync annotations to iframe whenever they change
     useEffect(() => {
       if (!loaded) return
       sandboxRef.current?.renderAnnotations(
@@ -99,10 +110,16 @@ export const PrototypeView = forwardRef<PrototypeViewHandle, PrototypeViewProps>
           onAnnotationPlaced={handleAnnotationPlaced}
         />
         {loaded && !hasPending && !publishMode && (
-          <AnnotationOverlay
-            isPlacing={isPlacing}
-            onStartPlacing={handleStartPlacing}
+          <OperationToolbar
+            canUndo={canUndo ?? false}
+            canRedo={canRedo ?? false}
+            history={undoHistory ?? []}
+            onUndo={onUndo ?? (() => {})}
+            onRedo={onRedo ?? (() => {})}
+            onJumpTo={onJumpTo ?? (() => {})}
+            onAddAnnotation={handleStartPlacing}
             onCancelPlacing={handleCancelPlacing}
+            isPlacing={isPlacing}
           />
         )}
       </div>

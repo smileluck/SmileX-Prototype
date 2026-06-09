@@ -10,6 +10,7 @@ import { DocumentsModal } from './components/documents/DocumentsModal'
 import { PublishedView } from './components/published/PublishedView'
 import { usePrototype } from './hooks/usePrototype'
 import { useAnnotations } from './hooks/useAnnotations'
+import { useUndoHistory } from './hooks/useUndoHistory'
 import { savePrototype } from './services/storage'
 import { downloadPublishedHTML } from './utils/publish'
 import type { PageInfo } from './types'
@@ -48,6 +49,13 @@ export default function App() {
     activePrototype,
     updatePrototype,
   )
+
+  const annotationHistory = useUndoHistory<import('./types').Annotation[]>(50)
+
+  // Clear history when switching prototypes
+  useEffect(() => {
+    annotationHistory.clear()
+  }, [activePrototype?.id])
 
   // Published view: render PublishedView directly
   const handleOpenInEditor = useCallback(() => {
@@ -93,12 +101,15 @@ export default function App() {
   }, [createPrototype])
 
   const handlePlaceAnnotation = useCallback((selector: string, scope: 'global' | 'page', page?: string) => {
+    if (activePrototype) {
+      annotationHistory.push(activePrototype.annotations, '添加标注')
+    }
     const id = addAnnotation(selector, scope, page)
     if (id) {
       setSelectedAnnotationId(id)
       setPendingAnnotationId(id)
     }
-  }, [addAnnotation])
+  }, [addAnnotation, activePrototype, annotationHistory.push])
 
   const prototypeRef = useRef(activePrototype)
   prototypeRef.current = activePrototype
@@ -112,6 +123,11 @@ export default function App() {
   }, [pendingAnnotationId])
 
   const handleDeleteAnnotation = useCallback(async (id: string) => {
+    if (activePrototype) {
+      const ann = activePrototype.annotations.find(a => a.id === id)
+      const label = ann ? `删除标注 #${ann.markerNumber}` : '删除标注'
+      annotationHistory.push(activePrototype.annotations, label)
+    }
     if (id === pendingAnnotationId) {
       setPendingAnnotationId(null)
     }
@@ -124,7 +140,7 @@ export default function App() {
       }
       await savePrototype(updated)
     }
-  }, [deleteAnnotation, pendingAnnotationId])
+  }, [deleteAnnotation, pendingAnnotationId, activePrototype, annotationHistory.push])
 
   const handleSelectAnnotation = useCallback((id: string) => {
     setSelectedAnnotationId(id)
@@ -134,6 +150,58 @@ export default function App() {
     }
     prototypeViewRef.current?.focusAnnotation(id)
   }, [])
+
+  const handleUndo = useCallback(() => {
+    if (!activePrototype) return
+    const entry = annotationHistory.undo(activePrototype.annotations)
+    if (!entry) return
+    const restored = entry.snapshot
+    updatePrototype(p => ({ ...p, annotations: restored, updatedAt: Date.now() }))
+    if (pendingAnnotationId && !restored.some(a => a.id === pendingAnnotationId)) {
+      setPendingAnnotationId(null)
+      setSelectedAnnotationId(null)
+    }
+  }, [activePrototype, annotationHistory, updatePrototype, pendingAnnotationId])
+
+  const handleRedo = useCallback(() => {
+    if (!activePrototype) return
+    const entry = annotationHistory.redo(activePrototype.annotations)
+    if (!entry) return
+    const restored = entry.snapshot
+    updatePrototype(p => ({ ...p, annotations: restored, updatedAt: Date.now() }))
+    if (pendingAnnotationId && !restored.some(a => a.id === pendingAnnotationId)) {
+      setPendingAnnotationId(null)
+      setSelectedAnnotationId(null)
+    }
+  }, [activePrototype, annotationHistory, updatePrototype, pendingAnnotationId])
+
+  const handleJumpTo = useCallback((index: number) => {
+    if (!activePrototype) return
+    const entry = annotationHistory.jumpTo(activePrototype.annotations, index)
+    if (!entry) return
+    const restored = entry.snapshot
+    updatePrototype(p => ({ ...p, annotations: restored, updatedAt: Date.now() }))
+    if (pendingAnnotationId && !restored.some(a => a.id === pendingAnnotationId)) {
+      setPendingAnnotationId(null)
+      setSelectedAnnotationId(null)
+    }
+  }, [activePrototype, annotationHistory, updatePrototype, pendingAnnotationId])
+
+  // Keyboard shortcuts for undo/redo
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
+        e.preventDefault()
+        handleUndo()
+      }
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) {
+        e.preventDefault()
+        handleRedo()
+      }
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [handleUndo, handleRedo])
 
   const handleNavigate = useCallback((page: string) => {
     prototypeViewRef.current?.navigateToPage(page)
@@ -211,6 +279,12 @@ export default function App() {
               onSelectAnnotation={handleSelectAnnotation}
               onPagesChange={setPages}
               onActivePageChange={setActivePage}
+              canUndo={annotationHistory.canUndo}
+              canRedo={annotationHistory.canRedo}
+              undoHistory={annotationHistory.history}
+              onUndo={handleUndo}
+              onRedo={handleRedo}
+              onJumpTo={handleJumpTo}
             />
           )}
         </div>
