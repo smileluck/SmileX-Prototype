@@ -31,6 +31,7 @@ export default function App() {
   const [showFlowchart, setShowFlowchart] = useState(false)
   const [showDocuments, setShowDocuments] = useState(false)
   const [showPublishModal, setShowPublishModal] = useState(false)
+  const [showGuide, setShowGuide] = useState(false)
   const [copied, setCopied] = useState(false)
   const prototypeViewRef = useRef<PrototypeViewHandle>(null)
 
@@ -81,7 +82,12 @@ export default function App() {
     if (activePrototype) downloadPublishedHTML(activePrototype)
   }, [activePrototype])
 
-  const handleCreate = useCallback(async () => {
+  const handleCreate = useCallback(() => {
+    setShowGuide(true)
+  }, [])
+
+  const handleGuideCreate = useCallback(async () => {
+    setShowGuide(false)
     const name = prompt('请输入原型名称', '未命名原型')
     if (name) await createPrototype(name)
   }, [createPrototype])
@@ -160,7 +166,10 @@ export default function App() {
             activeId={activePrototype?.id ?? null}
             onSelect={selectPrototype}
             onCreate={handleCreate}
-            onDelete={removePrototype}
+            onDelete={(id: string) => {
+                const p = prototypes.find(x => x.id === id)
+                if (p && confirm(`确定删除「${p.name}」？此操作不可撤销。`)) removePrototype(id)
+              }}
           />
         }
         rightSidebar={
@@ -248,6 +257,39 @@ export default function App() {
             </div>
           </div>
           <form method="dialog" className="modal-backdrop"><button onClick={() => setShowPublishModal(false)}>close</button></form>
+        </dialog>
+      )}
+
+      {/* Guide modal */}
+      {showGuide && (
+        <dialog className="modal modal-open">
+          <div className="modal-box max-w-lg">
+            <h3 className="font-bold text-lg mb-4">新建原型使用流程</h3>
+            <ol className="list-decimal list-inside space-y-3 text-sm leading-relaxed">
+              <li>
+                在项目根目录下启动 <kbd className="kbd kbd-sm">Claude Code</kbd>
+                <pre className="bg-base-200 rounded px-3 py-1.5 mt-1 text-xs overflow-x-auto">cd /path/to/SmileX-Prototype
+claude</pre>
+              </li>
+              <li>
+                将原型 HTML 文件或需求文档放到 <code className="bg-base-200 px-1 rounded">website/</code> 目录下的自定义项目文件夹中
+                <pre className="bg-base-200 rounded px-3 py-1.5 mt-1 text-xs overflow-x-auto">website/
+  my-project/
+    index.html      {'/* 原型 HTML */'}
+    requirements.md  {'/* 需求文档 */'}</pre>
+              </li>
+              <li>
+                在 Claude Code 中使用 <code className="bg-base-200 px-1 rounded">/prototype-review</code> 指令生成原型
+                <pre className="bg-base-200 rounded px-3 py-1.5 mt-1 text-xs overflow-x-auto">{'/prototype-review website/my-project/requirements.md'}</pre>
+                <p className="text-base-content/50 mt-1">也可以直接从 HTML 创建：查看、审查、标注已有原型</p>
+              </li>
+            </ol>
+            <div className="modal-action">
+              <button className="btn btn-sm btn-ghost" onClick={() => setShowGuide(false)}>知道了</button>
+              <button className="btn btn-sm btn-primary" onClick={handleGuideCreate}>继续创建</button>
+            </div>
+          </div>
+          <form method="dialog" className="modal-backdrop"><button onClick={() => setShowGuide(false)}>close</button></form>
         </dialog>
       )}
     </div>

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { X, Copy, FileText, BookOpen } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
@@ -23,6 +23,30 @@ export function DocumentsModal({ slug, hasSrs, hasHandbook, onClose }: Documents
   const [loading, setLoading] = useState(true)
   const [copied, setCopied] = useState(false)
   const [exporting, setExporting] = useState(false)
+  const scrollRef = useRef<HTMLDivElement>(null)
+
+  // 渲染后给所有标题加 id（textContent 空格→连字符）
+  useEffect(() => {
+    if (!currentContent || !scrollRef.current) return
+    scrollRef.current.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(el => {
+      if (el.id) return
+      const text = (el.textContent ?? '').trim()
+      el.id = text.replace(/\s+/g, '-')
+    })
+  })
+
+  const handleClick = useCallback((e: React.MouseEvent) => {
+    const a = (e.target as HTMLElement).closest('a')
+    if (!a) return
+    const href = a.getAttribute('href')
+    if (!href || !href.startsWith('#')) return
+    e.preventDefault()
+    const id = decodeURIComponent(href.slice(1))
+    const target = scrollRef.current?.querySelector(`#${CSS.escape(id)}`)
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }, [])
 
   useEffect(() => {
     let cancelled = false
@@ -116,7 +140,7 @@ export function DocumentsModal({ slug, hasSrs, hasHandbook, onClose }: Documents
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-auto p-6 min-h-0">
+        <div ref={scrollRef} className="flex-1 overflow-auto p-6 min-h-0" onClick={handleClick}>
           {loading ? (
             <div className="flex items-center justify-center h-full">
               <span className="loading loading-spinner loading-lg" />
