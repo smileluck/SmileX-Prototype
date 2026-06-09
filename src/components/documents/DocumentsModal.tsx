@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { X, Download, Copy, FileText, BookOpen } from 'lucide-react'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 import { loadSrs, loadHandbook } from '../../services/storage'
 
 interface DocumentsModalProps {
@@ -122,9 +124,11 @@ export function DocumentsModal({ slug, hasSrs, hasHandbook, onClose }: Documents
               </div>
             </div>
           ) : (
-            <pre className="whitespace-pre-wrap break-words font-mono text-sm leading-relaxed">
-              {currentContent}
-            </pre>
+            <div className="prose prose-sm max-w-none">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {currentContent}
+              </ReactMarkdown>
+            </div>
           )}
         </div>
       </div>
