@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { X, Copy, FileText, BookOpen } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
@@ -23,7 +23,6 @@ export function DocumentsModal({ slug, hasSrs, hasHandbook, onClose }: Documents
   const [loading, setLoading] = useState(true)
   const [copied, setCopied] = useState(false)
   const [exporting, setExporting] = useState(false)
-  const contentRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     let cancelled = false
@@ -57,9 +56,7 @@ export function DocumentsModal({ slug, hasSrs, hasHandbook, onClose }: Documents
           await downloadDocx(currentContent, `${baseName}.docx`)
           break
         case 'pdf':
-          if (contentRef.current) {
-            await downloadPdf(contentRef.current, `${baseName}.pdf`)
-          }
+          await downloadPdf(currentContent, `${baseName}.pdf`)
           break
       }
     } finally {
@@ -136,7 +133,7 @@ export function DocumentsModal({ slug, hasSrs, hasHandbook, onClose }: Documents
               </div>
             </div>
           ) : (
-            <div ref={contentRef} className="prose prose-sm max-w-none">
+            <div className="prose prose-sm max-w-none">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
                 {currentContent}
               </ReactMarkdown>
