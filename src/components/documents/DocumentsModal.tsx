@@ -1,8 +1,11 @@
-import { useState, useEffect, useCallback } from 'react'
-import { X, Download, Copy, FileText, BookOpen } from 'lucide-react'
+import { useState, useEffect, useCallback, useRef } from 'react'
+import { X, Copy, FileText, BookOpen } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { loadSrs, loadHandbook } from '../../services/storage'
+import { downloadMarkdown, downloadDocx, downloadPdf } from '../../utils/export'
+import { FormatDropdown } from './FormatDropdown'
+import type { ExportFormat } from './FormatDropdown'
 
 interface DocumentsModalProps {
   slug: string
@@ -19,6 +22,8 @@ export function DocumentsModal({ slug, hasSrs, hasHandbook, onClose }: Documents
   const [handbookContent, setHandbookContent] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [copied, setCopied] = useState(false)
+  const [exporting, setExporting] = useState(false)
+  const contentRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     let cancelled = false
@@ -39,16 +44,27 @@ export function DocumentsModal({ slug, hasSrs, hasHandbook, onClose }: Documents
 
   const currentContent = tab === 'srs' ? srsContent : handbookContent
 
-  const handleDownload = useCallback(() => {
+  const handleExport = useCallback(async (format: ExportFormat) => {
     if (!currentContent) return
-    const filename = tab === 'srs' ? 'srs.md' : 'handbook.md'
-    const blob = new Blob([currentContent], { type: 'text/plain;charset=utf-8' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = filename
-    a.click()
-    URL.revokeObjectURL(url)
+    const baseName = tab === 'srs' ? 'srs' : 'handbook'
+    setExporting(true)
+    try {
+      switch (format) {
+        case 'md':
+          downloadMarkdown(currentContent, `${baseName}.md`)
+          break
+        case 'docx':
+          await downloadDocx(currentContent, `${baseName}.docx`)
+          break
+        case 'pdf':
+          if (contentRef.current) {
+            await downloadPdf(contentRef.current, `${baseName}.pdf`)
+          }
+          break
+      }
+    } finally {
+      setExporting(false)
+    }
   }, [currentContent, tab])
 
   const handleCopy = useCallback(() => {
@@ -84,14 +100,10 @@ export function DocumentsModal({ slug, hasSrs, hasHandbook, onClose }: Documents
             )}
           </div>
           <div className="flex items-center gap-1">
-            <button
-              className="btn btn-sm btn-ghost"
-              onClick={handleDownload}
-              disabled={!currentContent}
-              title="下载"
-            >
-              <Download className="h-4 w-4" />
-            </button>
+            <FormatDropdown
+              onFormat={handleExport}
+              disabled={!currentContent || exporting}
+            />
             <button
               className="btn btn-sm btn-ghost"
               onClick={handleCopy}
@@ -124,7 +136,7 @@ export function DocumentsModal({ slug, hasSrs, hasHandbook, onClose }: Documents
               </div>
             </div>
           ) : (
-            <div className="prose prose-sm max-w-none">
+            <div ref={contentRef} className="prose prose-sm max-w-none">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
                 {currentContent}
               </ReactMarkdown>

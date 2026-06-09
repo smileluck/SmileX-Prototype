@@ -10,7 +10,10 @@
     "share": "npx concurrently \"npm run dev\" \"cloudflared tunnel --url http://localhost:5173\""
   },
   "dependencies": {
+    "docx": "^9.7.1",
+    "html2pdf.js": "^0.14.0",
     "lucide-react": "^0.511.0",
+    "marked": "^18.0.5",
     "nanoid": "^5.1.5",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
