@@ -83,7 +83,7 @@ curl -L https://github.com/cloudflare/cloudflared/releases/latest/download/cloud
 
 ## AI 工作流
 
-本项目使用 Claude Code 的 `/prototype-review` 技能与 AI 协作，支持两个方向的工作流。
+本项目使用 `/prototype-review` 技能与 AI 协作，支持两个方向的工作流。
 
 ### 方向一：需求文档 → 原型 HTML + 标注
 

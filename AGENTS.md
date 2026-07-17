@@ -6,7 +6,7 @@ SmileX Prototype 是一个 HTML 原型管理与展示平台。用户导入需求
 
 ## 技能
 
-- **prototype-review** (`.claude/skills/prototype-review/SKILL.md`) — 根据需求创建/审查 HTML 原型
+- **prototype-review** (`.agents/skills/prototype-review/SKILL.md`) — 根据需求创建/审查 HTML 原型
   - 当用户提供需求文档要求创建原型、分析需求生成 HTML、审查原型完整性时，invoke the Skill tool with `skill: "prototype-review"` before doing anything else.
   - 当用户明确输入 `/prototype-review` 时，同样 invoke the Skill tool with `skill: "prototype-review"`.
 
