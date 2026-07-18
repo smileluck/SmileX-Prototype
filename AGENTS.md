@@ -12,7 +12,7 @@ SmileX Prototype 是一个 HTML 原型管理与展示平台。用户导入需求
 - **design-library-creator** (`.agents/skills/design-library-creator/SKILL.md`) — 从任意 UI 来源（本地源码 / 网站 / 图片 / 主流组件库）解析并生成符合 Trae Design 契约的设计系统包
   - 当用户希望基于某个 UI 风格/组件库/截图/网站生成一套独立的设计系统（tokens + components + ui_kits）时，invoke the Skill tool with `skill: "design-library-creator"` before doing anything else.
   - 子命令：`design-library-creator`（主）/ `refine-library` / `expand-components` / `generate-additional-kit`。
-  - 只读参考：`trae-ui-example/`（Nimbus Core 样例）；产出到 `./design-systems/{name}/`。
+  - 只读参考：`references/trae-ui-example/`（Nimbus Core 样例，已嵌入技能内）；产出到 `./design-systems/{name}/`。
 
 ## 项目结构
 

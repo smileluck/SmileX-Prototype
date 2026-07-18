@@ -9,7 +9,7 @@ description: "从任意 UI 来源（本地源码 / 任意网站 / 图片 / 主�
 
 **核心能力**：技能不是"用户给啥我生成啥"，而是**主动遍历来源所有组件**（naive-ui 有 95 个、antd 有 70+ 个、element-plus 有 80+ 个）。同时对每类组件用**差异化的预览模板**（按钮 ≠ 表格 ≠ 日历 ≠ 上传器），保证真实形态。
 
-`trae-ui-example/` 是**只读参考示例**。本技能产出独立的设计库到 `./design-systems/{name}/`。
+`references/trae-ui-example/` 是**只读参考示例**（已嵌入技能内）。本技能产出独立的设计库到 `./design-systems/{name}/`。
 
 ## Usage
 
@@ -106,8 +106,8 @@ Phase 4: 聚合 + UIKit  → components.css（脚本生成） + components/index
 - ✅ 每个 ui-kit 必须有 `quality-report.json`
 
 ### 9. trae-ui-example 只读
-- ❌ **禁止**修改、追加、删除 `trae-ui-example/` 下任何文件
-- ❌ **禁止**把生成结果写到 `trae-ui-example/`
+- ❌ **禁止**修改、追加、删除 `references/trae-ui-example/` 下任何文件（已嵌入技能内的范本）
+- ❌ **禁止**把生成结果写到 `references/trae-ui-example/` 或任何外部位置
 
 ### 10. 输出目录
 - 默认 `./design-systems/{name}/`
@@ -292,7 +292,9 @@ node .agents/skills/design-library-creator/scripts/extract-components-css.mjs <l
 
 ## 与 trae-ui-example 的字段映射
 
-详见 `references/trae-ui-example-mapping.md` —— 包含每个 JSON 字段的类型、必填性、示例值。
+详见：
+- `references/trae-ui-example-mapping.md` —— 字段类型、必填性、示例值对照
+- `references/trae-ui-example/` —— 完整范本（嵌入技能内），可直接读 `components/buttons.json` 等真实样本
 
 ## 参考文档
 

@@ -1,0 +1,179 @@
+{
+  "schemaVersion": 2,
+  "slug": "atoms",
+  "name": "Shared Atoms",
+  "category": "foundation",
+  "sourceKind": "utility-aggregation",
+  "confidence": "high",
+  "semanticTypeCandidates": [
+    "layout-helper",
+    "heading-utility",
+    "tooltip",
+    "popover",
+    "empty-state",
+    "code-block",
+    "mono-text"
+  ],
+  "variantDimensions": {
+    "group": [
+      "layout-helpers",
+      "heading-utilities",
+      "tooltip-popover",
+      "empty-state",
+      "code-block",
+      "mono-num"
+    ]
+  },
+  "representativeVariants": [
+    { "group": "layout-helpers" },
+    { "group": "heading-utilities" },
+    { "group": "tooltip-popover" },
+    { "group": "empty-state" },
+    { "group": "code-block" },
+    { "group": "mono-num" }
+  ],
+  "anatomy": [
+    "row",
+    "col",
+    "grid-2",
+    "grid-3",
+    "grid-4",
+    "stack-8",
+    "stack-12",
+    "stack-16",
+    "stack-24",
+    "stack-40",
+    "h1",
+    "h2",
+    "h3",
+    "eyebrow",
+    "text-secondary",
+    "text-tertiary",
+    "ds-tooltip",
+    "ds-popover",
+    "ds-empty",
+    "ds-empty__icon",
+    "ds-empty__title",
+    "ds-empty__desc",
+    "ds-code",
+    "mono",
+    "num",
+    "ds-hero-title",
+    "ds-section-title"
+  ],
+  "structurePatterns": [
+    "utility class aggregation — single-class atoms picked up by extract-components-css.mjs from preview/component-atoms.html"
+  ],
+  "usageHints": [
+    "Use .row / .col / .grid-* / .stack-* as layout primitives; legacy aliases (.row vs .ds-row) both exist for backward-compatible markup.",
+    ".ds-tooltip / .ds-popover are inline atoms — no JS positioning bundled.",
+    ".ds-empty is a static empty-state container — wrap your own icon + title + desc.",
+    ".mono / .num MUST be used for any tabular figure / count / currency / id — they enable tabular-nums via var(--code-editor-font-family).",
+    ".ds-hero-title and .ds-section-title are page-level headline atoms — fluid clamp() sizing."
+  ],
+  "doNotInvent": [
+    "Do not invent additional layout slugs (e.g. layout, primitives, base, scaffold) — these atoms are the only shared utility surface.",
+    "Do not author additional .mono variants — use the single .mono / .num utilities."
+  ],
+  "unknowns": [],
+  "tokensConsumed": [
+    "--bg-brand",
+    "--bg-overlay-l1",
+    "--bg-tooltip",
+    "--body-base-font-family",
+    "--body-base-font-size",
+    "--body-base-font-weight",
+    "--body-base-line-height",
+    "--body-sm-font-size",
+    "--body-xs-font-size",
+    "--body-xs-line-height",
+    "--border-neutral-l1",
+    "--code-editor-font-family",
+    "--code-editor-font-size",
+    "--code-editor-line-height",
+    "--font-weight-medium",
+    "--font-weight-strong",
+    "--heading-2xl-font-family",
+    "--heading-2xl-font-size",
+    "--heading-2xl-font-weight",
+    "--heading-2xl-line-height",
+    "--heading-3xl-font-family",
+    "--heading-3xl-font-weight",
+    "--heading-md-font-family",
+    "--heading-md-font-size",
+    "--heading-md-font-weight",
+    "--heading-md-line-height",
+    "--heading-sm-font-family",
+    "--heading-sm-font-size",
+    "--heading-sm-font-weight",
+    "--heading-sm-line-height",
+    "--heading-xl-font-family",
+    "--icon-secondary",
+    "--radius-4",
+    "--spacer-12",
+    "--spacer-16",
+    "--spacer-24",
+    "--spacer-4",
+    "--spacer-40",
+    "--spacer-6",
+    "--spacer-8",
+    "--text-default",
+    "--text-secondary",
+    "--text-tertiary"
+  ],
+  "domAnatomy": {
+    "root": {
+      "tag": "div",
+      "class": "ds-stack-24",
+      "children": [
+        {
+          "tag": "div",
+          "class": "ds-row",
+          "children": [
+            { "tag": "span", "class": "ds-tooltip", "text": "Tooltip" },
+            { "tag": "span", "class": "ds-tooltip", "text": "Tooltip" }
+          ]
+        },
+        {
+          "tag": "div",
+          "class": "ds-grid-3",
+          "children": [
+            { "tag": "div", "class": "ds-popover", "text": "Popover 1" },
+            { "tag": "div", "class": "ds-popover", "text": "Popover 2" },
+            { "tag": "div", "class": "ds-popover", "text": "Popover 3" }
+          ]
+        },
+        {
+          "tag": "div",
+          "class": "ds-empty",
+          "children": [
+            { "tag": "span", "class": "ds-empty__icon", "text": "\u2205" },
+            { "tag": "div", "class": "ds-empty__title", "text": "No items" },
+            { "tag": "div", "class": "ds-empty__desc", "text": "There is nothing to show here yet." }
+          ]
+        },
+        {
+          "tag": "pre",
+          "class": "ds-code",
+          "text": "const greeting = \"hello\";"
+        },
+        {
+          "tag": "div",
+          "class": "ds-row",
+          "children": [
+            { "tag": "span", "class": "num", "text": "1,234,567" },
+            { "tag": "span", "class": "mono", "text": "user_id=42" }
+          ]
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "preview": "preview/component-atoms.html",
+    "source": "previews/ (aggregated utility helpers, no single source file)",
+    "css": {
+      "file": "components.css",
+      "marker": "── Atoms ──"
+    }
+  }
+}

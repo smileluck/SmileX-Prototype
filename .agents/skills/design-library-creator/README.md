@@ -103,6 +103,7 @@ design-library-creator/
 │   ├── scanning-strategies.md              # 4 类来源的「全量组件扫描策略」+ GitHub API 兜底
 │   ├── component-render-templates.md       # 8 类组件的差异化预览模板（含 upload / code / qr-code 等 special 模板）
 │   ├── trae-ui-example-mapping.md          # 字段一一映射
+│   ├── trae-ui-example/                    # 完整范本副本（嵌入技能内，188 文件）
 │   └── library-doc-template.md             # 库专属 SKILL.md / README.md 模板
 └── examples/
     └── source-brief.example.json           # Phase 1 产出样例
@@ -145,7 +146,7 @@ Token **verbatim 保留源命名** —— 不重命名、不缩放、不发明�
 
 ## 与 trae-ui-example 的关系
 
-`trae-ui-example/` 是**只读示例**（Nimbus Core 样板）。本技能生成**新的、独立的**设计库到 `design-systems/{name}/`，**绝不修改** `trae-ui-example/`。
+`references/trae-ui-example/` 是**只读范本**（已嵌入技能内，188 文件），代表 Nimbus Core 样板。本技能生成**新的、独立的**设计库到 `design-systems/{name}/`，**绝不修改** `references/trae-ui-example/` 或任何外部位置。
 
 ## Generation Notes
 

@@ -1,7 +1,7 @@
 # trae-ui-example 字段映射
 
 > 本文档是设计库生成的"字段字典"——每个 JSON 文件每个字段的类型、必填性、示例值。
-> 所有约束来自 `trae-ui-example/` 实际产物。
+> 所有约束来自 `references/trae-ui-example/`（已嵌入技能内，188 文件）实际产物。
 
 ---
 

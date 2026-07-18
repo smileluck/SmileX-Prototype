@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Avatar</title>
+  <link rel="stylesheet" href="../colors_and_type.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" />
+  <link rel="stylesheet" href="../components.css" />
+  <style>
+    /* ── preview-page chrome (reset + body + .pv-*, preview-only) ───────── */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      background: var(--bg-base-default);
+      color: var(--text-default);
+      font-family: var(--body-base-font-family);
+      font-size: var(--body-base-font-size);
+      line-height: var(--body-base-line-height);
+      font-weight: var(--body-base-font-weight);
+      min-height: 100%;
+      overflow-x: hidden;
+      max-width: 100%;
+    }
+    body { padding: var(--spacer-32); }
+    img, svg, video, canvas { max-width: 100%; }
+    a { color: var(--text-default); text-decoration: none; }
+    a:hover { color: var(--text-default-hover); }
+    hr { border: 0; border-top: 1px solid var(--border-neutral-l1); margin: var(--spacer-24) 0; }
+    .pv-header { margin-bottom: var(--spacer-32); padding-bottom: var(--spacer-16); border-bottom: 1px solid var(--border-neutral-l1); }
+    .pv-header h1 { font-size: var(--heading-lg-font-size); line-height: var(--heading-lg-line-height); font-weight: var(--heading-lg-font-weight); margin-bottom: var(--spacer-4); }
+    .pv-header p { color: var(--text-secondary); font-size: var(--body-sm-font-size); }
+    .pv-section { margin-bottom: var(--spacer-32); }
+    .pv-section__title { font-size: var(--heading-xs-font-size); font-weight: var(--heading-xs-font-weight); margin-bottom: var(--spacer-12); color: var(--text-default); }
+    .pv-section__sub { font-size: var(--body-xs-font-size); color: var(--text-tertiary); margin-bottom: var(--spacer-12); }
+
+    /* @component-css-start */
+    /* ===== Avatar ===== */
+    .ds-avatar {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--bg-overlay-l3);
+      color: var(--text-default);
+      font-size: var(--body-sm-font-size); font-weight: var(--font-weight-strong);
+      flex-shrink: 0;
+    }
+    .ds-avatar--sm { width: 24px; height: 24px; font-size: var(--body-xs-font-size); }
+    .ds-avatar--lg { width: 40px; height: 40px; }
+    .ds-avatar--square { border-radius: var(--radius-4); }
+    .ds-avatar--accent { background: var(--bg-brand); color: var(--text-onbrand); }
+    /* @component-css-end */
+  </style>
+</head>
+<body>
+  <div class="pv-header">
+    <h1>Avatar</h1>
+    <p>User avatars in three sizes plus stacked group with overflow indicator.</p>
+  </div>
+
+  <div class="pv-section">
+    <div class="pv-section__title">Avatar</div>
+    <div class="row">
+      <span class="ds-avatar ds-avatar--sm">A</span>
+      <span class="ds-avatar">M</span>
+      <span class="ds-avatar ds-avatar--lg">L</span>
+      <div class="row" style="gap: -8px;">
+        <span class="ds-avatar" style="border: 2px solid var(--bg-base-default); margin-right: -10px; z-index: 3;">A</span>
+        <span class="ds-avatar" style="border: 2px solid var(--bg-base-default); margin-right: -10px; z-index: 2;">M</span>
+        <span class="ds-avatar" style="border: 2px solid var(--bg-base-default); margin-right: -10px; z-index: 1;">L</span>
+        <span class="ds-avatar" style="border: 2px solid var(--bg-base-default); background: var(--bg-overlay-l2); color: var(--text-tertiary);">+5</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pv-section">
+    <div class="pv-section__title">Square & accent</div>
+    <div class="row">
+      <span class="ds-avatar ds-avatar--square">A</span>
+      <span class="ds-avatar ds-avatar--square ds-avatar--lg">M</span>
+      <span class="ds-avatar ds-avatar--accent">A</span>
+      <span class="ds-avatar ds-avatar--accent ds-avatar--lg">M</span>
+      <span class="ds-avatar ds-avatar--accent ds-avatar--square">L</span>
+    </div>
+  </div>
+
+</body>
+</html>

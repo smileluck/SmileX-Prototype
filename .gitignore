@@ -3,4 +3,3 @@ dist
 *.local
 .DS_Store
 website/
-trae-ui-example/

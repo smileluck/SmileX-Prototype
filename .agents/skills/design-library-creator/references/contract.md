@@ -1,7 +1,7 @@
 # 三层契约详细规范
 
 > 本文档详细说明生成的设计库每个文件的字段、必填性、约束。
-> 参考样例：`trae-ui-example/`
+> 参考样例：`references/trae-ui-example/`
 
 ## 目录结构
 
@@ -133,7 +133,7 @@
 - `doNotInvent`: 数组（明确禁止发明的变体）
 - `unknowns`: 数组
 
-**完整示例**：参考 `trae-ui-example/components/buttons.json`
+**完整示例**：参考 `references/trae-ui-example/components/buttons.json`
 
 ### `preview/component-{slug}.html`
 

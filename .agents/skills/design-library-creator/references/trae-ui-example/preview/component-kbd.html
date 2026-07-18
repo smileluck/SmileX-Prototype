@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Kbd</title>
+  <link rel="stylesheet" href="../colors_and_type.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" />
+  <link rel="stylesheet" href="../components.css" />
+  <style>
+    /* ── preview-page chrome (reset + body + .pv-*, preview-only) ───────── */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      background: var(--bg-base-default);
+      color: var(--text-default);
+      font-family: var(--body-base-font-family);
+      font-size: var(--body-base-font-size);
+      line-height: var(--body-base-line-height);
+      font-weight: var(--body-base-font-weight);
+      min-height: 100%;
+      overflow-x: hidden;
+      max-width: 100%;
+    }
+    body { padding: var(--spacer-32); }
+    img, svg, video, canvas { max-width: 100%; }
+    a { color: var(--text-default); text-decoration: none; }
+    a:hover { color: var(--text-default-hover); }
+    hr { border: 0; border-top: 1px solid var(--border-neutral-l1); margin: var(--spacer-24) 0; }
+    .pv-header { margin-bottom: var(--spacer-32); padding-bottom: var(--spacer-16); border-bottom: 1px solid var(--border-neutral-l1); }
+    .pv-header h1 { font-size: var(--heading-lg-font-size); line-height: var(--heading-lg-line-height); font-weight: var(--heading-lg-font-weight); margin-bottom: var(--spacer-4); }
+    .pv-header p { color: var(--text-secondary); font-size: var(--body-sm-font-size); }
+    .pv-section { margin-bottom: var(--spacer-32); }
+    .pv-section__title { font-size: var(--heading-xs-font-size); font-weight: var(--heading-xs-font-weight); margin-bottom: var(--spacer-12); color: var(--text-default); }
+    .pv-section__sub { font-size: var(--body-xs-font-size); color: var(--text-tertiary); margin-bottom: var(--spacer-12); }
+
+    /* @component-css-start */
+    /* ===== Kbd ===== */
+    .ds-kbd {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 22px;
+      height: 22px;
+      padding: 0 var(--spacer-6);
+      font-family: var(--code-editor-font-family);
+      font-size: var(--body-xs-font-size);
+      line-height: 1;
+      font-weight: var(--font-weight-medium);
+      color: var(--text-secondary);
+      background: var(--bg-overlay-l2);
+      border: 1px solid var(--border-neutral-l2);
+      border-bottom-width: 2px;
+      border-radius: var(--radius-4);
+    }
+    .ds-kbd__combo {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacer-4);
+    }
+    .ds-kbd__plus {
+      color: var(--text-tertiary);
+      font-size: var(--body-xs-font-size);
+    }
+    .ds-kbd__row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--spacer-16);
+    }
+    /* @component-css-end */
+  </style>
+</head>
+<body>
+  <div class="pv-header">
+    <h1>Kbd</h1>
+    <p>键盘快捷键提示，小圆角方块。</p>
+  </div>
+  <div class="pv-section">
+    <div class="pv-section__title">Single keys</div>
+    <div class="ds-kbd__row">
+      <kbd class="ds-kbd">⌘</kbd>
+      <kbd class="ds-kbd">⇧</kbd>
+      <kbd class="ds-kbd">⌥</kbd>
+      <kbd class="ds-kbd">⌃</kbd>
+      <kbd class="ds-kbd">⏎</kbd>
+      <kbd class="ds-kbd">Esc</kbd>
+    </div>
+  </div>
+  <div class="pv-section">
+    <div class="pv-section__title">Combinations</div>
+    <div class="ds-kbd__row">
+      <span class="ds-kbd__combo">
+        <kbd class="ds-kbd">⌘</kbd><span class="ds-kbd__plus">+</span><kbd class="ds-kbd">K</kbd>
+      </span>
+      <span class="ds-kbd__combo">
+        <kbd class="ds-kbd">⌘</kbd><span class="ds-kbd__plus">+</span><kbd class="ds-kbd">⇧</kbd><span class="ds-kbd__plus">+</span><kbd class="ds-kbd">P</kbd>
+      </span>
+      <span class="ds-kbd__combo">
+        <kbd class="ds-kbd">⌃</kbd><span class="ds-kbd__plus">+</span><kbd class="ds-kbd">C</kbd>
+      </span>
+    </div>
+  </div>
+</body>
+</html>

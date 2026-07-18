@@ -223,7 +223,7 @@ Bundled SVG icons live at `assets/icons/` (<N> files). Optional runtime sprite r
 
 ## 关键反模式（必须避免）
 
-❌ **直接复制 `trae-ui-example/SKILL.md` 或 `README.md` 的内容**到新生成的库。
+❌ **直接复制 `references/trae-ui-example/SKILL.md` 或 `README.md` 的内容**到新生成的库。
 
 ❌ **让新库的 SKILL.md 描述"nimbus-core"或"trae-ui-example"**。它必须描述**当前生成的设计库**（如 naive-core / element-core / ide-minimal）。
 
