@@ -1,0 +1,185 @@
+/* @dark-only */
+/* @group-priority: brand-green, status, brand-blue, brand-yellow, brand-red */
+:root {
+  /* ============================================================
+   * Naive Core Design Tokens (verbatim from naive-ui dark theme)
+   * Source: https://github.com/tusen-ai/naive-ui/blob/main/src/_styles/common/dark.ts
+   * Naming is preserved verbatim — do not rename tokens.
+   * Components consume these directly via var(--token-name).
+   * ============================================================ */
+
+  /* === Brand Green (primary) === */
+  --primaryColor: #63e2b7;
+  --primaryColorHover: #7fe7c4;
+  --primaryColorPressed: #5acea7;
+  --primaryColorSuppl: rgb(42, 148, 125);
+
+  /* === Status — Info (brand-blue) === */
+  --infoColor: #70c0e8;
+  --infoColorHover: #8acbec;
+  --infoColorPressed: #66afd3;
+  --infoColorSuppl: rgb(56, 137, 197);
+
+  /* === Status — Success (alias of primary) === */
+  --successColor: #63e2b7;
+  --successColorHover: #7fe7c4;
+  --successColorPressed: #5acea7;
+  --successColorSuppl: rgb(42, 148, 125);
+
+  /* === Status — Warning (brand-yellow) === */
+  --warningColor: #f2c97d;
+  --warningColorHover: #f5d599;
+  --warningColorPressed: #e6c260;
+  --warningColorSuppl: rgb(240, 138, 0);
+
+  /* === Status — Error (brand-red) === */
+  --errorColor: #e88080;
+  --errorColorHover: #e98b8b;
+  --errorColorPressed: #e57272;
+  --errorColorSuppl: rgb(208, 58, 82);
+
+  /* === Text === */
+  --textColor1: rgba(255, 255, 255, 0.9);
+  --textColor2: rgba(255, 255, 255, 0.82);
+  --textColor3: rgba(255, 255, 255, 0.52);
+  --textColorDisabled: rgba(255, 255, 255, 0.38);
+  --placeholderColor: rgba(255, 255, 255, 0.38);
+  --placeholderColorDisabled: rgba(255, 255, 255, 0.28);
+
+  /* === Icon === */
+  --iconColor: rgba(255, 255, 255, 0.38);
+  --iconColorHover: rgba(255, 255, 255, 0.475);
+  --iconColorPressed: rgba(255, 255, 255, 0.304);
+  --iconColorDisabled: rgba(255, 255, 255, 0.28);
+
+  /* === Border & Divider === */
+  --borderColor: rgba(255, 255, 255, 0.24);
+  --dividerColor: rgba(255, 255, 255, 0.09);
+
+  /* === Surface (background fills) === */
+  --bodyColor: rgb(16, 16, 20);
+  --cardColor: rgb(24, 24, 28);
+  --modalColor: rgb(44, 44, 50);
+  --popoverColor: rgb(72, 72, 78);
+
+  /* === Table === */
+  --tableColor: rgb(24, 24, 28);
+  --tableHeaderColor: rgba(255, 255, 255, 0.06);
+  --tableColorHover: rgba(255, 255, 255, 0.09);
+  --tableColorStriped: rgba(255, 255, 255, 0.05);
+
+  /* === Interaction States === */
+  --hoverColor: rgba(255, 255, 255, 0.09);
+  --pressedColor: rgba(255, 255, 255, 0.05);
+
+  /* === Form Controls === */
+  --inputColor: rgba(255, 255, 255, 0.1);
+  --inputColorDisabled: rgba(255, 255, 255, 0.06);
+  --actionColor: rgba(255, 255, 255, 0.06);
+  --tabColor: rgba(255, 255, 255, 0.04);
+  --tagColor: rgba(0, 0, 0, 0.2);
+  --avatarColor: rgba(255, 255, 255, 0.18);
+  --codeColor: rgba(255, 255, 255, 0.12);
+
+  /* === Inverted (light text on dark brand surfaces) === */
+  --invertedColor: rgb(0, 0, 0);
+
+  /* === Button Secondary === */
+  --buttonColor2: rgba(255, 255, 255, 0.08);
+  --buttonColor2Hover: rgba(255, 255, 255, 0.12);
+  --buttonColor2Pressed: rgba(255, 255, 255, 0.08);
+
+  /* === Rails (progress bars, sliders) === */
+  --railColor: rgba(255, 255, 255, 0.2);
+  --progressRailColor: rgba(255, 255, 255, 0.12);
+
+  /* === Close (X button hover/press) === */
+  --closeColorHover: rgba(255, 255, 255, 0.12);
+  --closeColorPressed: rgba(255, 255, 255, 0.08);
+
+  /* === Scrollbar === */
+  --scrollbarColor: rgba(255, 255, 255, 0.2);
+  --scrollbarColorHover: rgba(255, 255, 255, 0.3);
+  --scrollbarWidth: 5px;
+  --scrollbarHeight: 5px;
+  --scrollbarBorderRadius: 5px;
+
+  /* ============================================================
+   * Typography
+   * ============================================================ */
+  --fontFamily: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  --fontFamilyMono: 'JetBrains Mono', 'Fira Code', Menlo, Monaco, Consolas, 'Courier New', monospace;
+  --fontWeightStrong: 600;
+
+  /* Font Sizes (Naive UI: tiny / small / medium / large / huge) */
+  --fontSizeTiny: 12px;
+  --fontSizeSmall: 13px;
+  --fontSizeMedium: 14px;
+  --fontSizeLarge: 15px;
+  --fontSizeHuge: 16px;
+
+  --lineHeightTiny: 1.5;
+  --lineHeightSmall: 1.5;
+  --lineHeightMedium: 1.5;
+  --lineHeightLarge: 1.5;
+  --lineHeightHuge: 1.5;
+
+  /* Body aliases (project convention) */
+  --body-xs-font-size: var(--fontSizeTiny);
+  --body-sm-font-size: var(--fontSizeSmall);
+  --body-md-font-size: var(--fontSizeMedium);
+  --body-base-font-size: var(--fontSizeMedium);
+  --body-base-font-family: var(--fontFamily);
+  --body-base-font-weight: 400;
+  --body-base-line-height: var(--lineHeightMedium);
+  --body-sm-strong-font-family: var(--fontFamily);
+  --body-sm-strong-font-size: var(--fontSizeSmall);
+  --body-sm-strong-font-weight: var(--fontWeightStrong);
+
+  /* Headings */
+  --heading-3xs-font-size: 11px;
+  --heading-2xs-font-size: 12px;
+  --heading-xs-font-size: 13px;
+  --heading-sm-font-size: 14px;
+  --heading-md-font-size: 16px;
+  --heading-lg-font-size: 18px;
+  --heading-xl-font-size: 20px;
+  --heading-2xl-font-size: 24px;
+  --heading-3xl-font-size: 30px;
+  --heading-base-font-weight: 600;
+  --heading-base-line-height: 1.3;
+
+  /* ============================================================
+   * Border Radius
+   * ============================================================ */
+  --borderRadiusTiny: 2px;
+  --borderRadiusSmall: 3px;
+  --borderRadiusMedium: 4px;
+  --borderRadiusLarge: 6px;
+  --borderRadiusHuge: 8px;
+
+  /* Project aliases */
+  --radius-2: var(--borderRadiusTiny);
+  --radius-4: var(--borderRadiusMedium);
+  --radius-6: var(--borderRadiusLarge);
+  --radius-8: var(--borderRadiusHuge);
+
+  /* ============================================================
+   * Spacers & Component Heights
+   * ============================================================ */
+  --spacer-0: 0;
+  --spacer-4: 4px;
+  --spacer-8: 8px;
+  --spacer-12: 12px;
+  --spacer-16: 16px;
+  --spacer-24: 24px;
+  --spacer-32: 32px;
+  --spacer-40: 40px;
+
+  /* Component Heights (Naive UI convention) */
+  --heightTiny: 22px;
+  --heightSmall: 28px;
+  --heightMedium: 34px;
+  --heightLarge: 40px;
+  --heightHuge: 46px;
+}

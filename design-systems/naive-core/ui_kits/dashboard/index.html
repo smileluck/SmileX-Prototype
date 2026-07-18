@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard — Naive Core</title>
+  <link rel="stylesheet" href="../../colors_and_type.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" />
+  <link rel="stylesheet" href="../../components.css" />
+  <style>
+    .uikit-shell { max-width: 1184px; margin: 0 auto; padding: var(--spacer-32); background: var(--bodyColor); color: var(--textColor1); font-family: var(--fontFamily); font-size: var(--fontSizeMedium); line-height: var(--lineHeightMedium); min-height: 100vh; box-sizing: border-box; }
+    * { box-sizing: border-box; }
+    .dashboard-grid { display: grid; grid-template-columns: 240px 1fr; gap: var(--spacer-24); margin-top: var(--spacer-24); }
+    .sidebar { background: var(--cardColor); border: 1px solid var(--borderColor); border-radius: var(--borderRadiusLarge); padding: var(--spacer-16); height: fit-content; }
+    .sidebar h3 { font-size: var(--fontSizeTiny); text-transform: uppercase; letter-spacing: 0.08em; color: var(--textColor3); margin-bottom: var(--spacer-12); font-weight: var(--fontWeightStrong); }
+    .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--spacer-16); margin-bottom: var(--spacer-24); }
+    .stat-card { background: var(--cardColor); border: 1px solid var(--borderColor); border-radius: var(--borderRadiusLarge); padding: var(--spacer-16); }
+    .stat-card__label { font-size: var(--fontSizeTiny); color: var(--textColor3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--spacer-8); }
+    .stat-card__value { font-size: var(--heading-xl-font-size); font-weight: var(--heading-base-font-weight); color: var(--textColor1); font-variant-numeric: tabular-nums; }
+    .stat-card__delta { font-size: var(--fontSizeTiny); color: var(--successColor); margin-top: var(--spacer-4); }
+    .stat-card__delta--neg { color: var(--errorColor); }
+    .recent-card { background: var(--cardColor); border: 1px solid var(--borderColor); border-radius: var(--borderRadiusLarge); overflow: hidden; }
+    .recent-card__header { padding: var(--spacer-16); border-bottom: 1px solid var(--dividerColor); display: flex; justify-content: space-between; align-items: center; }
+    .recent-card__title { font-size: var(--heading-sm-font-size); font-weight: var(--heading-base-font-weight); }
+    .header-row { display: flex; justify-content: space-between; align-items: flex-start; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel" data-presets="env,react">
+    const { useState } = React;
+
+    function Sidebar() {
+      return (
+        <aside className="sidebar">
+          <h3>Navigation</h3>
+          <nav className="ds-menu ds-menu--vertical" style={{ background: 'transparent', border: 'none', padding: 0 }}>
+            <div className="ds-menu__item ds-menu__item--active">Dashboard</div>
+            <div className="ds-menu__item">Projects</div>
+            <div className="ds-menu__item">Tasks</div>
+            <div className="ds-menu__item">Team</div>
+            <div className="ds-menu__item">Reports</div>
+            <div className="ds-menu__item">Settings</div>
+          </nav>
+        </aside>
+      );
+    }
+
+    function StatCard({ label, value, delta, positive, badge }) {
+      return (
+        <div className="stat-card">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <div className="stat-card__label">{label}</div>
+            {badge && <span className={'ds-badge__sup ds-badge__sup--' + badge.type} style={{ position: 'static', transform: 'none' }}>{badge.text}</span>}
+          </div>
+          <div className="stat-card__value">{value}</div>
+          <div className={'stat-card__delta ' + (positive ? '' : 'stat-card__delta--neg')}>
+            {positive ? '↑' : '↓'} {delta}
+          </div>
+        </div>
+      );
+    }
+
+    function RecentActivity() {
+      const rows = [
+        { name: 'Marketing site redesign', status: 'Active', owner: 'Alice', time: '2h ago', statusType: 'success' },
+        { name: 'API gateway v2', status: 'Pending', owner: 'Bob', time: '5h ago', statusType: 'warning' },
+        { name: 'Internal dashboard', status: 'Failed', owner: 'Carol', time: '1d ago', statusType: 'error' },
+        { name: 'Documentation refresh', status: 'Draft', owner: 'Dave', time: '2d ago', statusType: 'info' },
+        { name: 'Mobile app rewrite', status: 'Active', owner: 'Eve', time: '3d ago', statusType: 'success' },
+        { name: 'Auth migration', status: 'Pending', owner: 'Frank', time: '1w ago', statusType: 'warning' },
+        { name: 'Search overhaul', status: 'Active', owner: 'Grace', time: '2w ago', statusType: 'success' },
+        { name: 'Billing integration', status: 'Draft', owner: 'Henry', time: '3w ago', statusType: 'info' }
+      ];
+      return (
+        <div className="recent-card">
+          <div className="recent-card__header">
+            <span className="recent-card__title">Recent Activity</span>
+            <div style={{ display: 'flex', gap: 'var(--spacer-8)' }}>
+              <button className="ds-btn ds-btn--default ds-btn--small">Export</button>
+              <button className="ds-btn ds-btn--primary ds-btn--small">View all</button>
+            </div>
+          </div>
+          <div className="ds-table-wrap" style={{ border: 'none', borderRadius: 0 }}>
+            <table className="ds-table ds-table--striped">
+              <thead>
+                <tr><th>Project</th><th>Status</th><th>Owner</th><th>Progress</th><th>Updated</th></tr>
+              </thead>
+              <tbody>
+                {rows.map((r, i) => {
+                  const progress = r.status === 'Active' ? 78 : r.status === 'Pending' ? 45 : r.status === 'Failed' ? 28 : 12;
+                  return (
+                    <tr key={i}>
+                      <td>{r.name}</td>
+                      <td><span className={'ds-tag ds-tag--' + r.statusType + ' ds-tag--small'}>{r.status}</span></td>
+                      <td>
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                          <span className="ds-avatar ds-avatar--small ds-avatar--primary">{r.owner[0]}</span>
+                          {r.owner}
+                        </span>
+                      </td>
+                      <td>
+                        <div className="ds-progress" style={{ minWidth: 100 }}>
+                          <div className="ds-progress__rail ds-progress__rail--small">
+                            <div className={'ds-progress__indicator ' + (r.status === 'Failed' ? 'ds-progress__indicator--error' : r.status === 'Pending' ? 'ds-progress__indicator--warning' : '')} style={{ width: progress + '%' }}></div>
+                          </div>
+                        </div>
+                      </td>
+                      <td style={{ color: 'var(--textColor2)' }}>{r.time}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center', padding: 'var(--spacer-16)' }}>
+            <div className="ds-pagination">
+              <button className="ds-pagination__btn" disabled>‹</button>
+              <div className="ds-pagination__item">1</div>
+              <div className="ds-pagination__item ds-pagination__item--active">2</div>
+              <div className="ds-pagination__item">3</div>
+              <div className="ds-pagination__ellipsis">…</div>
+              <button className="ds-pagination__btn">›</button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function QuickActions() {
+      return (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'var(--spacer-16)', marginTop: 'var(--spacer-24)' }}>
+          <div className="ds-card">
+            <div className="ds-card__header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span>Storage</span>
+              <span className="ds-tag ds-tag--warning ds-tag--small">68%</span>
+            </div>
+            <div className="ds-card__content">
+              <div className="ds-progress" style={{ marginBottom: 'var(--spacer-8)' }}>
+                <div className="ds-progress__rail"><div className="ds-progress__indicator ds-progress__indicator--warning" style={{ width: '68%' }}></div></div>
+              </div>
+              68 GB of 100 GB used. Upgrade for more capacity.
+            </div>
+          </div>
+          <div className="ds-card">
+            <div className="ds-card__header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span>API usage</span>
+              <span className="ds-tag ds-tag--info ds-tag--small">78%</span>
+            </div>
+            <div className="ds-card__content">
+              <div className="ds-progress" style={{ marginBottom: 'var(--spacer-8)' }}>
+                <div className="ds-progress__rail"><div className="ds-progress__indicator ds-progress__indicator--info" style={{ width: '78%' }}></div></div>
+              </div>
+              234k requests this month, 78% of plan limit.
+            </div>
+          </div>
+          <div className="ds-card">
+            <div className="ds-card__header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span>Support</span>
+              <span className="ds-badge__sup ds-badge__sup--primary" style={{ position: 'static', transform: 'none' }}>2</span>
+            </div>
+            <div className="ds-card__content">2 open tickets, average response 4h.</div>
+          </div>
+        </div>
+      );
+    }
+
+    function App() {
+      return (
+        <div className="uikit-shell">
+          <div className="header-row">
+            <div>
+              <nav className="ds-breadcrumb" style={{ marginBottom: 'var(--spacer-12)' }}>
+                <a className="ds-breadcrumb__item">Home</a>
+                <span className="ds-breadcrumb__separator">/</span>
+                <span className="ds-breadcrumb__current">Dashboard</span>
+              </nav>
+              <h1 style={{ fontSize: 'var(--heading-2xl-font-size)', fontWeight: 600, marginBottom: '4px' }}>Dashboard</h1>
+              <p style={{ color: 'var(--textColor2)', fontSize: 'var(--fontSizeSmall)' }}>Welcome back. Here's what's happening today.</p>
+            </div>
+            <div style={{ display: 'flex', gap: 'var(--spacer-8)' }}>
+              <button className="ds-btn ds-btn--default ds-btn--medium">Export</button>
+              <button className="ds-btn ds-btn--primary ds-btn--medium">New project</button>
+            </div>
+          </div>
+
+          <div className="dashboard-grid">
+            <Sidebar />
+
+            <main>
+              <div className="stat-grid">
+                <StatCard label="Active projects" value="24" delta="12% vs last month" positive={true} badge={{ type: 'success', text: '+3' }} />
+                <StatCard label="Open tasks" value="138" delta="8% vs last month" positive={false} />
+                <StatCard label="Team members" value="42" delta="3 new" positive={true} />
+                <StatCard label="Revenue" value="$12.4k" delta="24% vs last month" positive={true} />
+              </div>
+
+              <RecentActivity />
+
+              <QuickActions />
+            </main>
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>

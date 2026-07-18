@@ -1,0 +1,12 @@
+{
+  "kitType": "dashboard",
+  "screensGenerated": 1,
+  "coreComponentsUsed": ["buttons", "menu", "tag", "table", "avatar", "card", "breadcrumb", "badge", "progress", "pagination"],
+  "supportComponentsUsed": ["forms", "tabs", "dropdown", "dialog", "alert", "atoms"],
+  "previewClassReuseRate": 0.88,
+  "inventedComponents": [],
+  "interactiveStatesRendered": ["default", "hover", "active", "disabled", "error"],
+  "primaryActionPerScreen": true,
+  "mockDataDensity": { "tableRows": 8, "chartPoints": 0 },
+  "warnings": []
+}

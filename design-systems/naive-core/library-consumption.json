@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "recommendedReadOrder": [
+    "colors_and_type.css",
+    "css.json",
+    "components/index.json",
+    "uikit-plan.json",
+    "components/atoms.json",
+    "components/{slug}.json",
+    "preview/component-{slug}.html",
+    "components.css",
+    "ui_kits/dashboard/index.html",
+    "ui_kits/dashboard/quality-report.json"
+  ],
+  "downstreamNotes": "Naive Core is a dark-first design system distilled from naive-ui's official dark theme. Tokens are preserved verbatim from the source (e.g. --primaryColor instead of --bg-brand). Components use the .ds-* class prefix and reference tokens directly via var(). UI Kits are showcases (max-width 1184px) — do not copy as page templates; instead, read preview/component-*.html for clean component markup and compose your own outer grid at the consumer canvas size."
+}

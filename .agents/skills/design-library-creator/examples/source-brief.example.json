@@ -1,0 +1,161 @@
+{
+  "sourceType": "url",
+  "sourceLocator": "https://element-plus.org/en-US/component/button.html",
+  "capturedAt": "2026-07-17T18:30:00Z",
+  "tokens": {
+    "color": {
+      "bg-brand": "#409eff",
+      "bg-brand-hover": "#66b1ff",
+      "bg-brand-active": "#3a8ee6",
+      "bg-base-default": "#ffffff",
+      "bg-base-secondary": "#f5f7fa",
+      "bg-overlay-l1": "#0000000a",
+      "bg-overlay-l2": "#00000014",
+      "text-default": "#303133",
+      "text-secondary": "#606266",
+      "text-tertiary": "#909399",
+      "text-onbrand": "#ffffff",
+      "border-neutral-l1": "#dcdfe6",
+      "border-neutral-l2": "#e4e7ed",
+      "border-neutral-l3": "#ebeef5",
+      "status-primary-default": "#409eff",
+      "status-success-default": "#67c23a",
+      "status-warning-default": "#e6a23c",
+      "status-error-default": "#f56c6c"
+    },
+    "font": {
+      "body-base-font-family": "'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', Arial, sans-serif",
+      "body-base-font-size": "14px",
+      "body-base-font-weight": "400",
+      "body-base-line-height": "1.5",
+      "body-sm-strong-font-family": "'Helvetica Neue', Helvetica, sans-serif",
+      "body-sm-strong-font-size": "12px",
+      "body-sm-strong-font-weight": "500"
+    },
+    "radius": {
+      "radius-2": "2px",
+      "radius-4": "4px",
+      "radius-full": "9999px"
+    },
+    "spacing": {
+      "spacer-0": "0",
+      "spacer-4": "4px",
+      "spacer-8": "8px",
+      "spacer-12": "12px",
+      "spacer-16": "16px",
+      "spacer-24": "24px"
+    }
+  },
+  "components": [
+    {
+      "slug": "buttons",
+      "name": "Button",
+      "confidence": "high",
+      "variantDimensions": {
+        "type": ["primary", "success", "warning", "danger", "info", "default"],
+        "size": ["large", "default", "small"],
+        "state": ["default", "hover", "active", "disabled"],
+        "shape": ["text", "icon-only", "round", "circle"]
+      },
+      "tokensConsumed": [
+        "--bg-brand",
+        "--bg-brand-hover",
+        "--bg-overlay-l1",
+        "--text-default",
+        "--text-onbrand",
+        "--border-neutral-l1",
+        "--status-primary-default",
+        "--status-success-default",
+        "--status-warning-default",
+        "--status-error-default",
+        "--radius-4",
+        "--spacer-8",
+        "--spacer-12",
+        "--spacer-16"
+      ],
+      "sourceEvidence": "https://element-plus.org/en-US/component/button.html",
+      "visualAnchors": {
+        "primaryColor": "#409eff",
+        "hoverColor": "#66b1ff",
+        "textColor": "#303133",
+        "borderColor": "#dcdfe6"
+      }
+    },
+    {
+      "slug": "forms",
+      "name": "Form Controls",
+      "confidence": "high",
+      "variantDimensions": {
+        "type": ["input", "textarea", "select", "checkbox", "radio", "switch"],
+        "size": ["large", "default", "small"],
+        "state": ["default", "focus", "disabled", "error"]
+      },
+      "tokensConsumed": [
+        "--bg-base-default",
+        "--text-default",
+        "--text-secondary",
+        "--border-neutral-l1",
+        "--border-neutral-l2",
+        "--radius-4",
+        "--status-error-default",
+        "--spacer-8",
+        "--spacer-12"
+      ],
+      "sourceEvidence": "https://element-plus.org/en-US/component/input.html"
+    },
+    {
+      "slug": "tag",
+      "name": "Tag",
+      "confidence": "high",
+      "variantDimensions": {
+        "type": ["primary", "success", "info", "warning", "danger"],
+        "effect": ["light", "dark", "plain"],
+        "size": ["default", "small", "large"]
+      },
+      "tokensConsumed": [
+        "--bg-overlay-l1",
+        "--text-default",
+        "--status-primary-default",
+        "--status-success-default",
+        "--status-warning-default",
+        "--status-error-default",
+        "--radius-4"
+      ],
+      "sourceEvidence": "https://element-plus.org/en-US/component/tag.html"
+    },
+    {
+      "slug": "table",
+      "name": "Table",
+      "confidence": "medium",
+      "variantDimensions": {
+        "size": ["large", "default", "small"],
+        "stripe": [true, false],
+        "border": [true, false]
+      },
+      "tokensConsumed": [
+        "--bg-base-default",
+        "--bg-base-secondary",
+        "--text-default",
+        "--text-secondary",
+        "--border-neutral-l1",
+        "--spacer-8",
+        "--spacer-12",
+        "--spacer-16"
+      ],
+      "sourceEvidence": "https://element-plus.org/en-US/component/table.html",
+      "unknowns": ["sortable header interactions"]
+    }
+  ],
+  "visualAnchors": {
+    "primaryColor": "#409eff",
+    "successColor": "#67c23a",
+    "warningColor": "#e6a23c",
+    "dangerColor": "#f56c6c",
+    "infoColor": "#909399",
+    "textColor": "#303133",
+    "backgroundColor": "#ffffff",
+    "fontFamily": "Helvetica Neue, PingFang SC, Microsoft YaHei",
+    "density": "regular"
+  },
+  "notes": "Element Plus 浅色主题。如需深色主题，使用 --theme dark 后重新提取。"
+}

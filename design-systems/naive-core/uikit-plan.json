@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "headBoilerplate": "<link rel=\"stylesheet\" href=\"../../colors_and_type.css\">",
+  "corePreviewComponents": [
+    {
+      "slug": "buttons",
+      "reason": "fixed slot \"button\"; semantic=button:0.75; policy=fixed-slots-first",
+      "evidenceFile": "components/buttons.json",
+      "priority": 1,
+      "slot": "button"
+    },
+    {
+      "slug": "menu",
+      "reason": "fixed slot \"navigation\"; semantic=navigation:0.75; policy=fixed-slots-first",
+      "evidenceFile": "components/menu.json",
+      "priority": 2,
+      "slot": "navigation"
+    }
+  ],
+  "supportEvidenceComponents": [
+    { "slug": "breadcrumb", "reason": "support slot \"breadcrumb\"; semantic=breadcrumb:0.75", "evidenceFile": "components/breadcrumb.json", "priority": 3, "slot": "breadcrumb" },
+    { "slug": "badge", "reason": "support; semantic=badge:0.75", "evidenceFile": "components/badge.json", "priority": 4 },
+    { "slug": "card", "reason": "support slot \"card\"; semantic=card:0.75", "evidenceFile": "components/card.json", "priority": 5, "slot": "card" },
+    { "slug": "tag", "reason": "fixed slot \"tag\"; semantic=tag:0.75", "evidenceFile": "components/tag.json", "priority": 6, "slot": "tag" },
+    { "slug": "table", "reason": "fixed slot \"table\"; semantic=table:0.75", "evidenceFile": "components/table.json", "priority": 7, "slot": "table" },
+    { "slug": "pagination", "reason": "support; semantic=pagination:0.75", "evidenceFile": "components/pagination.json", "priority": 8 },
+    { "slug": "alert", "reason": "support; semantic=alert:0.75", "evidenceFile": "components/alert.json", "priority": 9 },
+    { "slug": "avatar", "reason": "support; semantic=avatar:0.75", "evidenceFile": "components/avatar.json", "priority": 10 },
+    { "slug": "progress", "reason": "support; semantic=progress:0.75", "evidenceFile": "components/progress.json", "priority": 11 },
+    { "slug": "dialog", "reason": "support; semantic=dialog:0.75", "evidenceFile": "components/dialog.json", "priority": 12 },
+    { "slug": "dropdown", "reason": "support; semantic=menu:0.75", "evidenceFile": "components/dropdown.json", "priority": 13 },
+    { "slug": "popover", "reason": "support; semantic=popover:0.75", "evidenceFile": "components/popover.json", "priority": 14 },
+    { "slug": "tooltip", "reason": "support; semantic=tooltip:0.75", "evidenceFile": "components/tooltip.json", "priority": 15 },
+    { "slug": "notification", "reason": "support; semantic=notification:0.75", "evidenceFile": "components/notification.json", "priority": 16 },
+    { "slug": "form", "reason": "support; semantic=form:0.75", "evidenceFile": "components/form.json", "priority": 17 },
+    { "slug": "forms", "reason": "support; semantic=input:0.75", "evidenceFile": "components/forms.json", "priority": 18 },
+    { "slug": "select", "reason": "support; semantic=select:0.75", "evidenceFile": "components/select.json", "priority": 19 },
+    { "slug": "input-number", "reason": "support; semantic=number-input:0.75", "evidenceFile": "components/input-number.json", "priority": 20 },
+    { "slug": "empty", "reason": "support; semantic=empty:0.75", "evidenceFile": "components/empty.json", "priority": 21 },
+    { "slug": "button-group", "reason": "support; semantic=toggle-group:0.75", "evidenceFile": "components/button-group.json", "priority": 22 },
+    { "slug": "tabs", "reason": "support slot \"tabs\"; semantic=tabs:0.75", "evidenceFile": "components/tabs.json", "priority": 23, "slot": "tabs" },
+    { "slug": "atoms", "reason": "support; shared utility atoms (layout helpers, headings, code, mono)", "evidenceFile": "components/atoms.json", "priority": 24 }
+  ],
+  "allowedComponents": [
+    "buttons",
+    "menu",
+    "breadcrumb",
+    "badge",
+    "card",
+    "tag",
+    "table",
+    "pagination",
+    "alert",
+    "avatar",
+    "progress",
+    "dialog",
+    "dropdown",
+    "popover",
+    "tooltip",
+    "notification",
+    "form",
+    "forms",
+    "select",
+    "input-number",
+    "empty",
+    "button-group",
+    "tabs",
+    "atoms"
+  ]
+}
