@@ -1,127 +1,186 @@
 # Naive Core Design System
 
-> Dark-first product design system (core subset — 24 components covering the dashboard UI Kit). Tokens authored verbatim from **naive-ui**'s official dark theme; component/UI-Kit references derived from naïve-ui's source.
+> Dark-first product design system — **full coverage: 95 naive-ui components + atoms (96 total)**, plus 4 UI Kits (dashboard / dev-explorer / mobile / marketing). Tokens authored verbatim from **naive-ui**'s official dark theme.
 
 ## Library Layout
 
-> The library root directory shown below is named `naive-core/` for documentation. The **deployed location is consumer-defined** — it can be `node_modules/@naive/core/`, `packages/design/naive-core/`, a CDN base URL, or anywhere else. All paths in this document are **relative to the library root**; treat the root prefix as `{NAIVE_CORE_ROOT}` and resolve it from your consumer project.
+> The library root directory shown below is named `naive-core/` for documentation. The **deployed location is consumer-defined**. All paths are **relative to the library root**; treat the root prefix as `{NAIVE_CORE_ROOT}`.
 
 ```
-{NAIVE_CORE_ROOT}/                 # naive-core library root (location is consumer-defined)
+{NAIVE_CORE_ROOT}/
 ├── SKILL.md                       # This file (design specification, concise)
 ├── README.md                      # Human-friendly guide with Downstream Consumption Guide
 ├── colors_and_type.css            # Authoritative token source (verbatim, dark-only)
-├── css.json                       # Machine-readable token projection (auto-generated)
-├── components.css                 # Aggregated component class definitions — AUTO-GENERATED
-├── icons.js                       # Optional inline icon sprite renderer
-├── uikit-plan.json                # Component whitelist + slot assignments + screen blueprint
-├── library-consumption.json       # Recommended downstream read order for agents
-├── assets/
-│   └── icons/                     # 115+ bundled SVG icons (default + tinted variants)
-├── components/                    # Component layer (24 JSON contracts, one per slug)
-│   ├── index.json
-│   ├── alert.json · atoms.json · avatar.json · badge.json · breadcrumb.json
-│   ├── button-group.json · buttons.json · card.json · dialog.json · dropdown.json
-│   ├── empty.json · form.json · forms.json · input-number.json · menu.json
-│   ├── notification.json · pagination.json · popover.json · progress.json · select.json
-│   ├── table.json · tabs.json · tag.json · tooltip.json
-├── preview/                       # 24 component preview pages (1 HTML per slug — includes atoms)
-└── ui_kits/
-    └── dashboard/
-        ├── index.html              # React 18 single-file showcase
-        └── quality-report.json
+├── css.json                       # Machine-readable token projection
+├── components.css                 # Aggregated component classes — AUTO-GENERATED (96 blocks)
+├── uikit-plan.json                # Component whitelist (2 core + 94 support) + slots
+├── library-consumption.json       # Downstream read order
+├── components/                    # 96 JSON contracts (96 × {slug}.json + index.json)
+├── preview/                       # 96 component preview pages (component-{slug}.html)
+└── ui_kits/                       # 4 page-level showcases
+    ├── dashboard/   (index.html + quality-report.json)
+    ├── dev-explorer/ (index.html + quality-report.json)
+    ├── mobile/      (index.html + quality-report.json)
+    └── marketing/   (index.html + quality-report.json)
 ```
 
-> `components.css` is **regenerated** by `.agents/skills/design-library-creator/scripts/extract-components-css.mjs`, which scans every `preview/component-*.html` for the CSS between `/* @component-css-start */` and `/* @component-css-end */` markers inside its `<style>` block and aggregates the result.
+> `components.css` is **regenerated** by `design-library-creator/scripts/extract-components-css.mjs`, scanning every `preview/component-*.html` for CSS between `/* @component-css-start */` and `/* @component-css-end */` markers. Edit component CSS in the preview HTML, then re-run the script — never edit `components.css` directly.
 
 ## Brand Essentials
 
-- **Surface**: dark canvas `--bodyColor rgb(16, 16, 20)`, layered with `--cardColor rgb(24, 24, 28)` / `--modalColor rgb(44, 44, 50)` and four `--bg-overlay-l1..l4` tints.
+- **Surface**: dark canvas `--bodyColor rgb(16, 16, 20)`, layered with `--cardColor rgb(24, 24, 28)` / `--modalColor rgb(44, 44, 50)` / `--popoverColor rgb(72, 72, 78)`.
 - **Primary text**: `--textColor1 rgba(255, 255, 255, 0.9)`; muted: `--textColor2` / `--textColor3`.
-- **Brand accent**: `--primaryColor #63e2b7` (green), with `--primaryColorHover` and `--primaryColorPressed` variants.
+- **Brand accent**: `--primaryColor #63e2b7` (green), with `--primaryColorHover` / `--primaryColorPressed`.
 - **Status palette**: primary / info / success / warning / error each provide `default | hover | pressed | suppl`. Note: success aliases primary (green) in naive-ui.
-- **Typography**: Inter body, JetBrains Mono for code; body scale `--fontSizeTiny..Huge` (12–16px) matching the **5-tier t-shirt sizing** for component heights (22 / 28 / 34 / 40 / 46 px).
-- **Radii**: `2 / 3 / 4 / 6 / 8` px (`--borderRadiusTiny..Huge`).
-- **Spacers**: `--spacer-0/4/8/12/16/24/32/40`.
+- **Typography**: Inter body, JetBrains Mono for code; `--fontSizeTiny..Huge` (12–16px) matching the 5-tier component heights (22 / 28 / 34 / 40 / 46 px).
+- **Radii**: `2 / 3 / 4 / 6 / 8` px. **Spacers**: `--spacer-0/4/8/12/16/24/32/40`.
 
 ## Token Naming Convention
 
-Tokens preserve their **naive-ui source naming verbatim**. There are no portable aliases — components consume the source variables directly:
+Tokens preserve their **naive-ui source naming verbatim** — no portable aliases:
 
-- `--primaryColor` / `--infoColor` / `--successColor` / `--warningColor` / `--errorColor` semantic brand keys (note: success ≡ primary)
-- `--text-1..3` / `--icon-*` content tokens (mirroring opacity states)
+- `--primaryColor` / `--infoColor` / `--successColor` / `--warningColor` / `--errorColor` (success ≡ primary)
+- `--textColor1..3` / `--iconColor*` content tokens
 - `--borderColor` / `--dividerColor` borders
-- `--bodyColor` / `--cardColor` / `--modalColor` / `--popoverColor` surface fills
+- `--bodyColor` / `--cardColor` / `--modalColor` / `--popoverColor` surfaces
 - `--tableHeaderColor` / `--tableColorHover` / `--tableColorStriped` table variants
-- `--hoverColor` / `--pressedColor` / `--buttonColor2` interaction states
-- `--inputColor` / `--inputColorDisabled` / `--actionColor` form & surface variants
-- Typography: `--body-{xs|sm|md|base}-{font-family|font-size|font-weight|line-height}` (+ `*-strong`)
-- Code: `--fontFamilyMono`, `--codeColor`
+- `--hoverColor` / `--pressedColor` / `--buttonColor2*` interaction states
+- `--inputColor` / `--inputColorDisabled` / `--actionColor` / `--tagColor` / `--avatarColor` / `--codeColor`
+- Typography: `--fontFamily` / `--fontFamilyMono` / `--fontSize*` / `--heading-*`
 
-> Components reference tokens directly via `var(--token-name)`. Do **not** rename tokens (e.g., do not invent `--bg-brand`); do **not** introduce new color scales.
+> Components reference tokens directly via `var(--token-name)`. Do **not** rename tokens; do **not** introduce new color scales.
 
-## Components (24)
+## Components (96)
 
-| Slug | Type | Notes |
-|------|------|-------|
-| alert | feedback | 4 tones × simple/complex layouts with optional icon + close |
-| atoms | layout | Shared atoms (.row, .col, .grid-*, .stack-*, .h1/.h2/.h3, .eyebrow, .ds-code, .mono) |
-| avatar | data | sm/md/lg × circle/square, primary tinted or default avatarColor |
-| badge | data | Numbered sup + dot indicator (error/primary/info/success/warning) |
-| breadcrumb | navigation | Path indicator with separator / > → |
-| button-group | general | Segmented control (shared borders, 1 active) |
-| buttons | general | 7 types × 4 sizes × 5 states; max 1 primary per page |
-| card | data | Bordered / embedded / hover surface container |
-| dialog | feedback | Centered overlay with header + body + footer structure |
-| dropdown | navigation | Popover menu (trigger + floating items + danger variants) |
-| empty | feedback | Centered placeholder (icon + title + description + optional action) |
-| form | form | Vertical form with required indicator + validation feedback |
-| forms | form | Input + Textarea + Checkbox + Radio + Switch |
-| input-number | form | Numeric input with +/− stepper (small/medium/large) |
-| menu | navigation | Horizontal + vertical menus with active indicator line |
-| notification | feedback | Floating toast card with status-colored left border |
-| pagination | navigation | Numeric pages with prev/next + optional page jumper |
-| popover | feedback | Floating panel with header + body slots + arrow |
-| progress | feedback | Linear bar (small/medium/large) + status colors + label |
-| select | form | Dropdown selection control with ✓ indicator |
-| table | data | Header + data rows with hover, stripe, bordered variants |
-| tabs | navigation | 3 styles — line / card / segment |
-| tag | data | Inline status pill — 6 types × 3 sizes, optional round |
-| tooltip | feedback | Hover-triggered hint bubble with arrow (CSS-only) |
+| Slug | Category | Render notes |
+|------|----------|--------------|
+| affix | navigation | horizontal + vertical, active indicator |
+| alert | feedback | 4 status variants |
+| anchor | navigation | horizontal + vertical, active indicator |
+| atoms | layout | grid / flex / stack helpers |
+| auto-complete | form | sizes + states + label/feedback |
+| avatar-group | data | 6 types × 3 sizes |
+| avatar | data | 6 types × 3 sizes |
+| back-top | navigation | horizontal + vertical, active indicator |
+| badge | general | 6 types × 3 sizes |
+| breadcrumb | navigation | horizontal + vertical, active indicator |
+| button-group | general | type × size × state matrix |
+| button | general | type × size × state matrix |
+| calendar | data | striped table / list rows |
+| card | data | striped table / list rows |
+| carousel | data | striped table / list rows |
+| cascader | form | sizes + states + label/feedback |
+| checkbox | form | domain-specific render |
+| code | data | domain-specific render |
+| collapse | feedback | 4 status variants |
+| color-picker | form | domain-specific render |
+| countdown | data | striped table / list rows |
+| data-table | data | striped table / list rows |
+| date-picker | form | sizes + states + label/feedback |
+| descriptions | data | striped table / list rows |
+| dialog | feedback | 4 status variants |
+| divider | general | 6 types × 3 sizes |
+| drawer | feedback | 4 status variants |
+| dropdown | navigation | horizontal + vertical, active indicator |
+| dynamic-input | form | sizes + states + label/feedback |
+| dynamic-tags | form | sizes + states + label/feedback |
+| ellipsis | data | striped table / list rows |
+| empty | feedback | 4 status variants |
+| equation | data | striped table / list rows |
+| flex | layout | grid / flex / stack helpers |
+| float-button-group | data | 6 types × 3 sizes |
+| float-button | data | 6 types × 3 sizes |
+| form | form | sizes + states + label/feedback |
+| gradient-text | general | 6 types × 3 sizes |
+| grid | layout | grid / flex / stack helpers |
+| heatmap | data | striped table / list rows |
+| highlight | data | domain-specific render |
+| icon-wrapper | general | 6 types × 3 sizes |
+| icon | general | 6 types × 3 sizes |
+| image | data | domain-specific render |
+| infinite-scroll | data | domain-specific render |
+| input-number | form | sizes + states + label/feedback |
+| input-otp | form | sizes + states + label/feedback |
+| input | form | sizes + states + label/feedback |
+| layout | layout | grid / flex / stack helpers |
+| legacy-grid | layout | grid / flex / stack helpers |
+| legacy-transfer | form | domain-specific render |
+| list | data | striped table / list rows |
+| loading-bar | feedback | 4 status variants |
+| log | data | domain-specific render |
+| marquee | data | domain-specific render |
+| mention | form | sizes + states + label/feedback |
+| menu | navigation | horizontal + vertical, active indicator |
+| message | feedback | 4 status variants |
+| modal | feedback | 4 status variants |
+| notification | feedback | 4 status variants |
+| number-animation | data | striped table / list rows |
+| page-header | navigation | horizontal + vertical, active indicator |
+| pagination | navigation | type × size × state matrix |
+| popconfirm | feedback | 4 status variants |
+| popover | feedback | 4 status variants |
+| popselect | feedback | 4 status variants |
+| progress | feedback | 4 status variants |
+| qr-code | data | domain-specific render |
+| radio | form | domain-specific render |
+| rate | form | domain-specific render |
+| result | feedback | 4 status variants |
+| scrollbar | data | domain-specific render |
+| select | form | sizes + states + label/feedback |
+| skeleton | feedback | 4 status variants |
+| slider | form | domain-specific render |
+| space | layout | grid / flex / stack helpers |
+| spin | feedback | 4 status variants |
+| split | layout | grid / flex / stack helpers |
+| statistic | data | striped table / list rows |
+| steps | navigation | horizontal + vertical, active indicator |
+| switch | form | domain-specific render |
+| table | data | striped table / list rows |
+| tabs | navigation | horizontal + vertical, active indicator |
+| tag | general | 6 types × 3 sizes |
+| thing | data | striped table / list rows |
+| time-picker | form | sizes + states + label/feedback |
+| time | data | striped table / list rows |
+| timeline | data | striped table / list rows |
+| tooltip | feedback | 4 status variants |
+| transfer | form | domain-specific render |
+| tree-select | form | sizes + states + label/feedback |
+| tree | data | striped table / list rows |
+| typography | data | domain-specific render |
+| upload | form | domain-specific render |
+| virtual-list | data | domain-specific render |
+| watermark | feedback | domain-specific render |
 
-## UI Kits (1)
+## UI Kits (4)
 
 | Type | Composition |
 |------|-------------|
-| dashboard | KPI stats (4 cards w/ badge + delta) + recent-activity table (w/ progress bars + pagination) + 3 quick-action cards (Storage / API / Support) |
+| dashboard | KPI stats + recent-activity table + quick-action cards |
+| dev-explorer | IDE shell — titlebar / activity-bar / file tree / editor tabs / AI chat |
+| mobile | 3 phone screens — home / project list / settings |
+| marketing | landing hero + feature grid + pricing table |
 
-Each UI Kit is a single self-contained interactive React 18 `index.html` that links `../../colors_and_type.css` and `../../components.css`. The shell is capped at `max-width: 1184px` per design-library-creator skill spec — UI Kits are showcases, not real-canvas page templates (see README → "Downstream Consumption Guide").
-
-## Icons
-
-Bundled SVG icons live at `assets/icons/`. Optional runtime sprite renderer at `icons.js` (when present).
+Each UI Kit is a single self-contained interactive React 18 `index.html` linking `../../colors_and_type.css` and `../../components.css`, capped at `max-width: 1184px` — showcases, not page templates (see README → Downstream Consumption Guide).
 
 ## Authoring Rules
 
-1. **Never hardcode hex / rem / px.** Always reference `var(--token)`.
-2. **Status color is local.** Tag/cell-level colorization only — never tint full table rows.
-3. **Surface lifts.** Use `--bodyColor` (base) and `--cardColor` (raised) for layered surfaces.
-4. **Borders stay neutral.** `--borderColor` for default chrome; only state-specific borders use status/brand.
-5. **Dark-only** by default. Remove `/* @dark-only */` from `colors_and_type.css` only when explicitly producing a light theme.
-6. **No `transform: scale`** in UIKit — the `max-width: 1184px` cap is a hard constraint.
-7. **Brand button cap.** At most **one** `.ds-btn--primary` per screen; use `.ds-btn--default` for the rest.
-8. **Status aliases primary.** Both `--primaryColor` and `--successColor` map to `#63e2b7`; the dashboard uses both keys to keep naive-ui semantics.
+1. **Never hardcode hex / rem / px** in component CSS — always `var(--token)`.
+2. **Status color is local** — tag/cell-level only, never full-row tints.
+3. **Surface lifts** — `--bodyColor` base, `--cardColor` raised.
+4. **Dark-only** by default (`/* @dark-only */` in `colors_and_type.css`).
+5. **No `transform: scale`** in UIKit — `max-width: 1184px` is a hard constraint.
+6. **Brand button cap** — at most one `.ds-btn--primary` per screen.
+7. **Preview chrome stays out of markers** — `.pv-*` above `@component-css-start`, `.ds-*` inside.
 
 ## Out of Scope (Not Generated)
 
-- **Token-only previews** (`colors`, `typography`, `spacing`, `radius`): foundational previews are NOT included; tokens are represented purely by `colors_and_type.css` + `css.json`.
-- **Light theme**: source tokens are dark-only (`/* @dark-only */`).
-- **Interactive library landing page**: this is a static design library, not a VitePress site.
-- **Changelog / version tracking**: handled via downstream consumers.
-- **Less common naïve-ui components** (e.g., highlight, equation, marquee, mention, qr-code, watermark, dynamic-input, transfer, tree-select): the 24 covered here handle the dashboard scenario; expand via `expand-components` if needed.
+- Token-only previews (`colors`, `typography`, `spacing`, `radius`) — represented purely by `colors_and_type.css` + `css.json`.
+- Light theme (dark-only source tokens).
+- Interactive library landing page (static design library, not a VitePress site).
+- Bundled SVG icon set (`assets/icons/` + `icons.js` are optional add-ons).
 
 ## Conversation Continuity
 
 - Add components: `expand-components`
-- Refine tokens or rename groups: `refine-library`
-- Generate an additional kit (mobile, dev-explorer, marketing): `generate-additional-kit`
+- Refine tokens: `refine-library`
+- Generate an additional kit: `generate-additional-kit`

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mobile — Naive Core</title>
+  <link rel="stylesheet" href="../../colors_and_type.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" />
+  <link rel="stylesheet" href="../../components.css" />
+  <style>
+    .uikit-shell { max-width: 1184px; margin: 0 auto; padding: var(--spacer-32); background: var(--bodyColor); color: var(--textColor1); font-family: var(--fontFamily); font-size: var(--fontSizeMedium); line-height: var(--lineHeightMedium); min-height: 100vh; box-sizing: border-box; }
+    * { box-sizing: border-box; }
+    .phones { display: grid; grid-template-columns: repeat(3, 320px); gap: var(--spacer-24); justify-content: center; }
+    .phone { background: var(--cardColor); border: 1px solid var(--borderColor); border-radius: 28px; overflow: hidden; height: 620px; display: flex; flex-direction: column; }
+    .phone__status { display: flex; justify-content: space-between; padding: var(--spacer-8) var(--spacer-16); font-size: var(--fontSizeTiny); color: var(--textColor2); }
+    .phone__body { flex: 1; padding: var(--spacer-16); overflow-y: auto; }
+    .tabbar { display: flex; border-top: 1px solid var(--dividerColor); }
+    .tabbar__item { flex: 1; padding: var(--spacer-12); text-align: center; font-size: var(--fontSizeTiny); color: var(--textColor3); cursor: pointer; }
+    .tabbar__item--active { color: var(--primaryColor); font-weight: var(--fontWeightStrong); }
+    .m-card { background: var(--actionColor); border-radius: var(--borderRadiusLarge); padding: var(--spacer-16); margin-bottom: var(--spacer-12); }
+    .m-list-row { display: flex; align-items: center; gap: var(--spacer-12); padding: var(--spacer-12) 0; border-bottom: 1px solid var(--dividerColor); }
+    .m-list-row:last-child { border-bottom: none; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel" data-presets="env,react">
+    function StatusBar() {
+      return <div className="phone__status"><span>9:41</span><span>●●●●○ 5G 100%</span></div>;
+    }
+    function TabBar({ active }) {
+      const items = ['Home', 'Explore', 'Messages', 'Profile'];
+      return <div className="tabbar">{items.map((t, i) => <div key={i} className={'tabbar__item ' + (t === active ? 'tabbar__item--active' : '')}>{t}</div>)}</div>;
+    }
+
+    function HomeScreen() {
+      return (
+        <div className="phone">
+          <StatusBar />
+          <div className="phone__body">
+            <h2 style={{ fontSize: 'var(--heading-xl-font-size)', fontWeight: 600, marginBottom: 'var(--spacer-4)' }}>Good morning</h2>
+            <p style={{ color: 'var(--textColor2)', fontSize: 'var(--fontSizeSmall)', marginBottom: 'var(--spacer-16)' }}>Here's your day at a glance</p>
+            <div className="m-card">
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--spacer-8)' }}>
+                <span style={{ fontSize: 'var(--fontSizeTiny)', color: 'var(--textColor3)' }}>TASKS TODAY</span>
+                <span className="ds-tag ds-tag--primary ds-tag--small">6</span>
+              </div>
+              <div className="ds-progress"><div className="ds-progress__rail"><div className="ds-progress__indicator" style={{ width: '66%' }}></div></div></div>
+              <div style={{ fontSize: 'var(--fontSizeSmall)', color: 'var(--textColor2)', marginTop: 'var(--spacer-8)' }}>4 of 6 completed</div>
+            </div>
+            <div className="m-card">
+              <div style={{ fontSize: 'var(--fontSizeTiny)', color: 'var(--textColor3)', marginBottom: 'var(--spacer-8)' }}>UP NEXT</div>
+              <div style={{ fontWeight: 600 }}>Design review</div>
+              <div style={{ fontSize: 'var(--fontSizeSmall)', color: 'var(--textColor2)' }}>10:30 · with Alice, Bob</div>
+            </div>
+            <button className="ds-btn ds-btn--primary ds-btn--medium" style={{ width: '100%' }}>View schedule</button>
+          </div>
+          <TabBar active="Home" />
+        </div>
+      );
+    }
+
+    function ListScreen() {
+      const rows = [
+        { t: 'Marketing site', m: 'Alice · 2h ago', tag: 'success' },
+        { t: 'API gateway', m: 'Bob · 5h ago', tag: 'warning' },
+        { t: 'Dashboard', m: 'Carol · 1d ago', tag: 'error' },
+        { t: 'Docs refresh', m: 'Dave · 2d ago', tag: 'info' },
+        { t: 'Mobile app', m: 'Eve · 3d ago', tag: 'success' }
+      ];
+      return (
+        <div className="phone">
+          <StatusBar />
+          <div className="phone__body">
+            <h2 style={{ fontSize: 'var(--heading-xl-font-size)', fontWeight: 600, marginBottom: 'var(--spacer-16)' }}>Projects</h2>
+            <input className="ds-input ds-input--medium" placeholder="Search…" style={{ width: '100%', marginBottom: 'var(--spacer-12)' }} />
+            {rows.map((r, i) => (
+              <div key={i} className="m-list-row">
+                <span className="ds-avatar ds-avatar--small ds-avatar--primary">{r.t[0]}</span>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontWeight: 600, fontSize: 'var(--fontSizeSmall)' }}>{r.t}</div>
+                  <div style={{ fontSize: 'var(--fontSizeTiny)', color: 'var(--textColor3)' }}>{r.m}</div>
+                </div>
+                <span className={'ds-tag ds-tag--' + r.tag + ' ds-tag--small'}>{r.tag}</span>
+              </div>
+            ))}
+          </div>
+          <TabBar active="Explore" />
+        </div>
+      );
+    }
+
+    function SettingsScreen() {
+      const rows = [
+        { t: 'Notifications', on: true },
+        { t: 'Dark mode', on: true },
+        { t: 'Auto-sync', on: false },
+        { t: 'Beta features', on: false }
+      ];
+      return (
+        <div className="phone">
+          <StatusBar />
+          <div className="phone__body">
+            <h2 style={{ fontSize: 'var(--heading-xl-font-size)', fontWeight: 600, marginBottom: 'var(--spacer-16)' }}>Settings</h2>
+            {rows.map((r, i) => (
+              <div key={i} className="m-list-row" style={{ justifyContent: 'space-between' }}>
+                <span style={{ fontSize: 'var(--fontSizeSmall)' }}>{r.t}</span>
+                <span className={'ds-switch ' + (r.on ? 'ds-switch--on' : '')}><span className="ds-switch__track"><span className="ds-switch__thumb"></span></span></span>
+              </div>
+            ))}
+            <div style={{ marginTop: 'var(--spacer-24)' }}>
+              <button className="ds-btn ds-btn--error ds-btn--medium" style={{ width: '100%' }}>Sign out</button>
+            </div>
+          </div>
+          <TabBar active="Profile" />
+        </div>
+      );
+    }
+
+    function App() {
+      return (
+        <div className="uikit-shell">
+          <div style={{ textAlign: 'center', marginBottom: 'var(--spacer-24)' }}>
+            <h1 style={{ fontSize: 'var(--heading-2xl-font-size)', fontWeight: 600 }}>Mobile Showcase</h1>
+            <p style={{ color: 'var(--textColor2)', fontSize: 'var(--fontSizeSmall)' }}>3 screens: home / list / settings</p>
+          </div>
+          <div className="phones">
+            <HomeScreen />
+            <ListScreen />
+            <SettingsScreen />
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>

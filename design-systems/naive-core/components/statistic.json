@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 2,
+  "slug": "statistic",
+  "name": "Statistic",
+  "category": "data",
+  "sourceKind": "structured-spec",
+  "confidence": "high",
+  "semanticTypeCandidates": [
+    "statistic"
+  ],
+  "variantDimensions": {
+    "renderCategory": [
+      "data"
+    ]
+  },
+  "representativeVariants": [
+    {
+      "type": "default"
+    }
+  ],
+  "anatomy": [
+    "root"
+  ],
+  "structurePatterns": [
+    "data template"
+  ],
+  "usageHints": [
+    "Rendered with the data template — see preview/component-statistic.html"
+  ],
+  "doNotInvent": [],
+  "unknowns": [],
+  "tokensConsumed": [
+    "--borderColor",
+    "--borderRadiusLarge",
+    "--borderRadiusMedium",
+    "--borderRadiusSmall",
+    "--cardColor",
+    "--dividerColor",
+    "--errorColor",
+    "--fontFamily",
+    "--fontSizeLarge",
+    "--fontSizeMedium",
+    "--fontSizeSmall",
+    "--fontSizeTiny",
+    "--fontWeightStrong",
+    "--infoColor",
+    "--primaryColor",
+    "--primaryColorHover",
+    "--spacer-12",
+    "--spacer-16",
+    "--spacer-24",
+    "--spacer-8",
+    "--successColor",
+    "--tableColorHover",
+    "--tableColorStriped",
+    "--tableHeaderColor",
+    "--textColor1",
+    "--textColor2",
+    "--textColor3",
+    "--warningColor"
+  ],
+  "domAnatomy": {
+    "root": {
+      "tag": "div",
+      "class": "ds-statistic",
+      "children": [
+        {
+          "tag": "div",
+          "class": "ds-statistic__content"
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "preview": "preview/component-statistic.html",
+    "source": "naive-ui statistic",
+    "css": {
+      "file": "components.css",
+      "marker": "── Statistic ──"
+    }
+  }
+}

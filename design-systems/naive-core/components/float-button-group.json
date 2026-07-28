@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 2,
+  "slug": "float-button-group",
+  "name": "Float Button Group",
+  "category": "data",
+  "sourceKind": "structured-spec",
+  "confidence": "high",
+  "semanticTypeCandidates": [
+    "float-button-group"
+  ],
+  "variantDimensions": {
+    "renderCategory": [
+      "general"
+    ]
+  },
+  "representativeVariants": [
+    {
+      "type": "default"
+    }
+  ],
+  "anatomy": [
+    "root"
+  ],
+  "structurePatterns": [
+    "general template"
+  ],
+  "usageHints": [
+    "Rendered with the general template — see preview/component-float-button-group.html"
+  ],
+  "doNotInvent": [],
+  "unknowns": [],
+  "tokensConsumed": [
+    "--avatarColor",
+    "--borderColor",
+    "--borderRadiusHuge",
+    "--borderRadiusLarge",
+    "--borderRadiusMedium",
+    "--borderRadiusSmall",
+    "--buttonColor2",
+    "--dividerColor",
+    "--errorColor",
+    "--fontFamily",
+    "--fontSizeMedium",
+    "--fontSizeSmall",
+    "--fontSizeTiny",
+    "--fontWeightStrong",
+    "--iconColor",
+    "--infoColor",
+    "--invertedColor",
+    "--primaryColor",
+    "--primaryColorHover",
+    "--spacer-12",
+    "--spacer-4",
+    "--spacer-8",
+    "--successColor",
+    "--tagColor",
+    "--textColor1",
+    "--textColor2",
+    "--textColor3",
+    "--warningColor"
+  ],
+  "domAnatomy": {
+    "root": {
+      "tag": "div",
+      "class": "ds-float-button-group",
+      "children": [
+        {
+          "tag": "div",
+          "class": "ds-float-button-group__content"
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "preview": "preview/component-float-button-group.html",
+    "source": "naive-ui float-button-group",
+    "css": {
+      "file": "components.css",
+      "marker": "── Float Button Group ──"
+    }
+  }
+}

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pagination</title>
+  <link rel="stylesheet" href="../colors_and_type.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" />
+  <link rel="stylesheet" href="../components.css" />
+  <style>
+    /* ── preview-page chrome (preview-only) ─────────────────── */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--bodyColor); color: var(--textColor1); font-family: var(--fontFamily); font-size: var(--fontSizeMedium); line-height: var(--lineHeightMedium); min-height: 100%; }
+    body { padding: var(--spacer-32); }
+    .pv-header { margin-bottom: var(--spacer-32); padding-bottom: var(--spacer-16); border-bottom: 1px solid var(--dividerColor); }
+    .pv-header h1 { font-size: var(--heading-lg-font-size); font-weight: var(--heading-base-font-weight); margin-bottom: var(--spacer-4); }
+    .pv-header p { color: var(--textColor2); font-size: var(--fontSizeSmall); }
+    .pv-section { margin-bottom: var(--spacer-32); }
+    .pv-section__title { font-size: var(--heading-sm-font-size); font-weight: var(--heading-base-font-weight); margin-bottom: var(--spacer-12); color: var(--textColor1); }
+    .row { display: flex; gap: var(--spacer-12); align-items: center; flex-wrap: wrap; }
+    .stack-12 { display: flex; flex-direction: column; gap: var(--spacer-12); }
+
+    /* @component-css-start */
+    /* ===== Pagination ===== */
+.ds-pagination { display: inline-flex; align-items: center; justify-content: center; gap: var(--spacer-4); padding: 0 var(--spacer-12); height: var(--heightMedium); border-radius: var(--borderRadiusMedium); border: 1px solid transparent; cursor: pointer; font-family: var(--fontFamily); font-size: var(--fontSizeMedium); font-weight: var(--fontWeightStrong); transition: background 0.12s, color 0.12s, border-color 0.12s; user-select: none; }
+.ds-pagination--tiny { height: var(--heightTiny); padding: 0 var(--spacer-8); font-size: var(--fontSizeTiny); border-radius: var(--borderRadiusSmall); }
+.ds-pagination--small { height: var(--heightSmall); font-size: var(--fontSizeSmall); border-radius: var(--borderRadiusSmall); }
+.ds-pagination--medium { height: var(--heightMedium); font-size: var(--fontSizeMedium); }
+.ds-pagination--large { height: var(--heightLarge); font-size: var(--fontSizeLarge); padding: 0 var(--spacer-16); }
+.ds-pagination--primary { background: var(--primaryColor); color: var(--invertedColor); }
+.ds-pagination--primary:hover { background: var(--primaryColorHover); }
+.ds-pagination--default { background: var(--buttonColor2); color: var(--textColor1); border-color: var(--borderColor); }
+.ds-pagination--tertiary { background: transparent; color: var(--textColor1); }
+.ds-pagination--tertiary:hover { background: var(--hoverColor); }
+.ds-pagination--info { background: var(--infoColor); color: var(--invertedColor); }
+.ds-pagination--success { background: var(--successColor); color: var(--invertedColor); }
+.ds-pagination--warning { background: var(--warningColor); color: var(--invertedColor); }
+.ds-pagination--error { background: var(--errorColor); color: var(--invertedColor); }
+.ds-pagination[disabled] { opacity: 0.5; cursor: not-allowed; }
+    /* @component-css-end */
+  </style>
+</head>
+<body>
+  <header class="pv-header">
+    <h1>Pagination</h1>
+    <p>naive-ui pagination — renderCategory: button.</p>
+  </header>
+  <section class="pv-section">
+    <div class="pv-section__title">Types</div>
+    <div class="row">
+      <button class="ds-pagination ds-pagination--primary ds-pagination--medium">Primary</button>
+      <button class="ds-pagination ds-pagination--default ds-pagination--medium">Default</button>
+      <button class="ds-pagination ds-pagination--tertiary ds-pagination--medium">Tertiary</button>
+      <button class="ds-pagination ds-pagination--info ds-pagination--medium">Info</button>
+      <button class="ds-pagination ds-pagination--success ds-pagination--medium">Success</button>
+      <button class="ds-pagination ds-pagination--warning ds-pagination--medium">Warning</button>
+      <button class="ds-pagination ds-pagination--error ds-pagination--medium">Error</button>
+    </div>
+  </section>
+  <section class="pv-section">
+    <div class="pv-section__title">Sizes</div>
+    <div class="row">
+      <button class="ds-pagination ds-pagination--primary ds-pagination--tiny">Tiny</button>
+      <button class="ds-pagination ds-pagination--primary ds-pagination--small">Small</button>
+      <button class="ds-pagination ds-pagination--primary ds-pagination--medium">Medium</button>
+      <button class="ds-pagination ds-pagination--primary ds-pagination--large">Large</button>
+    </div>
+  </section>
+  <section class="pv-section">
+    <div class="pv-section__title">States</div>
+    <div class="row">
+      <button class="ds-pagination ds-pagination--primary ds-pagination--medium">Default</button>
+      <button class="ds-pagination ds-pagination--primary ds-pagination--medium" disabled>Disabled</button>
+    </div>
+  </section>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "kitType": "marketing",
+  "screensGenerated": 1,
+  "coreComponentsUsed": ["button", "menu", "tag", "avatar", "card"],
+  "supportComponentsUsed": ["badge", "atoms"],
+  "previewClassReuseRate": 0.82,
+  "inventedComponents": [],
+  "interactiveStatesRendered": ["default", "hover", "active"],
+  "primaryActionPerScreen": true,
+  "mockDataDensity": { "features": 3, "pricingPlans": 3 },
+  "warnings": []
+}

@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "slug": "input",
+  "name": "Input",
+  "category": "form",
+  "sourceKind": "structured-spec",
+  "confidence": "high",
+  "semanticTypeCandidates": [
+    "input"
+  ],
+  "variantDimensions": {
+    "renderCategory": [
+      "form"
+    ]
+  },
+  "representativeVariants": [
+    {
+      "type": "default"
+    }
+  ],
+  "anatomy": [
+    "root"
+  ],
+  "structurePatterns": [
+    "form template"
+  ],
+  "usageHints": [
+    "Rendered with the form template — see preview/component-input.html"
+  ],
+  "doNotInvent": [],
+  "unknowns": [],
+  "tokensConsumed": [
+    "--borderColor",
+    "--borderRadiusLarge",
+    "--borderRadiusMedium",
+    "--borderRadiusSmall",
+    "--buttonColor2",
+    "--buttonColor2Hover",
+    "--dividerColor",
+    "--errorColor",
+    "--fontFamily",
+    "--fontSizeLarge",
+    "--fontSizeMedium",
+    "--fontSizeSmall",
+    "--fontSizeTiny",
+    "--fontWeightStrong",
+    "--heightLarge",
+    "--heightMedium",
+    "--heightSmall",
+    "--hoverColor",
+    "--inputColor",
+    "--inputColorDisabled",
+    "--placeholderColor",
+    "--popoverColor",
+    "--primaryColor",
+    "--primaryColorHover",
+    "--spacer-12",
+    "--spacer-8",
+    "--textColor1",
+    "--textColor2",
+    "--textColor3"
+  ],
+  "domAnatomy": {
+    "root": {
+      "tag": "div",
+      "class": "ds-input",
+      "children": [
+        {
+          "tag": "div",
+          "class": "ds-input__content"
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "preview": "preview/component-input.html",
+    "source": "naive-ui input",
+    "css": {
+      "file": "components.css",
+      "marker": "── Input ──"
+    }
+  }
+}

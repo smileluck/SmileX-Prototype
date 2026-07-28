@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Anchor</title>
+  <link rel="stylesheet" href="../colors_and_type.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" />
+  <link rel="stylesheet" href="../components.css" />
+  <style>
+    /* ── preview-page chrome (preview-only) ─────────────────── */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--bodyColor); color: var(--textColor1); font-family: var(--fontFamily); font-size: var(--fontSizeMedium); line-height: var(--lineHeightMedium); min-height: 100%; }
+    body { padding: var(--spacer-32); }
+    .pv-header { margin-bottom: var(--spacer-32); padding-bottom: var(--spacer-16); border-bottom: 1px solid var(--dividerColor); }
+    .pv-header h1 { font-size: var(--heading-lg-font-size); font-weight: var(--heading-base-font-weight); margin-bottom: var(--spacer-4); }
+    .pv-header p { color: var(--textColor2); font-size: var(--fontSizeSmall); }
+    .pv-section { margin-bottom: var(--spacer-32); }
+    .pv-section__title { font-size: var(--heading-sm-font-size); font-weight: var(--heading-base-font-weight); margin-bottom: var(--spacer-12); color: var(--textColor1); }
+    .row { display: flex; gap: var(--spacer-12); align-items: center; flex-wrap: wrap; }
+    .stack-12 { display: flex; flex-direction: column; gap: var(--spacer-12); }
+
+    /* @component-css-start */
+    /* ===== Anchor ===== */
+.ds-anchor { display: flex; gap: var(--spacer-4); font-size: var(--fontSizeSmall); }
+.ds-anchor--horizontal { flex-direction: row; border-bottom: 1px solid var(--dividerColor); }
+.ds-anchor--vertical { flex-direction: column; width: 200px; background: var(--cardColor); border: 1px solid var(--borderColor); border-radius: var(--borderRadiusMedium); padding: var(--spacer-4); }
+.ds-anchor__item { padding: var(--spacer-8) var(--spacer-12); cursor: pointer; color: var(--textColor2); border-radius: var(--borderRadiusSmall); transition: background 0.12s, color 0.12s; user-select: none; position: relative; }
+.ds-anchor__item:hover { background: var(--hoverColor); color: var(--textColor1); }
+.ds-anchor__item--active { color: var(--primaryColor); font-weight: var(--fontWeightStrong); }
+.ds-anchor--horizontal .ds-anchor__item--active::after { content: ""; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; background: var(--primaryColor); }
+.ds-anchor--vertical .ds-anchor__item--active { background: var(--actionColor); }
+    /* @component-css-end */
+  </style>
+</head>
+<body>
+  <header class="pv-header">
+    <h1>Anchor</h1>
+    <p>naive-ui anchor — renderCategory: navigation.</p>
+  </header>
+  <section class="pv-section">
+    <div class="pv-section__title">Horizontal</div>
+    <nav class="ds-anchor ds-anchor--horizontal">
+      <div class="ds-anchor__item ds-anchor__item--active">Home</div>
+      <div class="ds-anchor__item">Products</div>
+      <div class="ds-anchor__item">Pricing</div>
+      <div class="ds-anchor__item">Docs</div>
+    </nav>
+  </section>
+  <section class="pv-section">
+    <div class="pv-section__title">Vertical</div>
+    <nav class="ds-anchor ds-anchor--vertical">
+      <div class="ds-anchor__item ds-anchor__item--active">Dashboard</div>
+      <div class="ds-anchor__item">Projects</div>
+      <div class="ds-anchor__item">Tasks</div>
+      <div class="ds-anchor__item">Settings</div>
+    </nav>
+  </section>
+</body>
+</html>

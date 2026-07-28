@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Upload</title>
+  <link rel="stylesheet" href="../colors_and_type.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" />
+  <link rel="stylesheet" href="../components.css" />
+  <style>
+    /* ── preview-page chrome (preview-only) ─────────────────── */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--bodyColor); color: var(--textColor1); font-family: var(--fontFamily); font-size: var(--fontSizeMedium); line-height: var(--lineHeightMedium); min-height: 100%; }
+    body { padding: var(--spacer-32); }
+    .pv-header { margin-bottom: var(--spacer-32); padding-bottom: var(--spacer-16); border-bottom: 1px solid var(--dividerColor); }
+    .pv-header h1 { font-size: var(--heading-lg-font-size); font-weight: var(--heading-base-font-weight); margin-bottom: var(--spacer-4); }
+    .pv-header p { color: var(--textColor2); font-size: var(--fontSizeSmall); }
+    .pv-section { margin-bottom: var(--spacer-32); }
+    .pv-section__title { font-size: var(--heading-sm-font-size); font-weight: var(--heading-base-font-weight); margin-bottom: var(--spacer-12); color: var(--textColor1); }
+    .row { display: flex; gap: var(--spacer-12); align-items: center; flex-wrap: wrap; }
+    .stack-12 { display: flex; flex-direction: column; gap: var(--spacer-12); }
+
+    /* @component-css-start */
+    /* ===== Upload ===== */
+.ds-upload__trigger { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--spacer-8); padding: var(--spacer-24); border: 1px dashed var(--borderColor); border-radius: var(--borderRadiusLarge); background: var(--inputColor); color: var(--textColor2); cursor: pointer; transition: border-color 0.12s; }
+.ds-upload__trigger:hover { border-color: var(--primaryColor); color: var(--primaryColor); }
+.ds-upload__icon { font-size: 28px; color: var(--textColor3); }
+.ds-upload__list { margin-top: var(--spacer-12); display: flex; flex-direction: column; gap: var(--spacer-8); }
+.ds-upload__file { display: flex; align-items: center; gap: var(--spacer-8); padding: var(--spacer-8) var(--spacer-12); background: var(--cardColor); border: 1px solid var(--borderColor); border-radius: var(--borderRadiusMedium); font-size: var(--fontSizeSmall); }
+    /* @component-css-end */
+  </style>
+</head>
+<body>
+  <header class="pv-header">
+    <h1>Upload</h1>
+    <p>naive-ui upload — renderCategory: special.</p>
+  </header>
+  <section class="pv-section">
+    <div class="pv-section__title">Drag & drop</div>
+    <div class="ds-upload__trigger">
+      <div class="ds-upload__icon">⇪</div>
+      <div>Drag files here or click to upload</div>
+    </div>
+    <div class="ds-upload__list">
+      <div class="ds-upload__file">📄 report-q3.pdf · 2.4 MB</div>
+      <div class="ds-upload__file">🖼 banner.png · 820 KB</div>
+    </div>
+  </section>
+</body>
+</html>

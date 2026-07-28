@@ -1,0 +1,20 @@
+{
+  "library": "element-plus",
+  "github": {
+    "owner": "element-plus",
+    "repo": "element-plus",
+    "srcDir": "packages/components"
+  },
+  "totalCount": null,
+  "components": [],
+  "status": "stub — populate via GitHub Contents API on first use",
+  "expectedCount": "80+",
+  "excludedDirs": [
+    "_internal",
+    "_utils",
+    "composables",
+    "config-provider",
+    "theme",
+    "styles"
+  ]
+}

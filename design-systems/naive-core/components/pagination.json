@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 2,
+  "slug": "pagination",
+  "name": "Pagination",
+  "category": "navigation",
+  "sourceKind": "structured-spec",
+  "confidence": "high",
+  "semanticTypeCandidates": [
+    "pagination"
+  ],
+  "variantDimensions": {
+    "renderCategory": [
+      "button"
+    ]
+  },
+  "representativeVariants": [
+    {
+      "type": "default"
+    }
+  ],
+  "anatomy": [
+    "root"
+  ],
+  "structurePatterns": [
+    "button template"
+  ],
+  "usageHints": [
+    "Rendered with the button template — see preview/component-pagination.html"
+  ],
+  "doNotInvent": [],
+  "unknowns": [],
+  "tokensConsumed": [
+    "--borderColor",
+    "--borderRadiusMedium",
+    "--borderRadiusSmall",
+    "--buttonColor2",
+    "--buttonColor2Hover",
+    "--buttonColor2Pressed",
+    "--dividerColor",
+    "--errorColor",
+    "--fontFamily",
+    "--fontSizeMedium",
+    "--fontSizeSmall",
+    "--fontSizeTiny",
+    "--fontWeightStrong",
+    "--heightLarge",
+    "--heightMedium",
+    "--heightSmall",
+    "--heightTiny",
+    "--hoverColor",
+    "--infoColor",
+    "--invertedColor",
+    "--pressedColor",
+    "--primaryColor",
+    "--primaryColorHover",
+    "--primaryColorPressed",
+    "--spacer-12",
+    "--spacer-16",
+    "--spacer-4",
+    "--spacer-8",
+    "--successColor",
+    "--textColor1",
+    "--textColor2",
+    "--textColor3",
+    "--textColorDisabled",
+    "--warningColor"
+  ],
+  "domAnatomy": {
+    "root": {
+      "tag": "div",
+      "class": "ds-pagination",
+      "children": [
+        {
+          "tag": "div",
+          "class": "ds-pagination__content"
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "preview": "preview/component-pagination.html",
+    "source": "naive-ui pagination",
+    "css": {
+      "file": "components.css",
+      "marker": "── Pagination ──"
+    }
+  }
+}

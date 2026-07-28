@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Rate</title>
+  <link rel="stylesheet" href="../colors_and_type.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" />
+  <link rel="stylesheet" href="../components.css" />
+  <style>
+    /* ── preview-page chrome (preview-only) ─────────────────── */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--bodyColor); color: var(--textColor1); font-family: var(--fontFamily); font-size: var(--fontSizeMedium); line-height: var(--lineHeightMedium); min-height: 100%; }
+    body { padding: var(--spacer-32); }
+    .pv-header { margin-bottom: var(--spacer-32); padding-bottom: var(--spacer-16); border-bottom: 1px solid var(--dividerColor); }
+    .pv-header h1 { font-size: var(--heading-lg-font-size); font-weight: var(--heading-base-font-weight); margin-bottom: var(--spacer-4); }
+    .pv-header p { color: var(--textColor2); font-size: var(--fontSizeSmall); }
+    .pv-section { margin-bottom: var(--spacer-32); }
+    .pv-section__title { font-size: var(--heading-sm-font-size); font-weight: var(--heading-base-font-weight); margin-bottom: var(--spacer-12); color: var(--textColor1); }
+    .row { display: flex; gap: var(--spacer-12); align-items: center; flex-wrap: wrap; }
+    .stack-12 { display: flex; flex-direction: column; gap: var(--spacer-12); }
+
+    /* @component-css-start */
+    /* ===== Rate ===== */
+.ds-rate { display: inline-flex; gap: var(--spacer-4); font-size: 22px; }
+.ds-rate__star { color: var(--textColor3); cursor: pointer; transition: color 0.1s; }
+.ds-rate__star--filled { color: var(--warningColor); }
+.ds-rate__star--half { position: relative; color: var(--textColor3); }
+.ds-rate__star--half::before { content: "★"; position: absolute; left: 0; width: 50%; overflow: hidden; color: var(--warningColor); }
+    /* @component-css-end */
+  </style>
+</head>
+<body>
+  <header class="pv-header">
+    <h1>Rate</h1>
+    <p>naive-ui rate — renderCategory: special.</p>
+  </header>
+  <section class="pv-section">
+    <div class="pv-section__title">Rate</div>
+    <div class="ds-rate">
+      <span class="ds-rate__star ds-rate__star--filled">★</span>
+      <span class="ds-rate__star ds-rate__star--filled">★</span>
+      <span class="ds-rate__star ds-rate__star--filled">★</span>
+      <span class="ds-rate__star">★</span>
+      <span class="ds-rate__star">★</span>
+    </div>
+    <div style="margin-top: var(--spacer-12);" class="ds-rate">
+      <span class="ds-rate__star ds-rate__star--filled">★</span>
+      <span class="ds-rate__star ds-rate__star--filled">★</span>
+      <span class="ds-rate__star ds-rate__star--half">★</span>
+      <span class="ds-rate__star">★</span>
+      <span class="ds-rate__star">★</span>
+    </div>
+  </section>
+</body>
+</html>

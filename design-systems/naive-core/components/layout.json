@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 2,
+  "slug": "layout",
+  "name": "Layout",
+  "category": "layout",
+  "sourceKind": "structured-spec",
+  "confidence": "high",
+  "semanticTypeCandidates": [
+    "layout"
+  ],
+  "variantDimensions": {
+    "renderCategory": [
+      "layout"
+    ]
+  },
+  "representativeVariants": [
+    {
+      "type": "default"
+    }
+  ],
+  "anatomy": [
+    "root"
+  ],
+  "structurePatterns": [
+    "layout template"
+  ],
+  "usageHints": [
+    "Rendered with the layout template — see preview/component-layout.html"
+  ],
+  "doNotInvent": [],
+  "unknowns": [],
+  "tokensConsumed": [
+    "--actionColor",
+    "--borderColor",
+    "--borderRadiusLarge",
+    "--borderRadiusMedium",
+    "--borderRadiusSmall",
+    "--cardColor",
+    "--dividerColor",
+    "--fontFamily",
+    "--fontSizeMedium",
+    "--fontSizeSmall",
+    "--fontSizeTiny",
+    "--fontWeightStrong",
+    "--primaryColor",
+    "--primaryColorHover",
+    "--spacer-12",
+    "--spacer-16",
+    "--spacer-24",
+    "--spacer-32",
+    "--spacer-4",
+    "--spacer-8",
+    "--textColor1",
+    "--textColor2",
+    "--textColor3"
+  ],
+  "domAnatomy": {
+    "root": {
+      "tag": "div",
+      "class": "ds-layout",
+      "children": [
+        {
+          "tag": "div",
+          "class": "ds-layout__content"
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "preview": "preview/component-layout.html",
+    "source": "naive-ui layout",
+    "css": {
+      "file": "components.css",
+      "marker": "── Layout ──"
+    }
+  }
+}

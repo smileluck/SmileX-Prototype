@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 2,
+  "slug": "notification",
+  "name": "Notification",
+  "category": "feedback",
+  "sourceKind": "structured-spec",
+  "confidence": "high",
+  "semanticTypeCandidates": [
+    "notification"
+  ],
+  "variantDimensions": {
+    "renderCategory": [
+      "feedback"
+    ]
+  },
+  "representativeVariants": [
+    {
+      "type": "default"
+    }
+  ],
+  "anatomy": [
+    "root"
+  ],
+  "structurePatterns": [
+    "feedback template"
+  ],
+  "usageHints": [
+    "Rendered with the feedback template — see preview/component-notification.html"
+  ],
+  "doNotInvent": [],
+  "unknowns": [],
+  "tokensConsumed": [
+    "--actionColor",
+    "--borderColor",
+    "--borderRadiusLarge",
+    "--borderRadiusMedium",
+    "--borderRadiusSmall",
+    "--cardColor",
+    "--dividerColor",
+    "--errorColor",
+    "--fontFamily",
+    "--fontSizeMedium",
+    "--fontSizeSmall",
+    "--fontSizeTiny",
+    "--fontWeightStrong",
+    "--hoverColor",
+    "--infoColor",
+    "--invertedColor",
+    "--modalColor",
+    "--popoverColor",
+    "--primaryColor",
+    "--primaryColorHover",
+    "--progressRailColor",
+    "--railColor",
+    "--spacer-12",
+    "--spacer-16",
+    "--spacer-24",
+    "--spacer-8",
+    "--successColor",
+    "--textColor1",
+    "--textColor2",
+    "--textColor3",
+    "--warningColor"
+  ],
+  "domAnatomy": {
+    "root": {
+      "tag": "div",
+      "class": "ds-notification",
+      "children": [
+        {
+          "tag": "div",
+          "class": "ds-notification__content"
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "preview": "preview/component-notification.html",
+    "source": "naive-ui notification",
+    "css": {
+      "file": "components.css",
+      "marker": "── Notification ──"
+    }
+  }
+}

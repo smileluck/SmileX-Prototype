@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "slug": "marquee",
+  "name": "Marquee",
+  "category": "data",
+  "sourceKind": "structured-spec",
+  "confidence": "medium",
+  "semanticTypeCandidates": [
+    "marquee"
+  ],
+  "variantDimensions": {
+    "renderCategory": [
+      "special"
+    ]
+  },
+  "representativeVariants": [
+    {
+      "type": "default"
+    }
+  ],
+  "anatomy": [
+    "root"
+  ],
+  "structurePatterns": [
+    "special template"
+  ],
+  "usageHints": [
+    "Rendered with the special template — see preview/component-marquee.html"
+  ],
+  "doNotInvent": [],
+  "unknowns": [],
+  "tokensConsumed": [
+    "--borderColor",
+    "--borderRadiusLarge",
+    "--borderRadiusMedium",
+    "--borderRadiusSmall",
+    "--buttonColor2",
+    "--cardColor",
+    "--codeColor",
+    "--dividerColor",
+    "--errorColor",
+    "--fontFamily",
+    "--fontFamilyMono",
+    "--fontSizeMedium",
+    "--fontSizeSmall",
+    "--fontSizeTiny",
+    "--fontWeightStrong",
+    "--hoverColor",
+    "--infoColor",
+    "--inputColor",
+    "--popoverColor",
+    "--primaryColor",
+    "--primaryColorHover",
+    "--spacer-12",
+    "--spacer-16",
+    "--spacer-8",
+    "--successColor",
+    "--textColor1",
+    "--textColor2",
+    "--textColor3",
+    "--warningColor"
+  ],
+  "domAnatomy": {
+    "root": {
+      "tag": "div",
+      "class": "ds-marquee",
+      "children": [
+        {
+          "tag": "div",
+          "class": "ds-marquee__content"
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "preview": "preview/component-marquee.html",
+    "source": "naive-ui marquee",
+    "css": {
+      "file": "components.css",
+      "marker": "── Marquee ──"
+    }
+  }
+}

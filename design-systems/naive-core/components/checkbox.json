@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "slug": "checkbox",
+  "name": "Checkbox",
+  "category": "form",
+  "sourceKind": "structured-spec",
+  "confidence": "medium",
+  "semanticTypeCandidates": [
+    "checkbox"
+  ],
+  "variantDimensions": {
+    "renderCategory": [
+      "special"
+    ]
+  },
+  "representativeVariants": [
+    {
+      "type": "default"
+    }
+  ],
+  "anatomy": [
+    "root"
+  ],
+  "structurePatterns": [
+    "special template"
+  ],
+  "usageHints": [
+    "Rendered with the special template — see preview/component-checkbox.html"
+  ],
+  "doNotInvent": [],
+  "unknowns": [],
+  "tokensConsumed": [
+    "--borderColor",
+    "--borderRadiusLarge",
+    "--borderRadiusMedium",
+    "--borderRadiusSmall",
+    "--buttonColor2",
+    "--cardColor",
+    "--codeColor",
+    "--dividerColor",
+    "--errorColor",
+    "--fontFamily",
+    "--fontFamilyMono",
+    "--fontSizeMedium",
+    "--fontSizeSmall",
+    "--fontSizeTiny",
+    "--fontWeightStrong",
+    "--hoverColor",
+    "--infoColor",
+    "--inputColor",
+    "--popoverColor",
+    "--primaryColor",
+    "--primaryColorHover",
+    "--spacer-12",
+    "--spacer-16",
+    "--spacer-8",
+    "--successColor",
+    "--textColor1",
+    "--textColor2",
+    "--textColor3",
+    "--warningColor"
+  ],
+  "domAnatomy": {
+    "root": {
+      "tag": "div",
+      "class": "ds-checkbox",
+      "children": [
+        {
+          "tag": "div",
+          "class": "ds-checkbox__content"
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "preview": "preview/component-checkbox.html",
+    "source": "naive-ui checkbox",
+    "css": {
+      "file": "components.css",
+      "marker": "── Checkbox ──"
+    }
+  }
+}

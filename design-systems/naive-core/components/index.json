@@ -1,0 +1,504 @@
+{
+  "schemaVersion": 2,
+  "library": "naive-core",
+  "components": [
+    {
+      "slug": "affix",
+      "name": "Affix",
+      "preview": "preview/component-affix.html"
+    },
+    {
+      "slug": "alert",
+      "name": "Alert",
+      "preview": "preview/component-alert.html"
+    },
+    {
+      "slug": "anchor",
+      "name": "Anchor",
+      "preview": "preview/component-anchor.html"
+    },
+    {
+      "slug": "atoms",
+      "name": "Shared Atoms",
+      "preview": "preview/component-atoms.html"
+    },
+    {
+      "slug": "auto-complete",
+      "name": "Auto Complete",
+      "preview": "preview/component-auto-complete.html"
+    },
+    {
+      "slug": "avatar-group",
+      "name": "Avatar Group",
+      "preview": "preview/component-avatar-group.html"
+    },
+    {
+      "slug": "avatar",
+      "name": "Avatar",
+      "preview": "preview/component-avatar.html"
+    },
+    {
+      "slug": "back-top",
+      "name": "Back Top",
+      "preview": "preview/component-back-top.html"
+    },
+    {
+      "slug": "badge",
+      "name": "Badge",
+      "preview": "preview/component-badge.html"
+    },
+    {
+      "slug": "breadcrumb",
+      "name": "Breadcrumb",
+      "preview": "preview/component-breadcrumb.html"
+    },
+    {
+      "slug": "button-group",
+      "name": "Button Group",
+      "preview": "preview/component-button-group.html"
+    },
+    {
+      "slug": "button",
+      "name": "Button",
+      "preview": "preview/component-button.html"
+    },
+    {
+      "slug": "calendar",
+      "name": "Calendar",
+      "preview": "preview/component-calendar.html"
+    },
+    {
+      "slug": "card",
+      "name": "Card",
+      "preview": "preview/component-card.html"
+    },
+    {
+      "slug": "carousel",
+      "name": "Carousel",
+      "preview": "preview/component-carousel.html"
+    },
+    {
+      "slug": "cascader",
+      "name": "Cascader",
+      "preview": "preview/component-cascader.html"
+    },
+    {
+      "slug": "checkbox",
+      "name": "Checkbox",
+      "preview": "preview/component-checkbox.html"
+    },
+    {
+      "slug": "code",
+      "name": "Code",
+      "preview": "preview/component-code.html"
+    },
+    {
+      "slug": "collapse",
+      "name": "Collapse",
+      "preview": "preview/component-collapse.html"
+    },
+    {
+      "slug": "color-picker",
+      "name": "Color Picker",
+      "preview": "preview/component-color-picker.html"
+    },
+    {
+      "slug": "countdown",
+      "name": "Countdown",
+      "preview": "preview/component-countdown.html"
+    },
+    {
+      "slug": "data-table",
+      "name": "Data Table",
+      "preview": "preview/component-data-table.html"
+    },
+    {
+      "slug": "date-picker",
+      "name": "Date Picker",
+      "preview": "preview/component-date-picker.html"
+    },
+    {
+      "slug": "descriptions",
+      "name": "Descriptions",
+      "preview": "preview/component-descriptions.html"
+    },
+    {
+      "slug": "dialog",
+      "name": "Dialog",
+      "preview": "preview/component-dialog.html"
+    },
+    {
+      "slug": "divider",
+      "name": "Divider",
+      "preview": "preview/component-divider.html"
+    },
+    {
+      "slug": "drawer",
+      "name": "Drawer",
+      "preview": "preview/component-drawer.html"
+    },
+    {
+      "slug": "dropdown",
+      "name": "Dropdown",
+      "preview": "preview/component-dropdown.html"
+    },
+    {
+      "slug": "dynamic-input",
+      "name": "Dynamic Input",
+      "preview": "preview/component-dynamic-input.html"
+    },
+    {
+      "slug": "dynamic-tags",
+      "name": "Dynamic Tags",
+      "preview": "preview/component-dynamic-tags.html"
+    },
+    {
+      "slug": "ellipsis",
+      "name": "Ellipsis",
+      "preview": "preview/component-ellipsis.html"
+    },
+    {
+      "slug": "empty",
+      "name": "Empty",
+      "preview": "preview/component-empty.html"
+    },
+    {
+      "slug": "equation",
+      "name": "Equation",
+      "preview": "preview/component-equation.html"
+    },
+    {
+      "slug": "flex",
+      "name": "Flex",
+      "preview": "preview/component-flex.html"
+    },
+    {
+      "slug": "float-button-group",
+      "name": "Float Button Group",
+      "preview": "preview/component-float-button-group.html"
+    },
+    {
+      "slug": "float-button",
+      "name": "Float Button",
+      "preview": "preview/component-float-button.html"
+    },
+    {
+      "slug": "form",
+      "name": "Form",
+      "preview": "preview/component-form.html"
+    },
+    {
+      "slug": "gradient-text",
+      "name": "Gradient Text",
+      "preview": "preview/component-gradient-text.html"
+    },
+    {
+      "slug": "grid",
+      "name": "Grid",
+      "preview": "preview/component-grid.html"
+    },
+    {
+      "slug": "heatmap",
+      "name": "Heatmap",
+      "preview": "preview/component-heatmap.html"
+    },
+    {
+      "slug": "highlight",
+      "name": "Highlight",
+      "preview": "preview/component-highlight.html"
+    },
+    {
+      "slug": "icon-wrapper",
+      "name": "Icon Wrapper",
+      "preview": "preview/component-icon-wrapper.html"
+    },
+    {
+      "slug": "icon",
+      "name": "Icon",
+      "preview": "preview/component-icon.html"
+    },
+    {
+      "slug": "image",
+      "name": "Image",
+      "preview": "preview/component-image.html"
+    },
+    {
+      "slug": "infinite-scroll",
+      "name": "Infinite Scroll",
+      "preview": "preview/component-infinite-scroll.html"
+    },
+    {
+      "slug": "input-number",
+      "name": "Input Number",
+      "preview": "preview/component-input-number.html"
+    },
+    {
+      "slug": "input-otp",
+      "name": "Input OTP",
+      "preview": "preview/component-input-otp.html"
+    },
+    {
+      "slug": "input",
+      "name": "Input",
+      "preview": "preview/component-input.html"
+    },
+    {
+      "slug": "layout",
+      "name": "Layout",
+      "preview": "preview/component-layout.html"
+    },
+    {
+      "slug": "legacy-grid",
+      "name": "Legacy Grid",
+      "preview": "preview/component-legacy-grid.html"
+    },
+    {
+      "slug": "legacy-transfer",
+      "name": "Legacy Transfer",
+      "preview": "preview/component-legacy-transfer.html"
+    },
+    {
+      "slug": "list",
+      "name": "List",
+      "preview": "preview/component-list.html"
+    },
+    {
+      "slug": "loading-bar",
+      "name": "Loading Bar",
+      "preview": "preview/component-loading-bar.html"
+    },
+    {
+      "slug": "log",
+      "name": "Log",
+      "preview": "preview/component-log.html"
+    },
+    {
+      "slug": "marquee",
+      "name": "Marquee",
+      "preview": "preview/component-marquee.html"
+    },
+    {
+      "slug": "mention",
+      "name": "Mention",
+      "preview": "preview/component-mention.html"
+    },
+    {
+      "slug": "menu",
+      "name": "Menu",
+      "preview": "preview/component-menu.html"
+    },
+    {
+      "slug": "message",
+      "name": "Message",
+      "preview": "preview/component-message.html"
+    },
+    {
+      "slug": "modal",
+      "name": "Modal",
+      "preview": "preview/component-modal.html"
+    },
+    {
+      "slug": "notification",
+      "name": "Notification",
+      "preview": "preview/component-notification.html"
+    },
+    {
+      "slug": "number-animation",
+      "name": "Number Animation",
+      "preview": "preview/component-number-animation.html"
+    },
+    {
+      "slug": "page-header",
+      "name": "Page Header",
+      "preview": "preview/component-page-header.html"
+    },
+    {
+      "slug": "pagination",
+      "name": "Pagination",
+      "preview": "preview/component-pagination.html"
+    },
+    {
+      "slug": "popconfirm",
+      "name": "Popconfirm",
+      "preview": "preview/component-popconfirm.html"
+    },
+    {
+      "slug": "popover",
+      "name": "Popover",
+      "preview": "preview/component-popover.html"
+    },
+    {
+      "slug": "popselect",
+      "name": "Popselect",
+      "preview": "preview/component-popselect.html"
+    },
+    {
+      "slug": "progress",
+      "name": "Progress",
+      "preview": "preview/component-progress.html"
+    },
+    {
+      "slug": "qr-code",
+      "name": "QR Code",
+      "preview": "preview/component-qr-code.html"
+    },
+    {
+      "slug": "radio",
+      "name": "Radio",
+      "preview": "preview/component-radio.html"
+    },
+    {
+      "slug": "rate",
+      "name": "Rate",
+      "preview": "preview/component-rate.html"
+    },
+    {
+      "slug": "result",
+      "name": "Result",
+      "preview": "preview/component-result.html"
+    },
+    {
+      "slug": "scrollbar",
+      "name": "Scrollbar",
+      "preview": "preview/component-scrollbar.html"
+    },
+    {
+      "slug": "select",
+      "name": "Select",
+      "preview": "preview/component-select.html"
+    },
+    {
+      "slug": "skeleton",
+      "name": "Skeleton",
+      "preview": "preview/component-skeleton.html"
+    },
+    {
+      "slug": "slider",
+      "name": "Slider",
+      "preview": "preview/component-slider.html"
+    },
+    {
+      "slug": "space",
+      "name": "Space",
+      "preview": "preview/component-space.html"
+    },
+    {
+      "slug": "spin",
+      "name": "Spin",
+      "preview": "preview/component-spin.html"
+    },
+    {
+      "slug": "split",
+      "name": "Split",
+      "preview": "preview/component-split.html"
+    },
+    {
+      "slug": "statistic",
+      "name": "Statistic",
+      "preview": "preview/component-statistic.html"
+    },
+    {
+      "slug": "steps",
+      "name": "Steps",
+      "preview": "preview/component-steps.html"
+    },
+    {
+      "slug": "switch",
+      "name": "Switch",
+      "preview": "preview/component-switch.html"
+    },
+    {
+      "slug": "table",
+      "name": "Table",
+      "preview": "preview/component-table.html"
+    },
+    {
+      "slug": "tabs",
+      "name": "Tabs",
+      "preview": "preview/component-tabs.html"
+    },
+    {
+      "slug": "tag",
+      "name": "Tag",
+      "preview": "preview/component-tag.html"
+    },
+    {
+      "slug": "thing",
+      "name": "Thing",
+      "preview": "preview/component-thing.html"
+    },
+    {
+      "slug": "time-picker",
+      "name": "Time Picker",
+      "preview": "preview/component-time-picker.html"
+    },
+    {
+      "slug": "time",
+      "name": "Time",
+      "preview": "preview/component-time.html"
+    },
+    {
+      "slug": "timeline",
+      "name": "Timeline",
+      "preview": "preview/component-timeline.html"
+    },
+    {
+      "slug": "tooltip",
+      "name": "Tooltip",
+      "preview": "preview/component-tooltip.html"
+    },
+    {
+      "slug": "transfer",
+      "name": "Transfer",
+      "preview": "preview/component-transfer.html"
+    },
+    {
+      "slug": "tree-select",
+      "name": "Tree Select",
+      "preview": "preview/component-tree-select.html"
+    },
+    {
+      "slug": "tree",
+      "name": "Tree",
+      "preview": "preview/component-tree.html"
+    },
+    {
+      "slug": "typography",
+      "name": "Typography",
+      "preview": "preview/component-typography.html"
+    },
+    {
+      "slug": "upload",
+      "name": "Upload",
+      "preview": "preview/component-upload.html"
+    },
+    {
+      "slug": "virtual-list",
+      "name": "Virtual List",
+      "preview": "preview/component-virtual-list.html"
+    },
+    {
+      "slug": "watermark",
+      "name": "Watermark",
+      "preview": "preview/component-watermark.html"
+    }
+  ],
+  "uiKits": [
+    {
+      "type": "dashboard",
+      "entry": "ui_kits/dashboard/index.html"
+    },
+    {
+      "type": "dev-explorer",
+      "entry": "ui_kits/dev-explorer/index.html"
+    },
+    {
+      "type": "mobile",
+      "entry": "ui_kits/mobile/index.html"
+    },
+    {
+      "type": "marketing",
+      "entry": "ui_kits/marketing/index.html"
+    }
+  ]
+}

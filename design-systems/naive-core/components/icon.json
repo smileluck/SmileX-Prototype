@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 2,
+  "slug": "icon",
+  "name": "Icon",
+  "category": "general",
+  "sourceKind": "structured-spec",
+  "confidence": "high",
+  "semanticTypeCandidates": [
+    "icon"
+  ],
+  "variantDimensions": {
+    "renderCategory": [
+      "general"
+    ]
+  },
+  "representativeVariants": [
+    {
+      "type": "default"
+    }
+  ],
+  "anatomy": [
+    "root"
+  ],
+  "structurePatterns": [
+    "general template"
+  ],
+  "usageHints": [
+    "Rendered with the general template — see preview/component-icon.html"
+  ],
+  "doNotInvent": [],
+  "unknowns": [],
+  "tokensConsumed": [
+    "--avatarColor",
+    "--borderColor",
+    "--borderRadiusHuge",
+    "--borderRadiusLarge",
+    "--borderRadiusMedium",
+    "--borderRadiusSmall",
+    "--buttonColor2",
+    "--dividerColor",
+    "--errorColor",
+    "--fontFamily",
+    "--fontSizeMedium",
+    "--fontSizeSmall",
+    "--fontSizeTiny",
+    "--fontWeightStrong",
+    "--iconColor",
+    "--infoColor",
+    "--invertedColor",
+    "--primaryColor",
+    "--primaryColorHover",
+    "--spacer-12",
+    "--spacer-4",
+    "--spacer-8",
+    "--successColor",
+    "--tagColor",
+    "--textColor1",
+    "--textColor2",
+    "--textColor3",
+    "--warningColor"
+  ],
+  "domAnatomy": {
+    "root": {
+      "tag": "div",
+      "class": "ds-icon",
+      "children": [
+        {
+          "tag": "div",
+          "class": "ds-icon__content"
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "preview": "preview/component-icon.html",
+    "source": "naive-ui icon",
+    "css": {
+      "file": "components.css",
+      "marker": "── Icon ──"
+    }
+  }
+}

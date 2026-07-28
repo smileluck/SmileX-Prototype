@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Switch</title>
+  <link rel="stylesheet" href="../colors_and_type.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" />
+  <link rel="stylesheet" href="../components.css" />
+  <style>
+    /* ── preview-page chrome (preview-only) ─────────────────── */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--bodyColor); color: var(--textColor1); font-family: var(--fontFamily); font-size: var(--fontSizeMedium); line-height: var(--lineHeightMedium); min-height: 100%; }
+    body { padding: var(--spacer-32); }
+    .pv-header { margin-bottom: var(--spacer-32); padding-bottom: var(--spacer-16); border-bottom: 1px solid var(--dividerColor); }
+    .pv-header h1 { font-size: var(--heading-lg-font-size); font-weight: var(--heading-base-font-weight); margin-bottom: var(--spacer-4); }
+    .pv-header p { color: var(--textColor2); font-size: var(--fontSizeSmall); }
+    .pv-section { margin-bottom: var(--spacer-32); }
+    .pv-section__title { font-size: var(--heading-sm-font-size); font-weight: var(--heading-base-font-weight); margin-bottom: var(--spacer-12); color: var(--textColor1); }
+    .row { display: flex; gap: var(--spacer-12); align-items: center; flex-wrap: wrap; }
+    .stack-12 { display: flex; flex-direction: column; gap: var(--spacer-12); }
+
+    /* @component-css-start */
+    /* ===== Switch ===== */
+.ds-switch { display: inline-flex; align-items: center; gap: var(--spacer-8); cursor: pointer; user-select: none; font-size: var(--fontSizeSmall); color: var(--textColor1); }
+.ds-switch__track { width: 40px; height: 22px; background: var(--buttonColor2); border-radius: 11px; position: relative; transition: background 0.15s; }
+.ds-switch__thumb { width: 18px; height: 18px; background: var(--textColor1); border-radius: 50%; position: absolute; top: 2px; left: 2px; transition: transform 0.15s; }
+.ds-switch--on .ds-switch__track { background: var(--primaryColor); }
+.ds-switch--on .ds-switch__thumb { transform: translateX(18px); }
+.ds-switch--small .ds-switch__track { width: 32px; height: 18px; }
+.ds-switch--small .ds-switch__thumb { width: 14px; height: 14px; }
+.ds-switch--small.ds-switch--on .ds-switch__thumb { transform: translateX(14px); }
+    /* @component-css-end */
+  </style>
+</head>
+<body>
+  <header class="pv-header">
+    <h1>Switch</h1>
+    <p>naive-ui switch — renderCategory: special.</p>
+  </header>
+  <section class="pv-section">
+    <div class="pv-section__title">On / Off</div>
+    <div class="row">
+      <span class="ds-switch ds-switch--on"><span class="ds-switch__track"><span class="ds-switch__thumb"></span></span>On</span>
+      <span class="ds-switch"><span class="ds-switch__track"><span class="ds-switch__thumb"></span></span>Off</span>
+    </div>
+  </section>
+  <section class="pv-section">
+    <div class="pv-section__title">Small</div>
+    <span class="ds-switch ds-switch--small ds-switch--on"><span class="ds-switch__track"><span class="ds-switch__thumb"></span></span>Enabled</span>
+  </section>
+</body>
+</html>

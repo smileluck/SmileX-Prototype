@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 2,
+  "slug": "avatar-group",
+  "name": "Avatar Group",
+  "category": "data",
+  "sourceKind": "structured-spec",
+  "confidence": "high",
+  "semanticTypeCandidates": [
+    "avatar-group"
+  ],
+  "variantDimensions": {
+    "renderCategory": [
+      "general"
+    ]
+  },
+  "representativeVariants": [
+    {
+      "type": "default"
+    }
+  ],
+  "anatomy": [
+    "root"
+  ],
+  "structurePatterns": [
+    "general template"
+  ],
+  "usageHints": [
+    "Rendered with the general template — see preview/component-avatar-group.html"
+  ],
+  "doNotInvent": [],
+  "unknowns": [],
+  "tokensConsumed": [
+    "--avatarColor",
+    "--borderColor",
+    "--borderRadiusHuge",
+    "--borderRadiusLarge",
+    "--borderRadiusMedium",
+    "--borderRadiusSmall",
+    "--buttonColor2",
+    "--dividerColor",
+    "--errorColor",
+    "--fontFamily",
+    "--fontSizeMedium",
+    "--fontSizeSmall",
+    "--fontSizeTiny",
+    "--fontWeightStrong",
+    "--iconColor",
+    "--infoColor",
+    "--invertedColor",
+    "--primaryColor",
+    "--primaryColorHover",
+    "--spacer-12",
+    "--spacer-4",
+    "--spacer-8",
+    "--successColor",
+    "--tagColor",
+    "--textColor1",
+    "--textColor2",
+    "--textColor3",
+    "--warningColor"
+  ],
+  "domAnatomy": {
+    "root": {
+      "tag": "div",
+      "class": "ds-avatar-group",
+      "children": [
+        {
+          "tag": "div",
+          "class": "ds-avatar-group__content"
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "preview": "preview/component-avatar-group.html",
+    "source": "naive-ui avatar-group",
+    "css": {
+      "file": "components.css",
+      "marker": "── Avatar Group ──"
+    }
+  }
+}

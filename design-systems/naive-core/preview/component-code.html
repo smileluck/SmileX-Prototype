@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Code</title>
+  <link rel="stylesheet" href="../colors_and_type.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" />
+  <link rel="stylesheet" href="../components.css" />
+  <style>
+    /* ── preview-page chrome (preview-only) ─────────────────── */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--bodyColor); color: var(--textColor1); font-family: var(--fontFamily); font-size: var(--fontSizeMedium); line-height: var(--lineHeightMedium); min-height: 100%; }
+    body { padding: var(--spacer-32); }
+    .pv-header { margin-bottom: var(--spacer-32); padding-bottom: var(--spacer-16); border-bottom: 1px solid var(--dividerColor); }
+    .pv-header h1 { font-size: var(--heading-lg-font-size); font-weight: var(--heading-base-font-weight); margin-bottom: var(--spacer-4); }
+    .pv-header p { color: var(--textColor2); font-size: var(--fontSizeSmall); }
+    .pv-section { margin-bottom: var(--spacer-32); }
+    .pv-section__title { font-size: var(--heading-sm-font-size); font-weight: var(--heading-base-font-weight); margin-bottom: var(--spacer-12); color: var(--textColor1); }
+    .row { display: flex; gap: var(--spacer-12); align-items: center; flex-wrap: wrap; }
+    .stack-12 { display: flex; flex-direction: column; gap: var(--spacer-12); }
+
+    /* @component-css-start */
+    /* ===== Code ===== */
+.ds-code-inline { font-family: var(--fontFamilyMono); font-size: var(--fontSizeSmall); padding: 2px 6px; background: var(--codeColor); border-radius: var(--borderRadiusSmall); color: var(--textColor1); }
+.ds-code-block { font-family: var(--fontFamilyMono); font-size: var(--fontSizeSmall); line-height: 1.6; padding: var(--spacer-16); background: var(--codeColor); border-radius: var(--borderRadiusMedium); color: var(--textColor1); overflow-x: auto; }
+.ds-code-block__line { display: flex; gap: var(--spacer-12); }
+.ds-code-block__no { color: var(--textColor3); user-select: none; min-width: 24px; text-align: right; }
+    /* @component-css-end */
+  </style>
+</head>
+<body>
+  <header class="pv-header">
+    <h1>Code</h1>
+    <p>naive-ui code — renderCategory: special.</p>
+  </header>
+  <section class="pv-section">
+    <div class="pv-section__title">Inline</div>
+    <p>Use <code class="ds-code-inline">var(--primaryColor)</code> for the brand color.</p>
+  </section>
+  <section class="pv-section">
+    <div class="pv-section__title">Block with line numbers</div>
+    <pre class="ds-code-block"><div class="ds-code-block__line"><span class="ds-code-block__no">1</span><span>.ds-btn {</span></div><div class="ds-code-block__line"><span class="ds-code-block__no">2</span><span>  background: var(--primaryColor);</span></div><div class="ds-code-block__line"><span class="ds-code-block__no">3</span><span>}</span></div></pre>
+  </section>
+</body>
+</html>

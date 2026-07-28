@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dev Explorer — Naive Core</title>
+  <link rel="stylesheet" href="../../colors_and_type.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" />
+  <link rel="stylesheet" href="../../components.css" />
+  <style>
+    .uikit-shell { max-width: 1184px; margin: 0 auto; padding: var(--spacer-24); background: var(--bodyColor); color: var(--textColor1); font-family: var(--fontFamily); font-size: var(--fontSizeMedium); line-height: var(--lineHeightMedium); min-height: 100vh; box-sizing: border-box; }
+    * { box-sizing: border-box; }
+    .ide-titlebar { display: flex; align-items: center; gap: var(--spacer-12); padding: var(--spacer-8) var(--spacer-16); background: var(--cardColor); border: 1px solid var(--borderColor); border-radius: var(--borderRadiusLarge); }
+    .ide-grid { display: grid; grid-template-columns: 48px 240px 1fr 300px; gap: var(--spacer-12); margin-top: var(--spacer-12); height: 560px; }
+    .activity-bar { background: var(--cardColor); border: 1px solid var(--borderColor); border-radius: var(--borderRadiusLarge); display: flex; flex-direction: column; align-items: center; padding: var(--spacer-8) 0; gap: var(--spacer-12); }
+    .activity-bar__item { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: var(--borderRadiusSmall); color: var(--textColor3); cursor: pointer; }
+    .activity-bar__item--active { background: var(--actionColor); color: var(--primaryColor); }
+    .explorer { background: var(--cardColor); border: 1px solid var(--borderColor); border-radius: var(--borderRadiusLarge); padding: var(--spacer-12); overflow-y: auto; }
+    .editor { background: var(--cardColor); border: 1px solid var(--borderColor); border-radius: var(--borderRadiusLarge); display: flex; flex-direction: column; overflow: hidden; }
+    .editor__code { flex: 1; padding: var(--spacer-16); font-family: var(--fontFamilyMono); font-size: var(--fontSizeSmall); line-height: 1.7; color: var(--textColor1); overflow-y: auto; }
+    .editor__code .ln { color: var(--textColor3); display: inline-block; width: 28px; user-select: none; }
+    .chat { background: var(--cardColor); border: 1px solid var(--borderColor); border-radius: var(--borderRadiusLarge); display: flex; flex-direction: column; overflow: hidden; }
+    .chat__body { flex: 1; padding: var(--spacer-12); overflow-y: auto; display: flex; flex-direction: column; gap: var(--spacer-12); }
+    .chat__msg { padding: var(--spacer-8) var(--spacer-12); border-radius: var(--borderRadiusMedium); font-size: var(--fontSizeSmall); max-width: 90%; }
+    .chat__msg--user { background: var(--primaryColor); color: var(--invertedColor); align-self: flex-end; }
+    .chat__msg--ai { background: var(--actionColor); color: var(--textColor1); align-self: flex-start; }
+    .chat__input { padding: var(--spacer-12); border-top: 1px solid var(--dividerColor); display: flex; gap: var(--spacer-8); }
+    .file-row { display: flex; align-items: center; gap: var(--spacer-8); padding: 2px var(--spacer-4); border-radius: var(--borderRadiusSmall); font-size: var(--fontSizeSmall); color: var(--textColor2); cursor: pointer; }
+    .file-row:hover { background: var(--hoverColor); }
+    .file-row--active { background: var(--actionColor); color: var(--primaryColor); }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel" data-presets="env,react">
+    const { useState } = React;
+
+    function App() {
+      const files = [
+        { name: 'src/App.tsx', indent: 1, active: true },
+        { name: 'src/main.tsx', indent: 1 },
+        { name: 'src/components/Button.tsx', indent: 2 },
+        { name: 'src/components/Card.tsx', indent: 2 },
+        { name: 'src/hooks/useTheme.ts', indent: 2 },
+        { name: 'package.json', indent: 1 },
+        { name: 'tsconfig.json', indent: 1 },
+        { name: 'README.md', indent: 1 }
+      ];
+      const code = [
+        'import { useState } from "react";',
+        '',
+        'export function Button({ label, onClick }) {',
+        '  const [hover, setHover] = useState(false);',
+        '  return (',
+        '    <button',
+        '      className="ds-btn ds-btn--primary ds-btn--medium"',
+        '      onMouseEnter={() => setHover(true)}',
+        '      onClick={onClick}',
+        '    >',
+        '      {label}',
+        '    </button>',
+        '  );',
+        '}'
+      ];
+      return (
+        <div className="uikit-shell">
+          <div className="ide-titlebar">
+            <span className="ds-badge__dot ds-badge__dot--error"></span>
+            <span className="ds-badge__dot ds-badge__dot--warning"></span>
+            <span className="ds-badge__dot ds-badge__dot--success"></span>
+            <span style={{ color: 'var(--textColor2)', fontSize: 'var(--fontSizeSmall)', marginLeft: 'var(--spacer-8)' }}>smilex-prototype — Dev Explorer</span>
+            <div style={{ marginLeft: 'auto', display: 'flex', gap: 'var(--spacer-8)' }}>
+              <button className="ds-btn ds-btn--default ds-btn--small">Run</button>
+              <button className="ds-btn ds-btn--primary ds-btn--small">Deploy</button>
+            </div>
+          </div>
+
+          <div className="ide-grid">
+            <div className="activity-bar">
+              <div className="activity-bar__item activity-bar__item--active">📁</div>
+              <div className="activity-bar__item">🔍</div>
+              <div className="activity-bar__item">⑂</div>
+              <div className="activity-bar__item">▶</div>
+              <div className="activity-bar__item">⚙</div>
+            </div>
+
+            <div className="explorer">
+              <div style={{ fontSize: 'var(--fontSizeTiny)', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--textColor3)', marginBottom: 'var(--spacer-8)', fontWeight: 600 }}>Explorer</div>
+              <div className="ds-tree">
+                <div style={{ fontWeight: 600, fontSize: 'var(--fontSizeSmall)', padding: '2px 4px' }}>▾ smilex-prototype</div>
+                {files.map((f, i) => (
+                  <div key={i} className={'file-row ' + (f.active ? 'file-row--active' : '')} style={{ paddingLeft: (f.indent * 12 + 4) + 'px' }}>
+                    {f.name.split('/').pop()}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="editor">
+              <div className="ds-tabs">
+                <div className="ds-tabs__bar ds-tabs__bar--line">
+                  <div className="ds-tabs__item ds-tabs__item--active">App.tsx</div>
+                  <div className="ds-tabs__item">main.tsx</div>
+                  <div className="ds-tabs__item">useTheme.ts</div>
+                </div>
+              </div>
+              <nav className="ds-breadcrumb" style={{ padding: 'var(--spacer-8) var(--spacer-16)', borderBottom: '1px solid var(--dividerColor)' }}>
+                <a className="ds-breadcrumb__item">src</a>
+                <span className="ds-breadcrumb__separator">/</span>
+                <a className="ds-breadcrumb__item">components</a>
+                <span className="ds-breadcrumb__separator">/</span>
+                <span className="ds-breadcrumb__current">Button.tsx</span>
+              </nav>
+              <div className="editor__code">
+                {code.map((line, i) => (
+                  <div key={i}><span className="ln">{i + 1}</span>{line || ' '}</div>
+                ))}
+              </div>
+            </div>
+
+            <div className="chat">
+              <div style={{ padding: 'var(--spacer-12)', borderBottom: '1px solid var(--dividerColor)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontWeight: 600, fontSize: 'var(--fontSizeSmall)' }}>AI Assistant</span>
+                <span className="ds-tag ds-tag--success ds-tag--small">Online</span>
+              </div>
+              <div className="chat__body">
+                <div className="chat__msg chat__msg--user">Refactor this button to support loading state</div>
+                <div className="chat__msg chat__msg--ai">I'll add a loading prop with a spinner. Here's the updated component…</div>
+                <div className="chat__msg chat__msg--user">Also add aria-busy for a11y</div>
+                <div className="chat__msg chat__msg--ai">Good call. Added aria-busy={"{loading}"} to the button element.</div>
+              </div>
+              <div className="chat__input">
+                <input className="ds-input ds-input--small" style={{ flex: 1 }} placeholder="Ask anything…" />
+                <button className="ds-btn ds-btn--primary ds-btn--small">Send</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>

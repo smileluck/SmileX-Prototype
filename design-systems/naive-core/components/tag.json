@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 2,
+  "slug": "tag",
+  "name": "Tag",
+  "category": "general",
+  "sourceKind": "structured-spec",
+  "confidence": "high",
+  "semanticTypeCandidates": [
+    "tag"
+  ],
+  "variantDimensions": {
+    "renderCategory": [
+      "general"
+    ]
+  },
+  "representativeVariants": [
+    {
+      "type": "default"
+    }
+  ],
+  "anatomy": [
+    "root"
+  ],
+  "structurePatterns": [
+    "general template"
+  ],
+  "usageHints": [
+    "Rendered with the general template — see preview/component-tag.html"
+  ],
+  "doNotInvent": [],
+  "unknowns": [],
+  "tokensConsumed": [
+    "--avatarColor",
+    "--borderColor",
+    "--borderRadiusHuge",
+    "--borderRadiusLarge",
+    "--borderRadiusMedium",
+    "--borderRadiusSmall",
+    "--buttonColor2",
+    "--dividerColor",
+    "--errorColor",
+    "--fontFamily",
+    "--fontSizeMedium",
+    "--fontSizeSmall",
+    "--fontSizeTiny",
+    "--fontWeightStrong",
+    "--iconColor",
+    "--infoColor",
+    "--invertedColor",
+    "--primaryColor",
+    "--primaryColorHover",
+    "--spacer-12",
+    "--spacer-4",
+    "--spacer-8",
+    "--successColor",
+    "--tagColor",
+    "--textColor1",
+    "--textColor2",
+    "--textColor3",
+    "--warningColor"
+  ],
+  "domAnatomy": {
+    "root": {
+      "tag": "div",
+      "class": "ds-tag",
+      "children": [
+        {
+          "tag": "div",
+          "class": "ds-tag__content"
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "preview": "preview/component-tag.html",
+    "source": "naive-ui tag",
+    "css": {
+      "file": "components.css",
+      "marker": "── Tag ──"
+    }
+  }
+}

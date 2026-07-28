@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 2,
+  "slug": "grid",
+  "name": "Grid",
+  "category": "layout",
+  "sourceKind": "structured-spec",
+  "confidence": "high",
+  "semanticTypeCandidates": [
+    "grid"
+  ],
+  "variantDimensions": {
+    "renderCategory": [
+      "layout"
+    ]
+  },
+  "representativeVariants": [
+    {
+      "type": "default"
+    }
+  ],
+  "anatomy": [
+    "root"
+  ],
+  "structurePatterns": [
+    "layout template"
+  ],
+  "usageHints": [
+    "Rendered with the layout template — see preview/component-grid.html"
+  ],
+  "doNotInvent": [],
+  "unknowns": [],
+  "tokensConsumed": [
+    "--actionColor",
+    "--borderColor",
+    "--borderRadiusLarge",
+    "--borderRadiusMedium",
+    "--borderRadiusSmall",
+    "--cardColor",
+    "--dividerColor",
+    "--fontFamily",
+    "--fontSizeMedium",
+    "--fontSizeSmall",
+    "--fontSizeTiny",
+    "--fontWeightStrong",
+    "--primaryColor",
+    "--primaryColorHover",
+    "--spacer-12",
+    "--spacer-16",
+    "--spacer-24",
+    "--spacer-32",
+    "--spacer-4",
+    "--spacer-8",
+    "--textColor1",
+    "--textColor2",
+    "--textColor3"
+  ],
+  "domAnatomy": {
+    "root": {
+      "tag": "div",
+      "class": "ds-grid",
+      "children": [
+        {
+          "tag": "div",
+          "class": "ds-grid__content"
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "preview": "preview/component-grid.html",
+    "source": "naive-ui grid",
+    "css": {
+      "file": "components.css",
+      "marker": "── Grid ──"
+    }
+  }
+}

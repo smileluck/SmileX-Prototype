@@ -1,6 +1,6 @@
 # Naive Core
 
-A dark-first design system distilled from naïve-ui's official dark theme — **core subset (24 components)** retained to cover the dashboard UI Kit. The canonical token source is `colors_and_type.css` (+ `css.json`).
+A dark-first design system distilled from naïve-ui's official dark theme — **full coverage: 95 naive-ui components + atoms (96 total)** plus **4 UI Kits** (dashboard / dev-explorer / mobile / marketing). The canonical token source is `colors_and_type.css` (+ `css.json`).
 
 ## Open the Showcases
 
@@ -8,74 +8,141 @@ All HTML files reference `colors_and_type.css` via relative paths and run as sta
 
 | Showcase | Path |
 |----------|------|
+| Component — Affix | `preview/component-affix.html` |
 | Component — Alert | `preview/component-alert.html` |
-| Component — Atoms (shared utilities) | `preview/component-atoms.html` |
+| Component — Anchor | `preview/component-anchor.html` |
+| Component — Shared Atoms | `preview/component-atoms.html` |
+| Component — Auto Complete | `preview/component-auto-complete.html` |
+| Component — Avatar Group | `preview/component-avatar-group.html` |
 | Component — Avatar | `preview/component-avatar.html` |
+| Component — Back Top | `preview/component-back-top.html` |
 | Component — Badge | `preview/component-badge.html` |
 | Component — Breadcrumb | `preview/component-breadcrumb.html` |
 | Component — Button Group | `preview/component-button-group.html` |
-| Component — Buttons | `preview/component-buttons.html` |
-| Component — Card | `preview/component-cards.html` |
+| Component — Button | `preview/component-button.html` |
+| Component — Calendar | `preview/component-calendar.html` |
+| Component — Card | `preview/component-card.html` |
+| Component — Carousel | `preview/component-carousel.html` |
+| Component — Cascader | `preview/component-cascader.html` |
+| Component — Checkbox | `preview/component-checkbox.html` |
+| Component — Code | `preview/component-code.html` |
+| Component — Collapse | `preview/component-collapse.html` |
+| Component — Color Picker | `preview/component-color-picker.html` |
+| Component — Countdown | `preview/component-countdown.html` |
+| Component — Data Table | `preview/component-data-table.html` |
+| Component — Date Picker | `preview/component-date-picker.html` |
+| Component — Descriptions | `preview/component-descriptions.html` |
 | Component — Dialog | `preview/component-dialog.html` |
+| Component — Divider | `preview/component-divider.html` |
+| Component — Drawer | `preview/component-drawer.html` |
 | Component — Dropdown | `preview/component-dropdown.html` |
-| Component — Empty State | `preview/component-empty.html` |
+| Component — Dynamic Input | `preview/component-dynamic-input.html` |
+| Component — Dynamic Tags | `preview/component-dynamic-tags.html` |
+| Component — Ellipsis | `preview/component-ellipsis.html` |
+| Component — Empty | `preview/component-empty.html` |
+| Component — Equation | `preview/component-equation.html` |
+| Component — Flex | `preview/component-flex.html` |
+| Component — Float Button Group | `preview/component-float-button-group.html` |
+| Component — Float Button | `preview/component-float-button.html` |
 | Component — Form | `preview/component-form.html` |
-| Component — Form Controls | `preview/component-forms.html` |
+| Component — Gradient Text | `preview/component-gradient-text.html` |
+| Component — Grid | `preview/component-grid.html` |
+| Component — Heatmap | `preview/component-heatmap.html` |
+| Component — Highlight | `preview/component-highlight.html` |
+| Component — Icon Wrapper | `preview/component-icon-wrapper.html` |
+| Component — Icon | `preview/component-icon.html` |
+| Component — Image | `preview/component-image.html` |
+| Component — Infinite Scroll | `preview/component-infinite-scroll.html` |
 | Component — Input Number | `preview/component-input-number.html` |
+| Component — Input OTP | `preview/component-input-otp.html` |
+| Component — Input | `preview/component-input.html` |
+| Component — Layout | `preview/component-layout.html` |
+| Component — Legacy Grid | `preview/component-legacy-grid.html` |
+| Component — Legacy Transfer | `preview/component-legacy-transfer.html` |
+| Component — List | `preview/component-list.html` |
+| Component — Loading Bar | `preview/component-loading-bar.html` |
+| Component — Log | `preview/component-log.html` |
+| Component — Marquee | `preview/component-marquee.html` |
+| Component — Mention | `preview/component-mention.html` |
 | Component — Menu | `preview/component-menu.html` |
+| Component — Message | `preview/component-message.html` |
+| Component — Modal | `preview/component-modal.html` |
 | Component — Notification | `preview/component-notification.html` |
+| Component — Number Animation | `preview/component-number-animation.html` |
+| Component — Page Header | `preview/component-page-header.html` |
 | Component — Pagination | `preview/component-pagination.html` |
+| Component — Popconfirm | `preview/component-popconfirm.html` |
 | Component — Popover | `preview/component-popover.html` |
-| Component — Progress Bar | `preview/component-progress.html` |
+| Component — Popselect | `preview/component-popselect.html` |
+| Component — Progress | `preview/component-progress.html` |
+| Component — QR Code | `preview/component-qr-code.html` |
+| Component — Radio | `preview/component-radio.html` |
+| Component — Rate | `preview/component-rate.html` |
+| Component — Result | `preview/component-result.html` |
+| Component — Scrollbar | `preview/component-scrollbar.html` |
 | Component — Select | `preview/component-select.html` |
-| Component — Data Table | `preview/component-table.html` |
+| Component — Skeleton | `preview/component-skeleton.html` |
+| Component — Slider | `preview/component-slider.html` |
+| Component — Space | `preview/component-space.html` |
+| Component — Spin | `preview/component-spin.html` |
+| Component — Split | `preview/component-split.html` |
+| Component — Statistic | `preview/component-statistic.html` |
+| Component — Steps | `preview/component-steps.html` |
+| Component — Switch | `preview/component-switch.html` |
+| Component — Table | `preview/component-table.html` |
 | Component — Tabs | `preview/component-tabs.html` |
 | Component — Tag | `preview/component-tag.html` |
+| Component — Thing | `preview/component-thing.html` |
+| Component — Time Picker | `preview/component-time-picker.html` |
+| Component — Time | `preview/component-time.html` |
+| Component — Timeline | `preview/component-timeline.html` |
 | Component — Tooltip | `preview/component-tooltip.html` |
-| UI Kit — Dashboard | `ui_kits/dashboard/index.html` |
+| Component — Transfer | `preview/component-transfer.html` |
+| Component — Tree Select | `preview/component-tree-select.html` |
+| Component — Tree | `preview/component-tree.html` |
+| Component — Typography | `preview/component-typography.html` |
+| Component — Upload | `preview/component-upload.html` |
+| Component — Virtual List | `preview/component-virtual-list.html` |
+| Component — Watermark | `preview/component-watermark.html` |
+| UI Kit — dashboard | `ui_kits/dashboard/index.html` |
+| UI Kit — dev-explorer | `ui_kits/dev-explorer/index.html` |
+| UI Kit — mobile | `ui_kits/mobile/index.html` |
+| UI Kit — marketing | `ui_kits/marketing/index.html` |
 
 ## What's Inside
 
-- `colors_and_type.css` — authoritative token source (verbatim from naïve-ui dark theme, marked `/* @dark-only */` with `/* @group-priority: brand-green, status, brand-blue, brand-yellow, brand-red */`).
-- `css.json` — machine-readable token projection (`color`, `font`, `radius`, `spacing`, plus empty `shadow` / `size` buckets reserved by spec).
-- `components/` — 24 component slugs (`{slug}.json` + a shared `index.json`). Each contract carries `category`, `tokensConsumed`, `domAnatomy`, and `provenance`.
-- `preview/` — 24 component preview pages (`component-{slug}.html`). Each page (a) self-contains its preview-page chrome (reset, body padding, `.pv-*`) above the `@component-css-start` marker so it never leaks downstream, (b) embeds the canonical CSS for its `.ds-*` classes inside `<style>` between `/* @component-css-start */` and `/* @component-css-end */` markers, and (c) loads JetBrains Mono via a `<link rel="stylesheet" href="https://fonts.googleapis.com/...">` in `<head>`.
-- `ui_kits/` — 1 page-level showcase (`dashboard`) as a single interactive React 18 `index.html` with a sibling `quality-report.json`.
-- `components.css` — aggregated component class definitions, **auto-generated** from the marker blocks above by `design-library-creator/scripts/extract-components-css.mjs`. Do not edit by hand — regenerate after editing the corresponding `preview/component-*.html` file.
-- `uikit-plan.json` — component whitelist (2 core + 22 support) and slot assignments.
-- `library-consumption.json` — recommended downstream read order for agents.
-- `assets/icons/` — bundled SVG icons (default + status-tinted variants).
-- `icons.js` — optional inline icon-sprite renderer.
+- `colors_and_type.css` — authoritative token source (verbatim, `/* @dark-only */`, `/* @group-priority: brand-green, status, brand-blue, brand-yellow, brand-red */`).
+- `css.json` — machine-readable token projection (`color` / `font` / `radius` / `spacing` + reserved empty `shadow` / `size`).
+- `components/` — 96 component slugs (`{slug}.json` + `index.json`), each with `category`, `tokensConsumed`, `domAnatomy`, `provenance`.
+- `preview/` — 96 preview pages. Each (a) keeps preview chrome above `@component-css-start`, (b) embeds canonical `.ds-*` CSS between the markers, (c) links JetBrains Mono via Google Fonts.
+- `ui_kits/` — 4 showcases (dashboard / dev-explorer / mobile / marketing), each with `quality-report.json`.
+- `components.css` — **auto-generated** aggregation of all 96 marker blocks. Do not edit by hand.
+- `uikit-plan.json` — component whitelist (2 core + 94 support) and slot assignments.
+- `library-consumption.json` — recommended downstream read order.
 
 ## Token Highlights
 
 | Group | Examples |
 |-------|----------|
-| Brand | `--primaryColor #63e2b7`, `--primaryColorHover #7fe7c4`, `--primaryColorPressed #5acea7` |
-| Status — Info | `--infoColor #70c0e8`, `--infoColorHover #8acbec`, `--infoColorSuppl rgb(56, 137, 197)` |
-| Status — Warning | `--warningColor #f2c97d`, `--warningColorSuppl rgb(240, 138, 0)` |
-| Status — Error | `--errorColor #e88080`, `--errorColorSuppl rgb(208, 58, 82)` |
-| Surface | `--bodyColor rgb(16, 16, 20)`, `--cardColor rgb(24, 24, 28)`, `--modalColor rgb(44, 44, 50)`, `--popoverColor rgb(72, 72, 78)` |
-| Text / Icon | `--textColor1 rgba(255, 255, 255, 0.9)`, `--textColor2`, `--iconColor` |
-| Border | `--borderColor rgba(255, 255, 255, 0.24)`, `--dividerColor rgba(255, 255, 255, 0.09)` |
-| Table | `--tableHeaderColor`, `--tableColorHover rgba(255, 255, 255, 0.09)`, `--tableColorStriped` |
+| Brand | `--primaryColor #63e2b7`, `--primaryColorHover #7fe7c4` |
+| Status | `--infoColor #70c0e8`, `--warningColor #f2c97d`, `--errorColor #e88080` |
+| Surface | `--bodyColor rgb(16,16,20)`, `--cardColor rgb(24,24,28)`, `--popoverColor rgb(72,72,78)` |
+| Text / Icon | `--textColor1 rgba(255,255,255,0.9)`, `--textColor2`, `--iconColor` |
+| Border | `--borderColor rgba(255,255,255,0.24)`, `--dividerColor rgba(255,255,255,0.09)` |
+| Table | `--tableHeaderColor`, `--tableColorHover`, `--tableColorStriped` |
 | Interaction | `--hoverColor`, `--pressedColor`, `--buttonColor2` |
-| Type — body | Inter 12–16px, weights 400 / 600 |
-| Type — heading | `--heading-3xs..3xl-font-size` scale, 600 weight |
-| Radii | `2 / 3 / 4 / 6 / 8 px` (`--borderRadiusTiny..Huge`) |
-| Spacers | `--spacer-0/4/8/12/16/24/32/40` plus `--heightTiny..Huge` (22/28/34/40/46) |
+| Radii | `2 / 3 / 4 / 6 / 8 px` |
+| Spacers & Heights | `--spacer-0..40`, `--heightTiny..Huge` (22/28/34/40/46) |
 
 ## Naming Convention
 
-Tokens **preserve naïve-ui source naming verbatim** — there are no `--color-*` portable aliases. Components consume `var(--primaryColor)`, `var(--text-*)`, `var(--status-*-*)`, `var(--buttonColor2)` directly. Do not rename, scale-up, or invent values; if a missing variant is needed, run `refine-library` to extend the source first.
+Tokens **preserve naïve-ui source naming verbatim** — no `--color-*` portable aliases. Components consume `var(--primaryColor)`, `var(--textColor*)`, `var(--buttonColor2)` directly. Do not rename, scale, or invent values; run `refine-library` to extend the source first.
 
 ## Generation Notes
 
-- HTML structures from naïve-ui's official demos were preserved unchanged; the only rewrite is the relative paths to `colors_and_type.css` / `components.css` / icon assets.
-- Component slugs follow naïve-ui's own naming (e.g., `data-table` → `table`, `notification` stays as is).
-- `components/atoms.json` bundles shared layout helpers, typography scale, and one-shot atoms — these are picked up into `components.css` like any other component.
-- Foundational token-preview pages (`colors`, `typography`, `spacing`, `radius`) are intentionally **not** present — they are represented by `colors_and_type.css` + `css.json` only.
-- UI Kit ships as an interactive React 18 single-file showcase (`<script type="text/babel">` + Babel Standalone CDN), capped at `max-width: 1184px`.
+- Coverage: **full** — all 95 real naive-ui components (GitHub tree scan of `tusen-ai/naive-ui/src/`, excluding `_internal` / composables / config / legacy / theme dirs) + 1 shared `atoms` component.
+- 8 render templates applied: button / form / data / feedback / navigation / general / layout / special — see the skill's `references/component-render-templates.md`.
+- UI Kits ship as interactive React 18 single-file showcases (Babel Standalone CDN), capped at `max-width: 1184px`.
 
 ## Downstream Consumption Guide (重要)
 
@@ -83,35 +150,23 @@ Tokens **preserve naïve-ui source naming verbatim** — there are no `--color-*
 
 ### 三层契约
 
-| 层 | 文件 | 用途 | 是否可直接复制 |
+| 层 | 文件 | 用途 | 可直接复制 |
 |---|---|---|---|
-| **Tokens** | `colors_and_type.css` + `css.json` | 颜色/字号/圆角/间距等设计语言 | ✅ 直接 link 或读 css.json |
-| **Components** | `components.css` + `preview/component-*.html` | 单个组件的 markup + class | ✅ 复制 markup，引用 components.css |
-| **UIKit Showcase** | `ui_kits/{type}/index.html` | 页面级**样品展示**（max-width 1184px） | ❌ **不要直接复制根容器** |
+| **Tokens** | `colors_and_type.css` + `css.json` | 设计语言 | ✅ link 或读 css.json |
+| **Components** | `components.css` + `preview/component-*.html` | 单组件 markup + class | ✅ 复制 markup，引用 components.css |
+| **UIKit Showcase** | `ui_kits/{type}/index.html` | 页面级样品（max-width 1184px） | ❌ 不要复制根容器 |
 
 ### UIKit 是 Showcase，不是 Page Template
 
-UIKit 受 design-library-creator skill 硬约束：`max-width: 1184px` + 不允许 `transform: scale`。它是**给设计师看产品长什么样的样品**，不是给开发抄到 1920/2560 真实画布的母版。直接 copy 会导致两侧大片留白。
+UIKit 受硬约束 `max-width: 1184px` + 禁止 `transform: scale`。直接抄到 1920/2560 画布会两侧留白。
 
 ### 正确的下游消费流程
 
 ```
-你要做：在自己画布上生成一个深色 dashboard 风格页面
-  ↓
-1. 读 ui_kits/dashboard/index.html → 看页面"结构骨架"
-   （header w/ breadcrumb + sidebar (menu) + main stat-grid + recent table + quick-actions）
-  ↓
+1. 读 ui_kits/<type>/index.html → 看页面结构骨架
 2. 看每个 region 用了哪些 .ds-* 类
-   （sidebar 用 .ds-menu--vertical · stat-card 用 .ds-card · table 用 .ds-table--striped · 进度用 .ds-progress）
-  ↓
 3. 进 preview/component-{slug}.html 拿干净的组件 markup
-   （preview 不带 1184 容器，组件级是 fluid 的）
-  ↓
-4. 在你自己的画布上写外层 grid
-   - 不要继承 UIKit 的 .uikit-shell (max-width: 1184)
-   - 不要继承 UIKit 的根 grid-template-columns（那是为 1184 调的比例）
-   - 只继承组件层级的 markup + class
-   - 顶层用 100vw / 100% / auto-fit grid 自适应你的画布
+4. 在自己画布写外层 grid（100vw / auto-fit），不继承 .uikit-shell
 ```
 
 ### 快速参考表
@@ -120,20 +175,12 @@ UIKit 受 design-library-creator skill 硬约束：`max-width: 1184px` + 不允�
 |---|---|
 | 用品牌色/字号/间距 token | `colors_and_type.css` 或 `css.json` |
 | 写一个按钮 / 表单 / 表格 | `preview/component-{slug}.html` + `components.css` |
-| 写一个完整的 dashboard / 表格页 | UIKit 看**结构思路** + preview 拿组件 markup + 自己写外层 grid |
-| 看有哪些组件可用 | `components/index.json` |
-| 加新组件 | `expand-components` workflow（用 `preview/component-{slug}.html` 格式） |
-
-### UIKit 内层组件其实是流体的
-
-注意：UIKit 的 1184 限制只在**最外层 `.uikit-shell` 容器**。内层所有 `.ds-*` 组件都是 fluid 的（`min-width: 0` + `1fr` + `minmax(0, 1fr)`）。所以正确做法是：把内层 region 整段 copy 出来，外层换成你自己的画布尺寸 grid。
-
-## Icons
-
-Bundled SVG icons live at `assets/icons/`. Optional runtime sprite renderer at `icons.js` (when present).
+| 写完整页面（自定义画布） | UIKit 看结构思路 + preview 拿 markup + 自己写外层 grid |
+| 看有哪些组件可用 | `components/index.json`（96 个） |
+| 加新组件 | `expand-components` workflow |
 
 ## Next Steps
 
-- Refine or extend tokens → `refine-library` workflow (e.g., add a secondary success tint or `--primaryColorSurface`).
-- Add new components → `expand-components` workflow (e.g., append `tree-select`, `cascader`, `data-table`).
-- Spin up an additional kit (mobile / dev-explorer / marketing) → `generate-additional-kit` workflow.
+- Refine or extend tokens → `refine-library` workflow.
+- Add new components → `expand-components` workflow.
+- Spin up an additional kit → `generate-additional-kit` workflow.

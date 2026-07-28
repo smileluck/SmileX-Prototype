@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Timeline</title>
+  <link rel="stylesheet" href="../colors_and_type.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" />
+  <link rel="stylesheet" href="../components.css" />
+  <style>
+    /* ── preview-page chrome (preview-only) ─────────────────── */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--bodyColor); color: var(--textColor1); font-family: var(--fontFamily); font-size: var(--fontSizeMedium); line-height: var(--lineHeightMedium); min-height: 100%; }
+    body { padding: var(--spacer-32); }
+    .pv-header { margin-bottom: var(--spacer-32); padding-bottom: var(--spacer-16); border-bottom: 1px solid var(--dividerColor); }
+    .pv-header h1 { font-size: var(--heading-lg-font-size); font-weight: var(--heading-base-font-weight); margin-bottom: var(--spacer-4); }
+    .pv-header p { color: var(--textColor2); font-size: var(--fontSizeSmall); }
+    .pv-section { margin-bottom: var(--spacer-32); }
+    .pv-section__title { font-size: var(--heading-sm-font-size); font-weight: var(--heading-base-font-weight); margin-bottom: var(--spacer-12); color: var(--textColor1); }
+    .row { display: flex; gap: var(--spacer-12); align-items: center; flex-wrap: wrap; }
+    .stack-12 { display: flex; flex-direction: column; gap: var(--spacer-12); }
+
+    /* @component-css-start */
+    /* ===== Timeline ===== */
+.ds-timeline { width: 100%; background: var(--cardColor); border: 1px solid var(--borderColor); border-radius: var(--borderRadiusLarge); overflow: hidden; font-size: var(--fontSizeSmall); color: var(--textColor1); }
+.ds-timeline__header { padding: var(--spacer-12) var(--spacer-16); background: var(--tableHeaderColor); font-weight: var(--fontWeightStrong); border-bottom: 1px solid var(--dividerColor); }
+.ds-timeline__row { display: flex; align-items: center; gap: var(--spacer-12); padding: var(--spacer-12) var(--spacer-16); border-bottom: 1px solid var(--dividerColor); transition: background 0.1s; }
+.ds-timeline__row:hover { background: var(--tableColorHover); }
+.ds-timeline__row:last-child { border-bottom: none; }
+.ds-timeline--striped .ds-timeline__row:nth-child(even) { background: var(--tableColorStriped); }
+.ds-timeline__cell { flex: 1; min-width: 0; }
+.ds-timeline__cell--muted { color: var(--textColor2); }
+    /* @component-css-end */
+  </style>
+</head>
+<body>
+  <header class="pv-header">
+    <h1>Timeline</h1>
+    <p>naive-ui timeline — renderCategory: data.</p>
+  </header>
+  <section class="pv-section">
+    <div class="pv-section__title">Default — striped, hover</div>
+    <div class="ds-timeline ds-timeline--striped">
+      <div class="ds-timeline__header">Name / Status / Owner / Updated</div>
+      <div class="ds-timeline__row">
+        <div class="ds-timeline__cell">Marketing site</div>
+        <div class="ds-timeline__cell">Active</div>
+        <div class="ds-timeline__cell">Alice</div>
+        <div class="ds-timeline__cell ds-timeline__cell--muted">2h ago</div>
+      </div>
+      <div class="ds-timeline__row">
+        <div class="ds-timeline__cell">API gateway</div>
+        <div class="ds-timeline__cell">Pending</div>
+        <div class="ds-timeline__cell">Bob</div>
+        <div class="ds-timeline__cell ds-timeline__cell--muted">5h ago</div>
+      </div>
+      <div class="ds-timeline__row">
+        <div class="ds-timeline__cell">Internal dashboard</div>
+        <div class="ds-timeline__cell">Failed</div>
+        <div class="ds-timeline__cell">Carol</div>
+        <div class="ds-timeline__cell ds-timeline__cell--muted">1d ago</div>
+      </div>
+      <div class="ds-timeline__row">
+        <div class="ds-timeline__cell">Documentation</div>
+        <div class="ds-timeline__cell">Draft</div>
+        <div class="ds-timeline__cell">Dave</div>
+        <div class="ds-timeline__cell ds-timeline__cell--muted">2d ago</div>
+      </div>
+      <div class="ds-timeline__row">
+        <div class="ds-timeline__cell">Mobile app</div>
+        <div class="ds-timeline__cell">Active</div>
+        <div class="ds-timeline__cell">Eve</div>
+        <div class="ds-timeline__cell ds-timeline__cell--muted">3d ago</div>
+      </div>
+      <div class="ds-timeline__row">
+        <div class="ds-timeline__cell">Auth migration</div>
+        <div class="ds-timeline__cell">Pending</div>
+        <div class="ds-timeline__cell">Frank</div>
+        <div class="ds-timeline__cell ds-timeline__cell--muted">1w ago</div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

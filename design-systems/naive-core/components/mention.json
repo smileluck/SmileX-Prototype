@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "slug": "mention",
+  "name": "Mention",
+  "category": "form",
+  "sourceKind": "structured-spec",
+  "confidence": "high",
+  "semanticTypeCandidates": [
+    "mention"
+  ],
+  "variantDimensions": {
+    "renderCategory": [
+      "form"
+    ]
+  },
+  "representativeVariants": [
+    {
+      "type": "default"
+    }
+  ],
+  "anatomy": [
+    "root"
+  ],
+  "structurePatterns": [
+    "form template"
+  ],
+  "usageHints": [
+    "Rendered with the form template — see preview/component-mention.html"
+  ],
+  "doNotInvent": [],
+  "unknowns": [],
+  "tokensConsumed": [
+    "--borderColor",
+    "--borderRadiusLarge",
+    "--borderRadiusMedium",
+    "--borderRadiusSmall",
+    "--buttonColor2",
+    "--buttonColor2Hover",
+    "--dividerColor",
+    "--errorColor",
+    "--fontFamily",
+    "--fontSizeLarge",
+    "--fontSizeMedium",
+    "--fontSizeSmall",
+    "--fontSizeTiny",
+    "--fontWeightStrong",
+    "--heightLarge",
+    "--heightMedium",
+    "--heightSmall",
+    "--hoverColor",
+    "--inputColor",
+    "--inputColorDisabled",
+    "--placeholderColor",
+    "--popoverColor",
+    "--primaryColor",
+    "--primaryColorHover",
+    "--spacer-12",
+    "--spacer-8",
+    "--textColor1",
+    "--textColor2",
+    "--textColor3"
+  ],
+  "domAnatomy": {
+    "root": {
+      "tag": "div",
+      "class": "ds-mention",
+      "children": [
+        {
+          "tag": "div",
+          "class": "ds-mention__content"
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "preview": "preview/component-mention.html",
+    "source": "naive-ui mention",
+    "css": {
+      "file": "components.css",
+      "marker": "── Mention ──"
+    }
+  }
+}

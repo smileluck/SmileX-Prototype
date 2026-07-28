@@ -1,0 +1,12 @@
+{
+  "kitType": "dev-explorer",
+  "screensGenerated": 1,
+  "coreComponentsUsed": ["button", "menu", "tabs", "breadcrumb", "tree", "input", "tag", "badge"],
+  "supportComponentsUsed": ["tooltip", "dropdown", "atoms"],
+  "previewClassReuseRate": 0.86,
+  "inventedComponents": [],
+  "interactiveStatesRendered": ["default", "hover", "active", "disabled"],
+  "primaryActionPerScreen": true,
+  "mockDataDensity": { "fileTreeRows": 8, "codeLines": 14, "chatMessages": 4 },
+  "warnings": []
+}

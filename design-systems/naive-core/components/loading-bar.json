@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 2,
+  "slug": "loading-bar",
+  "name": "Loading Bar",
+  "category": "feedback",
+  "sourceKind": "structured-spec",
+  "confidence": "high",
+  "semanticTypeCandidates": [
+    "loading-bar"
+  ],
+  "variantDimensions": {
+    "renderCategory": [
+      "feedback"
+    ]
+  },
+  "representativeVariants": [
+    {
+      "type": "default"
+    }
+  ],
+  "anatomy": [
+    "root"
+  ],
+  "structurePatterns": [
+    "feedback template"
+  ],
+  "usageHints": [
+    "Rendered with the feedback template — see preview/component-loading-bar.html"
+  ],
+  "doNotInvent": [],
+  "unknowns": [],
+  "tokensConsumed": [
+    "--actionColor",
+    "--borderColor",
+    "--borderRadiusLarge",
+    "--borderRadiusMedium",
+    "--borderRadiusSmall",
+    "--cardColor",
+    "--dividerColor",
+    "--errorColor",
+    "--fontFamily",
+    "--fontSizeMedium",
+    "--fontSizeSmall",
+    "--fontSizeTiny",
+    "--fontWeightStrong",
+    "--hoverColor",
+    "--infoColor",
+    "--invertedColor",
+    "--modalColor",
+    "--popoverColor",
+    "--primaryColor",
+    "--primaryColorHover",
+    "--progressRailColor",
+    "--railColor",
+    "--spacer-12",
+    "--spacer-16",
+    "--spacer-24",
+    "--spacer-8",
+    "--successColor",
+    "--textColor1",
+    "--textColor2",
+    "--textColor3",
+    "--warningColor"
+  ],
+  "domAnatomy": {
+    "root": {
+      "tag": "div",
+      "class": "ds-loading-bar",
+      "children": [
+        {
+          "tag": "div",
+          "class": "ds-loading-bar__content"
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "preview": "preview/component-loading-bar.html",
+    "source": "naive-ui loading-bar",
+    "css": {
+      "file": "components.css",
+      "marker": "── Loading Bar ──"
+    }
+  }
+}

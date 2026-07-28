@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 2,
+  "slug": "popconfirm",
+  "name": "Popconfirm",
+  "category": "feedback",
+  "sourceKind": "structured-spec",
+  "confidence": "high",
+  "semanticTypeCandidates": [
+    "popconfirm"
+  ],
+  "variantDimensions": {
+    "renderCategory": [
+      "feedback"
+    ]
+  },
+  "representativeVariants": [
+    {
+      "type": "default"
+    }
+  ],
+  "anatomy": [
+    "root"
+  ],
+  "structurePatterns": [
+    "feedback template"
+  ],
+  "usageHints": [
+    "Rendered with the feedback template — see preview/component-popconfirm.html"
+  ],
+  "doNotInvent": [],
+  "unknowns": [],
+  "tokensConsumed": [
+    "--actionColor",
+    "--borderColor",
+    "--borderRadiusLarge",
+    "--borderRadiusMedium",
+    "--borderRadiusSmall",
+    "--cardColor",
+    "--dividerColor",
+    "--errorColor",
+    "--fontFamily",
+    "--fontSizeMedium",
+    "--fontSizeSmall",
+    "--fontSizeTiny",
+    "--fontWeightStrong",
+    "--hoverColor",
+    "--infoColor",
+    "--invertedColor",
+    "--modalColor",
+    "--popoverColor",
+    "--primaryColor",
+    "--primaryColorHover",
+    "--progressRailColor",
+    "--railColor",
+    "--spacer-12",
+    "--spacer-16",
+    "--spacer-24",
+    "--spacer-8",
+    "--successColor",
+    "--textColor1",
+    "--textColor2",
+    "--textColor3",
+    "--warningColor"
+  ],
+  "domAnatomy": {
+    "root": {
+      "tag": "div",
+      "class": "ds-popconfirm",
+      "children": [
+        {
+          "tag": "div",
+          "class": "ds-popconfirm__content"
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "preview": "preview/component-popconfirm.html",
+    "source": "naive-ui popconfirm",
+    "css": {
+      "file": "components.css",
+      "marker": "── Popconfirm ──"
+    }
+  }
+}

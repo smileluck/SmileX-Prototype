@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 2,
+  "slug": "empty",
+  "name": "Empty",
+  "category": "feedback",
+  "sourceKind": "structured-spec",
+  "confidence": "high",
+  "semanticTypeCandidates": [
+    "empty"
+  ],
+  "variantDimensions": {
+    "renderCategory": [
+      "feedback"
+    ]
+  },
+  "representativeVariants": [
+    {
+      "type": "default"
+    }
+  ],
+  "anatomy": [
+    "root"
+  ],
+  "structurePatterns": [
+    "feedback template"
+  ],
+  "usageHints": [
+    "Rendered with the feedback template — see preview/component-empty.html"
+  ],
+  "doNotInvent": [],
+  "unknowns": [],
+  "tokensConsumed": [
+    "--actionColor",
+    "--borderColor",
+    "--borderRadiusLarge",
+    "--borderRadiusMedium",
+    "--borderRadiusSmall",
+    "--cardColor",
+    "--dividerColor",
+    "--errorColor",
+    "--fontFamily",
+    "--fontSizeMedium",
+    "--fontSizeSmall",
+    "--fontSizeTiny",
+    "--fontWeightStrong",
+    "--hoverColor",
+    "--infoColor",
+    "--invertedColor",
+    "--modalColor",
+    "--popoverColor",
+    "--primaryColor",
+    "--primaryColorHover",
+    "--progressRailColor",
+    "--railColor",
+    "--spacer-12",
+    "--spacer-16",
+    "--spacer-24",
+    "--spacer-8",
+    "--successColor",
+    "--textColor1",
+    "--textColor2",
+    "--textColor3",
+    "--warningColor"
+  ],
+  "domAnatomy": {
+    "root": {
+      "tag": "div",
+      "class": "ds-empty",
+      "children": [
+        {
+          "tag": "div",
+          "class": "ds-empty__content"
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "preview": "preview/component-empty.html",
+    "source": "naive-ui empty",
+    "css": {
+      "file": "components.css",
+      "marker": "── Empty ──"
+    }
+  }
+}

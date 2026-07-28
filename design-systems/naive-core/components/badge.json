@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 2,
+  "slug": "badge",
+  "name": "Badge",
+  "category": "general",
+  "sourceKind": "structured-spec",
+  "confidence": "high",
+  "semanticTypeCandidates": [
+    "badge"
+  ],
+  "variantDimensions": {
+    "renderCategory": [
+      "general"
+    ]
+  },
+  "representativeVariants": [
+    {
+      "type": "default"
+    }
+  ],
+  "anatomy": [
+    "root"
+  ],
+  "structurePatterns": [
+    "general template"
+  ],
+  "usageHints": [
+    "Rendered with the general template — see preview/component-badge.html"
+  ],
+  "doNotInvent": [],
+  "unknowns": [],
+  "tokensConsumed": [
+    "--avatarColor",
+    "--borderColor",
+    "--borderRadiusHuge",
+    "--borderRadiusLarge",
+    "--borderRadiusMedium",
+    "--borderRadiusSmall",
+    "--buttonColor2",
+    "--dividerColor",
+    "--errorColor",
+    "--fontFamily",
+    "--fontSizeMedium",
+    "--fontSizeSmall",
+    "--fontSizeTiny",
+    "--fontWeightStrong",
+    "--iconColor",
+    "--infoColor",
+    "--invertedColor",
+    "--primaryColor",
+    "--primaryColorHover",
+    "--spacer-12",
+    "--spacer-4",
+    "--spacer-8",
+    "--successColor",
+    "--tagColor",
+    "--textColor1",
+    "--textColor2",
+    "--textColor3",
+    "--warningColor"
+  ],
+  "domAnatomy": {
+    "root": {
+      "tag": "div",
+      "class": "ds-badge",
+      "children": [
+        {
+          "tag": "div",
+          "class": "ds-badge__content"
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "preview": "preview/component-badge.html",
+    "source": "naive-ui badge",
+    "css": {
+      "file": "components.css",
+      "marker": "── Badge ──"
+    }
+  }
+}

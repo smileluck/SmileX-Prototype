@@ -1,0 +1,20 @@
+{
+  "library": "chakra-ui",
+  "github": {
+    "owner": "chakra-ui",
+    "repo": "chakra-ui",
+    "srcDir": "packages/components/src"
+  },
+  "totalCount": null,
+  "components": [],
+  "status": "stub — populate via GitHub Contents API on first use",
+  "expectedCount": "30+",
+  "excludedDirs": [
+    "_internal",
+    "_utils",
+    "composables",
+    "config-provider",
+    "theme",
+    "styles"
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 2,
+  "slug": "steps",
+  "name": "Steps",
+  "category": "navigation",
+  "sourceKind": "structured-spec",
+  "confidence": "high",
+  "semanticTypeCandidates": [
+    "steps"
+  ],
+  "variantDimensions": {
+    "renderCategory": [
+      "navigation"
+    ]
+  },
+  "representativeVariants": [
+    {
+      "type": "default"
+    }
+  ],
+  "anatomy": [
+    "root"
+  ],
+  "structurePatterns": [
+    "navigation template"
+  ],
+  "usageHints": [
+    "Rendered with the navigation template — see preview/component-steps.html"
+  ],
+  "doNotInvent": [],
+  "unknowns": [],
+  "tokensConsumed": [
+    "--actionColor",
+    "--borderColor",
+    "--borderRadiusMedium",
+    "--borderRadiusSmall",
+    "--cardColor",
+    "--dividerColor",
+    "--fontFamily",
+    "--fontSizeMedium",
+    "--fontSizeSmall",
+    "--fontSizeTiny",
+    "--fontWeightStrong",
+    "--heightMedium",
+    "--hoverColor",
+    "--popoverColor",
+    "--pressedColor",
+    "--primaryColor",
+    "--primaryColorHover",
+    "--primaryColorPressed",
+    "--spacer-12",
+    "--spacer-4",
+    "--spacer-8",
+    "--textColor1",
+    "--textColor2",
+    "--textColor3"
+  ],
+  "domAnatomy": {
+    "root": {
+      "tag": "div",
+      "class": "ds-steps",
+      "children": [
+        {
+          "tag": "div",
+          "class": "ds-steps__item"
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "preview": "preview/component-steps.html",
+    "source": "naive-ui steps",
+    "css": {
+      "file": "components.css",
+      "marker": "── Steps ──"
+    }
+  }
+}

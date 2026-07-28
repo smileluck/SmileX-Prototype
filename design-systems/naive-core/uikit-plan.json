@@ -3,9 +3,9 @@
   "headBoilerplate": "<link rel=\"stylesheet\" href=\"../../colors_and_type.css\">",
   "corePreviewComponents": [
     {
-      "slug": "buttons",
+      "slug": "button",
       "reason": "fixed slot \"button\"; semantic=button:0.75; policy=fixed-slots-first",
-      "evidenceFile": "components/buttons.json",
+      "evidenceFile": "components/button.json",
       "priority": 1,
       "slot": "button"
     },
@@ -18,53 +18,672 @@
     }
   ],
   "supportEvidenceComponents": [
-    { "slug": "breadcrumb", "reason": "support slot \"breadcrumb\"; semantic=breadcrumb:0.75", "evidenceFile": "components/breadcrumb.json", "priority": 3, "slot": "breadcrumb" },
-    { "slug": "badge", "reason": "support; semantic=badge:0.75", "evidenceFile": "components/badge.json", "priority": 4 },
-    { "slug": "card", "reason": "support slot \"card\"; semantic=card:0.75", "evidenceFile": "components/card.json", "priority": 5, "slot": "card" },
-    { "slug": "tag", "reason": "fixed slot \"tag\"; semantic=tag:0.75", "evidenceFile": "components/tag.json", "priority": 6, "slot": "tag" },
-    { "slug": "table", "reason": "fixed slot \"table\"; semantic=table:0.75", "evidenceFile": "components/table.json", "priority": 7, "slot": "table" },
-    { "slug": "pagination", "reason": "support; semantic=pagination:0.75", "evidenceFile": "components/pagination.json", "priority": 8 },
-    { "slug": "alert", "reason": "support; semantic=alert:0.75", "evidenceFile": "components/alert.json", "priority": 9 },
-    { "slug": "avatar", "reason": "support; semantic=avatar:0.75", "evidenceFile": "components/avatar.json", "priority": 10 },
-    { "slug": "progress", "reason": "support; semantic=progress:0.75", "evidenceFile": "components/progress.json", "priority": 11 },
-    { "slug": "dialog", "reason": "support; semantic=dialog:0.75", "evidenceFile": "components/dialog.json", "priority": 12 },
-    { "slug": "dropdown", "reason": "support; semantic=menu:0.75", "evidenceFile": "components/dropdown.json", "priority": 13 },
-    { "slug": "popover", "reason": "support; semantic=popover:0.75", "evidenceFile": "components/popover.json", "priority": 14 },
-    { "slug": "tooltip", "reason": "support; semantic=tooltip:0.75", "evidenceFile": "components/tooltip.json", "priority": 15 },
-    { "slug": "notification", "reason": "support; semantic=notification:0.75", "evidenceFile": "components/notification.json", "priority": 16 },
-    { "slug": "form", "reason": "support; semantic=form:0.75", "evidenceFile": "components/form.json", "priority": 17 },
-    { "slug": "forms", "reason": "support; semantic=input:0.75", "evidenceFile": "components/forms.json", "priority": 18 },
-    { "slug": "select", "reason": "support; semantic=select:0.75", "evidenceFile": "components/select.json", "priority": 19 },
-    { "slug": "input-number", "reason": "support; semantic=number-input:0.75", "evidenceFile": "components/input-number.json", "priority": 20 },
-    { "slug": "empty", "reason": "support; semantic=empty:0.75", "evidenceFile": "components/empty.json", "priority": 21 },
-    { "slug": "button-group", "reason": "support; semantic=toggle-group:0.75", "evidenceFile": "components/button-group.json", "priority": 22 },
-    { "slug": "tabs", "reason": "support slot \"tabs\"; semantic=tabs:0.75", "evidenceFile": "components/tabs.json", "priority": 23, "slot": "tabs" },
-    { "slug": "atoms", "reason": "support; shared utility atoms (layout helpers, headings, code, mono)", "evidenceFile": "components/atoms.json", "priority": 24 }
+    {
+      "slug": "affix",
+      "reason": "support; semantic=affix:0.75",
+      "evidenceFile": "components/affix.json",
+      "priority": 3
+    },
+    {
+      "slug": "alert",
+      "reason": "support; semantic=alert:0.75",
+      "evidenceFile": "components/alert.json",
+      "priority": 4
+    },
+    {
+      "slug": "anchor",
+      "reason": "support; semantic=anchor:0.75",
+      "evidenceFile": "components/anchor.json",
+      "priority": 5
+    },
+    {
+      "slug": "atoms",
+      "reason": "support; semantic=atoms:0.75",
+      "evidenceFile": "components/atoms.json",
+      "priority": 6
+    },
+    {
+      "slug": "auto-complete",
+      "reason": "support; semantic=auto-complete:0.75",
+      "evidenceFile": "components/auto-complete.json",
+      "priority": 7
+    },
+    {
+      "slug": "avatar-group",
+      "reason": "support; semantic=avatar-group:0.75",
+      "evidenceFile": "components/avatar-group.json",
+      "priority": 8
+    },
+    {
+      "slug": "avatar",
+      "reason": "support; semantic=avatar:0.75",
+      "evidenceFile": "components/avatar.json",
+      "priority": 9
+    },
+    {
+      "slug": "back-top",
+      "reason": "support; semantic=back-top:0.75",
+      "evidenceFile": "components/back-top.json",
+      "priority": 10
+    },
+    {
+      "slug": "badge",
+      "reason": "support; semantic=badge:0.75",
+      "evidenceFile": "components/badge.json",
+      "priority": 11
+    },
+    {
+      "slug": "breadcrumb",
+      "reason": "support; semantic=breadcrumb:0.75",
+      "evidenceFile": "components/breadcrumb.json",
+      "priority": 12,
+      "slot": "breadcrumb"
+    },
+    {
+      "slug": "button-group",
+      "reason": "support; semantic=button-group:0.75",
+      "evidenceFile": "components/button-group.json",
+      "priority": 13
+    },
+    {
+      "slug": "calendar",
+      "reason": "support; semantic=calendar:0.75",
+      "evidenceFile": "components/calendar.json",
+      "priority": 14
+    },
+    {
+      "slug": "card",
+      "reason": "support; semantic=card:0.75",
+      "evidenceFile": "components/card.json",
+      "priority": 15,
+      "slot": "card"
+    },
+    {
+      "slug": "carousel",
+      "reason": "support; semantic=carousel:0.75",
+      "evidenceFile": "components/carousel.json",
+      "priority": 16
+    },
+    {
+      "slug": "cascader",
+      "reason": "support; semantic=cascader:0.75",
+      "evidenceFile": "components/cascader.json",
+      "priority": 17
+    },
+    {
+      "slug": "checkbox",
+      "reason": "support; semantic=checkbox:0.75",
+      "evidenceFile": "components/checkbox.json",
+      "priority": 18
+    },
+    {
+      "slug": "code",
+      "reason": "support; semantic=code:0.75",
+      "evidenceFile": "components/code.json",
+      "priority": 19
+    },
+    {
+      "slug": "collapse",
+      "reason": "support; semantic=collapse:0.75",
+      "evidenceFile": "components/collapse.json",
+      "priority": 20
+    },
+    {
+      "slug": "color-picker",
+      "reason": "support; semantic=color-picker:0.75",
+      "evidenceFile": "components/color-picker.json",
+      "priority": 21
+    },
+    {
+      "slug": "countdown",
+      "reason": "support; semantic=countdown:0.75",
+      "evidenceFile": "components/countdown.json",
+      "priority": 22
+    },
+    {
+      "slug": "data-table",
+      "reason": "support; semantic=data-table:0.75",
+      "evidenceFile": "components/data-table.json",
+      "priority": 23
+    },
+    {
+      "slug": "date-picker",
+      "reason": "support; semantic=date-picker:0.75",
+      "evidenceFile": "components/date-picker.json",
+      "priority": 24
+    },
+    {
+      "slug": "descriptions",
+      "reason": "support; semantic=descriptions:0.75",
+      "evidenceFile": "components/descriptions.json",
+      "priority": 25
+    },
+    {
+      "slug": "dialog",
+      "reason": "support; semantic=dialog:0.75",
+      "evidenceFile": "components/dialog.json",
+      "priority": 26
+    },
+    {
+      "slug": "divider",
+      "reason": "support; semantic=divider:0.75",
+      "evidenceFile": "components/divider.json",
+      "priority": 27
+    },
+    {
+      "slug": "drawer",
+      "reason": "support; semantic=drawer:0.75",
+      "evidenceFile": "components/drawer.json",
+      "priority": 28
+    },
+    {
+      "slug": "dropdown",
+      "reason": "support; semantic=dropdown:0.75",
+      "evidenceFile": "components/dropdown.json",
+      "priority": 29
+    },
+    {
+      "slug": "dynamic-input",
+      "reason": "support; semantic=dynamic-input:0.75",
+      "evidenceFile": "components/dynamic-input.json",
+      "priority": 30
+    },
+    {
+      "slug": "dynamic-tags",
+      "reason": "support; semantic=dynamic-tags:0.75",
+      "evidenceFile": "components/dynamic-tags.json",
+      "priority": 31
+    },
+    {
+      "slug": "ellipsis",
+      "reason": "support; semantic=ellipsis:0.75",
+      "evidenceFile": "components/ellipsis.json",
+      "priority": 32
+    },
+    {
+      "slug": "empty",
+      "reason": "support; semantic=empty:0.75",
+      "evidenceFile": "components/empty.json",
+      "priority": 33
+    },
+    {
+      "slug": "equation",
+      "reason": "support; semantic=equation:0.75",
+      "evidenceFile": "components/equation.json",
+      "priority": 34
+    },
+    {
+      "slug": "flex",
+      "reason": "support; semantic=flex:0.75",
+      "evidenceFile": "components/flex.json",
+      "priority": 35
+    },
+    {
+      "slug": "float-button-group",
+      "reason": "support; semantic=float-button-group:0.75",
+      "evidenceFile": "components/float-button-group.json",
+      "priority": 36
+    },
+    {
+      "slug": "float-button",
+      "reason": "support; semantic=float-button:0.75",
+      "evidenceFile": "components/float-button.json",
+      "priority": 37
+    },
+    {
+      "slug": "form",
+      "reason": "support; semantic=form:0.75",
+      "evidenceFile": "components/form.json",
+      "priority": 38
+    },
+    {
+      "slug": "gradient-text",
+      "reason": "support; semantic=gradient-text:0.75",
+      "evidenceFile": "components/gradient-text.json",
+      "priority": 39
+    },
+    {
+      "slug": "grid",
+      "reason": "support; semantic=grid:0.75",
+      "evidenceFile": "components/grid.json",
+      "priority": 40
+    },
+    {
+      "slug": "heatmap",
+      "reason": "support; semantic=heatmap:0.75",
+      "evidenceFile": "components/heatmap.json",
+      "priority": 41
+    },
+    {
+      "slug": "highlight",
+      "reason": "support; semantic=highlight:0.75",
+      "evidenceFile": "components/highlight.json",
+      "priority": 42
+    },
+    {
+      "slug": "icon-wrapper",
+      "reason": "support; semantic=icon-wrapper:0.75",
+      "evidenceFile": "components/icon-wrapper.json",
+      "priority": 43
+    },
+    {
+      "slug": "icon",
+      "reason": "support; semantic=icon:0.75",
+      "evidenceFile": "components/icon.json",
+      "priority": 44
+    },
+    {
+      "slug": "image",
+      "reason": "support; semantic=image:0.75",
+      "evidenceFile": "components/image.json",
+      "priority": 45
+    },
+    {
+      "slug": "infinite-scroll",
+      "reason": "support; semantic=infinite-scroll:0.75",
+      "evidenceFile": "components/infinite-scroll.json",
+      "priority": 46
+    },
+    {
+      "slug": "input-number",
+      "reason": "support; semantic=input-number:0.75",
+      "evidenceFile": "components/input-number.json",
+      "priority": 47
+    },
+    {
+      "slug": "input-otp",
+      "reason": "support; semantic=input-otp:0.75",
+      "evidenceFile": "components/input-otp.json",
+      "priority": 48
+    },
+    {
+      "slug": "input",
+      "reason": "support; semantic=input:0.75",
+      "evidenceFile": "components/input.json",
+      "priority": 49
+    },
+    {
+      "slug": "layout",
+      "reason": "support; semantic=layout:0.75",
+      "evidenceFile": "components/layout.json",
+      "priority": 50
+    },
+    {
+      "slug": "legacy-grid",
+      "reason": "support; semantic=legacy-grid:0.75",
+      "evidenceFile": "components/legacy-grid.json",
+      "priority": 51
+    },
+    {
+      "slug": "legacy-transfer",
+      "reason": "support; semantic=legacy-transfer:0.75",
+      "evidenceFile": "components/legacy-transfer.json",
+      "priority": 52
+    },
+    {
+      "slug": "list",
+      "reason": "support; semantic=list:0.75",
+      "evidenceFile": "components/list.json",
+      "priority": 53
+    },
+    {
+      "slug": "loading-bar",
+      "reason": "support; semantic=loading-bar:0.75",
+      "evidenceFile": "components/loading-bar.json",
+      "priority": 54
+    },
+    {
+      "slug": "log",
+      "reason": "support; semantic=log:0.75",
+      "evidenceFile": "components/log.json",
+      "priority": 55
+    },
+    {
+      "slug": "marquee",
+      "reason": "support; semantic=marquee:0.75",
+      "evidenceFile": "components/marquee.json",
+      "priority": 56
+    },
+    {
+      "slug": "mention",
+      "reason": "support; semantic=mention:0.75",
+      "evidenceFile": "components/mention.json",
+      "priority": 57
+    },
+    {
+      "slug": "message",
+      "reason": "support; semantic=message:0.75",
+      "evidenceFile": "components/message.json",
+      "priority": 58
+    },
+    {
+      "slug": "modal",
+      "reason": "support; semantic=modal:0.75",
+      "evidenceFile": "components/modal.json",
+      "priority": 59
+    },
+    {
+      "slug": "notification",
+      "reason": "support; semantic=notification:0.75",
+      "evidenceFile": "components/notification.json",
+      "priority": 60
+    },
+    {
+      "slug": "number-animation",
+      "reason": "support; semantic=number-animation:0.75",
+      "evidenceFile": "components/number-animation.json",
+      "priority": 61
+    },
+    {
+      "slug": "page-header",
+      "reason": "support; semantic=page-header:0.75",
+      "evidenceFile": "components/page-header.json",
+      "priority": 62
+    },
+    {
+      "slug": "pagination",
+      "reason": "support; semantic=pagination:0.75",
+      "evidenceFile": "components/pagination.json",
+      "priority": 63
+    },
+    {
+      "slug": "popconfirm",
+      "reason": "support; semantic=popconfirm:0.75",
+      "evidenceFile": "components/popconfirm.json",
+      "priority": 64
+    },
+    {
+      "slug": "popover",
+      "reason": "support; semantic=popover:0.75",
+      "evidenceFile": "components/popover.json",
+      "priority": 65
+    },
+    {
+      "slug": "popselect",
+      "reason": "support; semantic=popselect:0.75",
+      "evidenceFile": "components/popselect.json",
+      "priority": 66
+    },
+    {
+      "slug": "progress",
+      "reason": "support; semantic=progress:0.75",
+      "evidenceFile": "components/progress.json",
+      "priority": 67
+    },
+    {
+      "slug": "qr-code",
+      "reason": "support; semantic=qr-code:0.75",
+      "evidenceFile": "components/qr-code.json",
+      "priority": 68
+    },
+    {
+      "slug": "radio",
+      "reason": "support; semantic=radio:0.75",
+      "evidenceFile": "components/radio.json",
+      "priority": 69
+    },
+    {
+      "slug": "rate",
+      "reason": "support; semantic=rate:0.75",
+      "evidenceFile": "components/rate.json",
+      "priority": 70
+    },
+    {
+      "slug": "result",
+      "reason": "support; semantic=result:0.75",
+      "evidenceFile": "components/result.json",
+      "priority": 71
+    },
+    {
+      "slug": "scrollbar",
+      "reason": "support; semantic=scrollbar:0.75",
+      "evidenceFile": "components/scrollbar.json",
+      "priority": 72
+    },
+    {
+      "slug": "select",
+      "reason": "support; semantic=select:0.75",
+      "evidenceFile": "components/select.json",
+      "priority": 73
+    },
+    {
+      "slug": "skeleton",
+      "reason": "support; semantic=skeleton:0.75",
+      "evidenceFile": "components/skeleton.json",
+      "priority": 74
+    },
+    {
+      "slug": "slider",
+      "reason": "support; semantic=slider:0.75",
+      "evidenceFile": "components/slider.json",
+      "priority": 75
+    },
+    {
+      "slug": "space",
+      "reason": "support; semantic=space:0.75",
+      "evidenceFile": "components/space.json",
+      "priority": 76
+    },
+    {
+      "slug": "spin",
+      "reason": "support; semantic=spin:0.75",
+      "evidenceFile": "components/spin.json",
+      "priority": 77
+    },
+    {
+      "slug": "split",
+      "reason": "support; semantic=split:0.75",
+      "evidenceFile": "components/split.json",
+      "priority": 78
+    },
+    {
+      "slug": "statistic",
+      "reason": "support; semantic=statistic:0.75",
+      "evidenceFile": "components/statistic.json",
+      "priority": 79
+    },
+    {
+      "slug": "steps",
+      "reason": "support; semantic=steps:0.75",
+      "evidenceFile": "components/steps.json",
+      "priority": 80
+    },
+    {
+      "slug": "switch",
+      "reason": "support; semantic=switch:0.75",
+      "evidenceFile": "components/switch.json",
+      "priority": 81
+    },
+    {
+      "slug": "table",
+      "reason": "support; semantic=table:0.75",
+      "evidenceFile": "components/table.json",
+      "priority": 82,
+      "slot": "table"
+    },
+    {
+      "slug": "tabs",
+      "reason": "support; semantic=tabs:0.75",
+      "evidenceFile": "components/tabs.json",
+      "priority": 83,
+      "slot": "tabs"
+    },
+    {
+      "slug": "tag",
+      "reason": "support; semantic=tag:0.75",
+      "evidenceFile": "components/tag.json",
+      "priority": 84,
+      "slot": "tag"
+    },
+    {
+      "slug": "thing",
+      "reason": "support; semantic=thing:0.75",
+      "evidenceFile": "components/thing.json",
+      "priority": 85
+    },
+    {
+      "slug": "time-picker",
+      "reason": "support; semantic=time-picker:0.75",
+      "evidenceFile": "components/time-picker.json",
+      "priority": 86
+    },
+    {
+      "slug": "time",
+      "reason": "support; semantic=time:0.75",
+      "evidenceFile": "components/time.json",
+      "priority": 87
+    },
+    {
+      "slug": "timeline",
+      "reason": "support; semantic=timeline:0.75",
+      "evidenceFile": "components/timeline.json",
+      "priority": 88
+    },
+    {
+      "slug": "tooltip",
+      "reason": "support; semantic=tooltip:0.75",
+      "evidenceFile": "components/tooltip.json",
+      "priority": 89
+    },
+    {
+      "slug": "transfer",
+      "reason": "support; semantic=transfer:0.75",
+      "evidenceFile": "components/transfer.json",
+      "priority": 90
+    },
+    {
+      "slug": "tree-select",
+      "reason": "support; semantic=tree-select:0.75",
+      "evidenceFile": "components/tree-select.json",
+      "priority": 91
+    },
+    {
+      "slug": "tree",
+      "reason": "support; semantic=tree:0.75",
+      "evidenceFile": "components/tree.json",
+      "priority": 92
+    },
+    {
+      "slug": "typography",
+      "reason": "support; semantic=typography:0.75",
+      "evidenceFile": "components/typography.json",
+      "priority": 93
+    },
+    {
+      "slug": "upload",
+      "reason": "support; semantic=upload:0.75",
+      "evidenceFile": "components/upload.json",
+      "priority": 94
+    },
+    {
+      "slug": "virtual-list",
+      "reason": "support; semantic=virtual-list:0.75",
+      "evidenceFile": "components/virtual-list.json",
+      "priority": 95
+    },
+    {
+      "slug": "watermark",
+      "reason": "support; semantic=watermark:0.75",
+      "evidenceFile": "components/watermark.json",
+      "priority": 96
+    }
   ],
   "allowedComponents": [
-    "buttons",
-    "menu",
-    "breadcrumb",
-    "badge",
-    "card",
-    "tag",
-    "table",
-    "pagination",
+    "affix",
     "alert",
+    "anchor",
+    "atoms",
+    "auto-complete",
+    "avatar-group",
     "avatar",
-    "progress",
-    "dialog",
-    "dropdown",
-    "popover",
-    "tooltip",
-    "notification",
-    "form",
-    "forms",
-    "select",
-    "input-number",
-    "empty",
+    "back-top",
+    "badge",
+    "breadcrumb",
     "button-group",
+    "button",
+    "calendar",
+    "card",
+    "carousel",
+    "cascader",
+    "checkbox",
+    "code",
+    "collapse",
+    "color-picker",
+    "countdown",
+    "data-table",
+    "date-picker",
+    "descriptions",
+    "dialog",
+    "divider",
+    "drawer",
+    "dropdown",
+    "dynamic-input",
+    "dynamic-tags",
+    "ellipsis",
+    "empty",
+    "equation",
+    "flex",
+    "float-button-group",
+    "float-button",
+    "form",
+    "gradient-text",
+    "grid",
+    "heatmap",
+    "highlight",
+    "icon-wrapper",
+    "icon",
+    "image",
+    "infinite-scroll",
+    "input-number",
+    "input-otp",
+    "input",
+    "layout",
+    "legacy-grid",
+    "legacy-transfer",
+    "list",
+    "loading-bar",
+    "log",
+    "marquee",
+    "mention",
+    "menu",
+    "message",
+    "modal",
+    "notification",
+    "number-animation",
+    "page-header",
+    "pagination",
+    "popconfirm",
+    "popover",
+    "popselect",
+    "progress",
+    "qr-code",
+    "radio",
+    "rate",
+    "result",
+    "scrollbar",
+    "select",
+    "skeleton",
+    "slider",
+    "space",
+    "spin",
+    "split",
+    "statistic",
+    "steps",
+    "switch",
+    "table",
     "tabs",
-    "atoms"
+    "tag",
+    "thing",
+    "time-picker",
+    "time",
+    "timeline",
+    "tooltip",
+    "transfer",
+    "tree-select",
+    "tree",
+    "typography",
+    "upload",
+    "virtual-list",
+    "watermark"
   ]
 }

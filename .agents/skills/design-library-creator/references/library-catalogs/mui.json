@@ -1,0 +1,20 @@
+{
+  "library": "mui",
+  "github": {
+    "owner": "mui",
+    "repo": "material-ui",
+    "srcDir": "packages/mui-material/src"
+  },
+  "totalCount": null,
+  "components": [],
+  "status": "stub — populate via GitHub Contents API on first use",
+  "expectedCount": "70+",
+  "excludedDirs": [
+    "_internal",
+    "_utils",
+    "composables",
+    "config-provider",
+    "theme",
+    "styles"
+  ]
+}

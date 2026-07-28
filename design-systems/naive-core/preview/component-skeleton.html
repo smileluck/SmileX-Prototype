@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Skeleton</title>
+  <link rel="stylesheet" href="../colors_and_type.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" />
+  <link rel="stylesheet" href="../components.css" />
+  <style>
+    /* ── preview-page chrome (preview-only) ─────────────────── */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--bodyColor); color: var(--textColor1); font-family: var(--fontFamily); font-size: var(--fontSizeMedium); line-height: var(--lineHeightMedium); min-height: 100%; }
+    body { padding: var(--spacer-32); }
+    .pv-header { margin-bottom: var(--spacer-32); padding-bottom: var(--spacer-16); border-bottom: 1px solid var(--dividerColor); }
+    .pv-header h1 { font-size: var(--heading-lg-font-size); font-weight: var(--heading-base-font-weight); margin-bottom: var(--spacer-4); }
+    .pv-header p { color: var(--textColor2); font-size: var(--fontSizeSmall); }
+    .pv-section { margin-bottom: var(--spacer-32); }
+    .pv-section__title { font-size: var(--heading-sm-font-size); font-weight: var(--heading-base-font-weight); margin-bottom: var(--spacer-12); color: var(--textColor1); }
+    .row { display: flex; gap: var(--spacer-12); align-items: center; flex-wrap: wrap; }
+    .stack-12 { display: flex; flex-direction: column; gap: var(--spacer-12); }
+
+    /* @component-css-start */
+    /* ===== Skeleton ===== */
+.ds-skeleton { display: flex; gap: var(--spacer-12); padding: var(--spacer-12) var(--spacer-16); border-radius: var(--borderRadiusMedium); border: 1px solid var(--borderColor); background: var(--actionColor); font-size: var(--fontSizeSmall); color: var(--textColor1); align-items: flex-start; }
+.ds-skeleton__icon { flex-shrink: 0; width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center; }
+.ds-skeleton__title { font-weight: var(--fontWeightStrong); }
+.ds-skeleton__content { color: var(--textColor2); }
+.ds-skeleton--info { background: rgba(112, 192, 232, 0.08); border-color: rgba(112, 192, 232, 0.24); }
+.ds-skeleton--info .ds-skeleton__icon { color: var(--infoColor); }
+.ds-skeleton--success { background: rgba(99, 226, 183, 0.08); border-color: rgba(99, 226, 183, 0.24); }
+.ds-skeleton--success .ds-skeleton__icon { color: var(--successColor); }
+.ds-skeleton--warning { background: rgba(242, 201, 125, 0.08); border-color: rgba(242, 201, 125, 0.24); }
+.ds-skeleton--warning .ds-skeleton__icon { color: var(--warningColor); }
+.ds-skeleton--error { background: rgba(232, 128, 128, 0.08); border-color: rgba(232, 128, 128, 0.24); }
+.ds-skeleton--error .ds-skeleton__icon { color: var(--errorColor); }
+    /* @component-css-end */
+  </style>
+</head>
+<body>
+  <header class="pv-header">
+    <h1>Skeleton</h1>
+    <p>naive-ui skeleton — renderCategory: feedback.</p>
+  </header>
+  <section class="pv-section">
+    <div class="pv-section__title">Status variants</div>
+    <div class="stack-12">
+      <div class="ds-skeleton ds-skeleton--info">
+        <span class="ds-skeleton__icon">ℹ</span>
+        <div><div class="ds-skeleton__title">Info</div><div class="ds-skeleton__content">Informational message.</div></div>
+      </div>
+      <div class="ds-skeleton ds-skeleton--success">
+        <span class="ds-skeleton__icon">✓</span>
+        <div><div class="ds-skeleton__title">Success</div><div class="ds-skeleton__content">Operation completed.</div></div>
+      </div>
+      <div class="ds-skeleton ds-skeleton--warning">
+        <span class="ds-skeleton__icon">⚠</span>
+        <div><div class="ds-skeleton__title">Warning</div><div class="ds-skeleton__content">Review before proceeding.</div></div>
+      </div>
+      <div class="ds-skeleton ds-skeleton--error">
+        <span class="ds-skeleton__icon">✕</span>
+        <div><div class="ds-skeleton__title">Error</div><div class="ds-skeleton__content">Something went wrong.</div></div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

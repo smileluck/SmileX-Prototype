@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Marketing — Naive Core</title>
+  <link rel="stylesheet" href="../../colors_and_type.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" />
+  <link rel="stylesheet" href="../../components.css" />
+  <style>
+    .uikit-shell { max-width: 1184px; margin: 0 auto; padding: 0 var(--spacer-32) var(--spacer-32); background: var(--bodyColor); color: var(--textColor1); font-family: var(--fontFamily); font-size: var(--fontSizeMedium); line-height: var(--lineHeightMedium); min-height: 100vh; box-sizing: border-box; }
+    * { box-sizing: border-box; }
+    .mk-nav { display: flex; align-items: center; justify-content: space-between; padding: var(--spacer-16) 0; border-bottom: 1px solid var(--dividerColor); }
+    .mk-hero { text-align: center; padding: var(--spacer-40) 0 var(--spacer-32); }
+    .mk-hero__title { font-size: 44px; font-weight: 700; line-height: 1.15; margin-bottom: var(--spacer-16); }
+    .mk-hero__title em { font-style: normal; color: var(--primaryColor); }
+    .mk-hero__sub { font-size: var(--fontSizeLarge); color: var(--textColor2); max-width: 560px; margin: 0 auto var(--spacer-24); }
+    .mk-features { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacer-16); margin: var(--spacer-32) 0; }
+    .mk-feature { background: var(--cardColor); border: 1px solid var(--borderColor); border-radius: var(--borderRadiusLarge); padding: var(--spacer-24); }
+    .mk-feature__icon { width: 40px; height: 40px; border-radius: var(--borderRadiusMedium); background: rgba(99, 226, 183, 0.16); color: var(--primaryColor); display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: var(--spacer-12); }
+    .mk-pricing { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacer-16); margin: var(--spacer-32) 0; }
+    .mk-price { background: var(--cardColor); border: 1px solid var(--borderColor); border-radius: var(--borderRadiusLarge); padding: var(--spacer-24); position: relative; }
+    .mk-price--featured { border-color: var(--primaryColor); }
+    .mk-price__value { font-size: 36px; font-weight: 700; margin: var(--spacer-8) 0; }
+    .mk-price__value span { font-size: var(--fontSizeSmall); color: var(--textColor3); font-weight: 400; }
+    .mk-price__feat { font-size: var(--fontSizeSmall); color: var(--textColor2); padding: var(--spacer-4) 0; }
+    .mk-footer { text-align: center; padding: var(--spacer-24) 0 0; border-top: 1px solid var(--dividerColor); color: var(--textColor3); font-size: var(--fontSizeSmall); }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel" data-presets="env,react">
+    function Nav() {
+      return (
+        <div className="mk-nav">
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacer-8)', fontWeight: 700 }}>
+            <span className="ds-avatar ds-avatar--small ds-avatar--primary">N</span> Naive Core
+          </div>
+          <nav className="ds-menu ds-menu--horizontal" style={{ border: 'none' }}>
+            <div className="ds-menu__item ds-menu__item--active">Product</div>
+            <div className="ds-menu__item">Docs</div>
+            <div className="ds-menu__item">Pricing</div>
+            <div className="ds-menu__item">Blog</div>
+          </nav>
+          <div style={{ display: 'flex', gap: 'var(--spacer-8)' }}>
+            <button className="ds-btn ds-btn--tertiary ds-btn--medium">Sign in</button>
+            <button className="ds-btn ds-btn--primary ds-btn--medium">Get started</button>
+          </div>
+        </div>
+      );
+    }
+
+    function Hero() {
+      return (
+        <div className="mk-hero">
+          <span className="ds-tag ds-tag--primary ds-tag--medium ds-tag--round">v3.0 now available</span>
+          <h1 className="mk-hero__title" style={{ marginTop: 'var(--spacer-16)' }}>Build dark UIs <em>10× faster</em><br/>with production-grade tokens</h1>
+          <p className="mk-hero__sub">96 components, verbatim naive-ui tokens, and ready-made kits for dashboard, IDE, mobile, and marketing.</p>
+          <div style={{ display: 'flex', gap: 'var(--spacer-12)', justifyContent: 'center' }}>
+            <button className="ds-btn ds-btn--primary ds-btn--large">Start building</button>
+            <button className="ds-btn ds-btn--default ds-btn--large">View components</button>
+          </div>
+        </div>
+      );
+    }
+
+    function Features() {
+      const feats = [
+        { icon: '🎨', t: 'Verbatim tokens', d: 'Every color, radius and spacer maps 1:1 to the naive-ui dark theme. No renaming, no guesswork.' },
+        { icon: '🧩', t: '96 components', d: 'Full coverage from buttons and tables to QR codes, transfers, and virtual lists.' },
+        { icon: '📦', t: 'Ready-made kits', d: 'Dashboard, dev-explorer, mobile, and marketing showcases you can learn from — not copy blindly.' }
+      ];
+      return (
+        <div className="mk-features">
+          {feats.map((f, i) => (
+            <div key={i} className="mk-feature">
+              <div className="mk-feature__icon">{f.icon}</div>
+              <div style={{ fontWeight: 600, marginBottom: 'var(--spacer-8)' }}>{f.t}</div>
+              <div style={{ fontSize: 'var(--fontSizeSmall)', color: 'var(--textColor2)' }}>{f.d}</div>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    function Pricing() {
+      const plans = [
+        { name: 'Starter', price: 'Free', feats: ['24 core components', 'Dashboard kit', 'Community support'], featured: false, cta: 'default' },
+        { name: 'Pro', price: '$19', feats: ['All 96 components', 'All 4 UI kits', 'Priority support', 'Token refine workflow'], featured: true, cta: 'primary' },
+        { name: 'Team', price: '$49', feats: ['Everything in Pro', 'Custom kits on demand', 'Design review sessions'], featured: false, cta: 'default' }
+      ];
+      return (
+        <div>
+          <h2 style={{ textAlign: 'center', fontSize: 'var(--heading-2xl-font-size)', fontWeight: 600, marginBottom: 'var(--spacer-8)' }}>Simple pricing</h2>
+          <p style={{ textAlign: 'center', color: 'var(--textColor2)', marginBottom: 'var(--spacer-24)' }}>Start free, scale when you need more components.</p>
+          <div className="mk-pricing">
+            {plans.map((p, i) => (
+              <div key={i} className={'mk-price ' + (p.featured ? 'mk-price--featured' : '')}>
+                {p.featured && <span className="ds-tag ds-tag--primary ds-tag--small" style={{ position: 'absolute', top: 'var(--spacer-16)', right: 'var(--spacer-16)' }}>Popular</span>}
+                <div style={{ fontWeight: 600 }}>{p.name}</div>
+                <div className="mk-price__value">{p.price}{p.price !== 'Free' && <span>/mo</span>}</div>
+                {p.feats.map((f, j) => <div key={j} className="mk-price__feat">✓ {f}</div>)}
+                <button className={'ds-btn ds-btn--' + p.cta + ' ds-btn--medium'} style={{ width: '100%', marginTop: 'var(--spacer-16)' }}>Choose {p.name}</button>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function App() {
+      return (
+        <div className="uikit-shell">
+          <Nav />
+          <Hero />
+          <Features />
+          <Pricing />
+          <div className="mk-footer">Naive Core — distilled from naive-ui. Built with design-library-creator.</div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>

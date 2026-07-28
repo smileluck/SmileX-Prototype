@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Image</title>
+  <link rel="stylesheet" href="../colors_and_type.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" />
+  <link rel="stylesheet" href="../components.css" />
+  <style>
+    /* ── preview-page chrome (preview-only) ─────────────────── */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--bodyColor); color: var(--textColor1); font-family: var(--fontFamily); font-size: var(--fontSizeMedium); line-height: var(--lineHeightMedium); min-height: 100%; }
+    body { padding: var(--spacer-32); }
+    .pv-header { margin-bottom: var(--spacer-32); padding-bottom: var(--spacer-16); border-bottom: 1px solid var(--dividerColor); }
+    .pv-header h1 { font-size: var(--heading-lg-font-size); font-weight: var(--heading-base-font-weight); margin-bottom: var(--spacer-4); }
+    .pv-header p { color: var(--textColor2); font-size: var(--fontSizeSmall); }
+    .pv-section { margin-bottom: var(--spacer-32); }
+    .pv-section__title { font-size: var(--heading-sm-font-size); font-weight: var(--heading-base-font-weight); margin-bottom: var(--spacer-12); color: var(--textColor1); }
+    .row { display: flex; gap: var(--spacer-12); align-items: center; flex-wrap: wrap; }
+    .stack-12 { display: flex; flex-direction: column; gap: var(--spacer-12); }
+
+    /* @component-css-start */
+    /* ===== Image ===== */
+.ds-image { display: inline-flex; flex-direction: column; gap: var(--spacer-8); }
+.ds-image__frame { width: 240px; height: 160px; background: var(--actionColor); border: 1px solid var(--borderColor); border-radius: var(--borderRadiusLarge); display: flex; align-items: center; justify-content: center; color: var(--textColor3); overflow: hidden; }
+.ds-image__preview { cursor: zoom-in; }
+.ds-image__toolbar { display: flex; gap: var(--spacer-8); justify-content: center; }
+.ds-image__tool { width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; background: var(--buttonColor2); border-radius: var(--borderRadiusSmall); color: var(--textColor2); cursor: pointer; font-size: 14px; }
+    /* @component-css-end */
+  </style>
+</head>
+<body>
+  <header class="pv-header">
+    <h1>Image</h1>
+    <p>naive-ui image — renderCategory: special.</p>
+  </header>
+  <section class="pv-section">
+    <div class="pv-section__title">Image with toolbar</div>
+    <div class="ds-image">
+      <div class="ds-image__frame ds-image__preview">🖼 240 × 160 preview</div>
+      <div class="ds-image__toolbar">
+        <span class="ds-image__tool">＋</span>
+        <span class="ds-image__tool">－</span>
+        <span class="ds-image__tool">⟳</span>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

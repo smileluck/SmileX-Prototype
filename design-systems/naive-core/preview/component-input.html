@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Input</title>
+  <link rel="stylesheet" href="../colors_and_type.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" />
+  <link rel="stylesheet" href="../components.css" />
+  <style>
+    /* ── preview-page chrome (preview-only) ─────────────────── */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--bodyColor); color: var(--textColor1); font-family: var(--fontFamily); font-size: var(--fontSizeMedium); line-height: var(--lineHeightMedium); min-height: 100%; }
+    body { padding: var(--spacer-32); }
+    .pv-header { margin-bottom: var(--spacer-32); padding-bottom: var(--spacer-16); border-bottom: 1px solid var(--dividerColor); }
+    .pv-header h1 { font-size: var(--heading-lg-font-size); font-weight: var(--heading-base-font-weight); margin-bottom: var(--spacer-4); }
+    .pv-header p { color: var(--textColor2); font-size: var(--fontSizeSmall); }
+    .pv-section { margin-bottom: var(--spacer-32); }
+    .pv-section__title { font-size: var(--heading-sm-font-size); font-weight: var(--heading-base-font-weight); margin-bottom: var(--spacer-12); color: var(--textColor1); }
+    .row { display: flex; gap: var(--spacer-12); align-items: center; flex-wrap: wrap; }
+    .stack-12 { display: flex; flex-direction: column; gap: var(--spacer-12); }
+
+    /* @component-css-start */
+    /* ===== Input ===== */
+.ds-input { display: inline-flex; align-items: center; width: 260px; height: var(--heightMedium); padding: 0 var(--spacer-12); background: var(--inputColor); color: var(--textColor1); border: 1px solid var(--borderColor); border-radius: var(--borderRadiusMedium); font-family: var(--fontFamily); font-size: var(--fontSizeMedium); outline: none; transition: border-color 0.12s; }
+.ds-input--small { height: var(--heightSmall); font-size: var(--fontSizeSmall); }
+.ds-input--large { height: var(--heightLarge); font-size: var(--fontSizeLarge); }
+.ds-input::placeholder { color: var(--placeholderColor); }
+.ds-input:hover { border-color: var(--primaryColorHover); }
+.ds-input:focus { border-color: var(--primaryColor); }
+.ds-input--disabled, .ds-input:disabled { background: var(--inputColorDisabled); color: var(--textColorDisabled); cursor: not-allowed; }
+.ds-input--error { border-color: var(--errorColor); }
+.ds-input__label { font-size: var(--fontSizeSmall); font-weight: var(--fontWeightStrong); color: var(--textColor1); }
+.ds-input__feedback { font-size: var(--fontSizeTiny); margin-top: var(--spacer-4); }
+.ds-input__feedback--success { color: var(--successColor); }
+.ds-input__feedback--error { color: var(--errorColor); }
+    /* @component-css-end */
+  </style>
+</head>
+<body>
+  <header class="pv-header">
+    <h1>Input</h1>
+    <p>naive-ui input — renderCategory: form.</p>
+  </header>
+  <section class="pv-section">
+    <div class="pv-section__title">Sizes</div>
+    <div class="stack-12">
+      <input class="ds-input ds-input--small" placeholder="Small" />
+      <input class="ds-input" placeholder="Medium (default)" />
+      <input class="ds-input ds-input--large" placeholder="Large" />
+    </div>
+  </section>
+  <section class="pv-section">
+    <div class="pv-section__title">States</div>
+    <div class="stack-12">
+      <input class="ds-input" placeholder="Default" />
+      <input class="ds-input" placeholder="Disabled" disabled />
+      <input class="ds-input ds-input--error" value="Invalid value" />
+    </div>
+  </section>
+  <section class="pv-section">
+    <div class="pv-section__title">With label and feedback</div>
+    <div class="stack-12">
+      <label class="ds-input__label">Name</label>
+      <input class="ds-input" value="Valid input" />
+      <span class="ds-input__feedback ds-input__feedback--success">✓ Looks good</span>
+      <label class="ds-input__label">Email</label>
+      <input class="ds-input ds-input--error" value="not-an-email" />
+      <span class="ds-input__feedback ds-input__feedback--error">✕ Invalid email</span>
+    </div>
+  </section>
+</body>
+</html>

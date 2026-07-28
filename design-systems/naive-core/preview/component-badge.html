@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Badge</title>
+  <link rel="stylesheet" href="../colors_and_type.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" />
+  <link rel="stylesheet" href="../components.css" />
+  <style>
+    /* ── preview-page chrome (preview-only) ─────────────────── */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--bodyColor); color: var(--textColor1); font-family: var(--fontFamily); font-size: var(--fontSizeMedium); line-height: var(--lineHeightMedium); min-height: 100%; }
+    body { padding: var(--spacer-32); }
+    .pv-header { margin-bottom: var(--spacer-32); padding-bottom: var(--spacer-16); border-bottom: 1px solid var(--dividerColor); }
+    .pv-header h1 { font-size: var(--heading-lg-font-size); font-weight: var(--heading-base-font-weight); margin-bottom: var(--spacer-4); }
+    .pv-header p { color: var(--textColor2); font-size: var(--fontSizeSmall); }
+    .pv-section { margin-bottom: var(--spacer-32); }
+    .pv-section__title { font-size: var(--heading-sm-font-size); font-weight: var(--heading-base-font-weight); margin-bottom: var(--spacer-12); color: var(--textColor1); }
+    .row { display: flex; gap: var(--spacer-12); align-items: center; flex-wrap: wrap; }
+    .stack-12 { display: flex; flex-direction: column; gap: var(--spacer-12); }
+
+    /* @component-css-start */
+    /* ===== Badge ===== */
+.ds-badge { display: inline-flex; align-items: center; gap: var(--spacer-4); padding: 0 var(--spacer-8); height: 24px; font-size: var(--fontSizeSmall); font-weight: var(--fontWeightStrong); border-radius: var(--borderRadiusMedium); color: var(--textColor1); border: 1px solid transparent; white-space: nowrap; }
+.ds-badge--small { height: 20px; font-size: var(--fontSizeTiny); padding: 0 var(--spacer-4); }
+.ds-badge--large { height: 30px; font-size: var(--fontSizeMedium); padding: 0 var(--spacer-12); }
+.ds-badge--default { background: var(--tagColor); }
+.ds-badge--primary { background: rgba(99, 226, 183, 0.16); color: var(--primaryColor); border-color: rgba(99, 226, 183, 0.24); }
+.ds-badge--info { background: rgba(112, 192, 232, 0.16); color: var(--infoColor); border-color: rgba(112, 192, 232, 0.24); }
+.ds-badge--success { background: rgba(99, 226, 183, 0.16); color: var(--successColor); border-color: rgba(99, 226, 183, 0.24); }
+.ds-badge--warning { background: rgba(242, 201, 125, 0.16); color: var(--warningColor); border-color: rgba(242, 201, 125, 0.24); }
+.ds-badge--error { background: rgba(232, 128, 128, 0.16); color: var(--errorColor); border-color: rgba(232, 128, 128, 0.24); }
+    /* @component-css-end */
+  </style>
+</head>
+<body>
+  <header class="pv-header">
+    <h1>Badge</h1>
+    <p>naive-ui badge — renderCategory: general.</p>
+  </header>
+  <section class="pv-section">
+    <div class="pv-section__title">Types</div>
+    <div class="row">
+      <span class="ds-badge ds-badge--default">Default</span>
+      <span class="ds-badge ds-badge--primary">Primary</span>
+      <span class="ds-badge ds-badge--info">Info</span>
+      <span class="ds-badge ds-badge--success">Success</span>
+      <span class="ds-badge ds-badge--warning">Warning</span>
+      <span class="ds-badge ds-badge--error">Error</span>
+    </div>
+  </section>
+  <section class="pv-section">
+    <div class="pv-section__title">Sizes</div>
+    <div class="row">
+      <span class="ds-badge ds-badge--primary ds-badge--small">Small</span>
+      <span class="ds-badge ds-badge--primary">Medium</span>
+      <span class="ds-badge ds-badge--primary ds-badge--large">Large</span>
+    </div>
+  </section>
+</body>
+</html>

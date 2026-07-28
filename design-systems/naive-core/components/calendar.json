@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 2,
+  "slug": "calendar",
+  "name": "Calendar",
+  "category": "data",
+  "sourceKind": "structured-spec",
+  "confidence": "high",
+  "semanticTypeCandidates": [
+    "calendar"
+  ],
+  "variantDimensions": {
+    "renderCategory": [
+      "data"
+    ]
+  },
+  "representativeVariants": [
+    {
+      "type": "default"
+    }
+  ],
+  "anatomy": [
+    "root"
+  ],
+  "structurePatterns": [
+    "data template"
+  ],
+  "usageHints": [
+    "Rendered with the data template — see preview/component-calendar.html"
+  ],
+  "doNotInvent": [],
+  "unknowns": [],
+  "tokensConsumed": [
+    "--borderColor",
+    "--borderRadiusLarge",
+    "--borderRadiusMedium",
+    "--borderRadiusSmall",
+    "--cardColor",
+    "--dividerColor",
+    "--errorColor",
+    "--fontFamily",
+    "--fontSizeLarge",
+    "--fontSizeMedium",
+    "--fontSizeSmall",
+    "--fontSizeTiny",
+    "--fontWeightStrong",
+    "--infoColor",
+    "--primaryColor",
+    "--primaryColorHover",
+    "--spacer-12",
+    "--spacer-16",
+    "--spacer-24",
+    "--spacer-8",
+    "--successColor",
+    "--tableColorHover",
+    "--tableColorStriped",
+    "--tableHeaderColor",
+    "--textColor1",
+    "--textColor2",
+    "--textColor3",
+    "--warningColor"
+  ],
+  "domAnatomy": {
+    "root": {
+      "tag": "div",
+      "class": "ds-calendar",
+      "children": [
+        {
+          "tag": "div",
+          "class": "ds-calendar__content"
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "preview": "preview/component-calendar.html",
+    "source": "naive-ui calendar",
+    "css": {
+      "file": "components.css",
+      "marker": "── Calendar ──"
+    }
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 2,
+  "slug": "carousel",
+  "name": "Carousel",
+  "category": "data",
+  "sourceKind": "structured-spec",
+  "confidence": "high",
+  "semanticTypeCandidates": [
+    "carousel"
+  ],
+  "variantDimensions": {
+    "renderCategory": [
+      "data"
+    ]
+  },
+  "representativeVariants": [
+    {
+      "type": "default"
+    }
+  ],
+  "anatomy": [
+    "root"
+  ],
+  "structurePatterns": [
+    "data template"
+  ],
+  "usageHints": [
+    "Rendered with the data template — see preview/component-carousel.html"
+  ],
+  "doNotInvent": [],
+  "unknowns": [],
+  "tokensConsumed": [
+    "--borderColor",
+    "--borderRadiusLarge",
+    "--borderRadiusMedium",
+    "--borderRadiusSmall",
+    "--cardColor",
+    "--dividerColor",
+    "--errorColor",
+    "--fontFamily",
+    "--fontSizeLarge",
+    "--fontSizeMedium",
+    "--fontSizeSmall",
+    "--fontSizeTiny",
+    "--fontWeightStrong",
+    "--infoColor",
+    "--primaryColor",
+    "--primaryColorHover",
+    "--spacer-12",
+    "--spacer-16",
+    "--spacer-24",
+    "--spacer-8",
+    "--successColor",
+    "--tableColorHover",
+    "--tableColorStriped",
+    "--tableHeaderColor",
+    "--textColor1",
+    "--textColor2",
+    "--textColor3",
+    "--warningColor"
+  ],
+  "domAnatomy": {
+    "root": {
+      "tag": "div",
+      "class": "ds-carousel",
+      "children": [
+        {
+          "tag": "div",
+          "class": "ds-carousel__content"
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "preview": "preview/component-carousel.html",
+    "source": "naive-ui carousel",
+    "css": {
+      "file": "components.css",
+      "marker": "── Carousel ──"
+    }
+  }
+}

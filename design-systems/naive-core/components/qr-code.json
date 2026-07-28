@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "slug": "qr-code",
+  "name": "QR Code",
+  "category": "data",
+  "sourceKind": "structured-spec",
+  "confidence": "medium",
+  "semanticTypeCandidates": [
+    "qr-code"
+  ],
+  "variantDimensions": {
+    "renderCategory": [
+      "special"
+    ]
+  },
+  "representativeVariants": [
+    {
+      "type": "default"
+    }
+  ],
+  "anatomy": [
+    "root"
+  ],
+  "structurePatterns": [
+    "special template"
+  ],
+  "usageHints": [
+    "Rendered with the special template — see preview/component-qr-code.html"
+  ],
+  "doNotInvent": [],
+  "unknowns": [],
+  "tokensConsumed": [
+    "--borderColor",
+    "--borderRadiusLarge",
+    "--borderRadiusMedium",
+    "--borderRadiusSmall",
+    "--buttonColor2",
+    "--cardColor",
+    "--codeColor",
+    "--dividerColor",
+    "--errorColor",
+    "--fontFamily",
+    "--fontFamilyMono",
+    "--fontSizeMedium",
+    "--fontSizeSmall",
+    "--fontSizeTiny",
+    "--fontWeightStrong",
+    "--hoverColor",
+    "--infoColor",
+    "--inputColor",
+    "--popoverColor",
+    "--primaryColor",
+    "--primaryColorHover",
+    "--spacer-12",
+    "--spacer-16",
+    "--spacer-8",
+    "--successColor",
+    "--textColor1",
+    "--textColor2",
+    "--textColor3",
+    "--warningColor"
+  ],
+  "domAnatomy": {
+    "root": {
+      "tag": "div",
+      "class": "ds-qr-code",
+      "children": [
+        {
+          "tag": "div",
+          "class": "ds-qr-code__content"
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "preview": "preview/component-qr-code.html",
+    "source": "naive-ui qr-code",
+    "css": {
+      "file": "components.css",
+      "marker": "── QR Code ──"
+    }
+  }
+}

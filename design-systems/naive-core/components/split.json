@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 2,
+  "slug": "split",
+  "name": "Split",
+  "category": "layout",
+  "sourceKind": "structured-spec",
+  "confidence": "high",
+  "semanticTypeCandidates": [
+    "split"
+  ],
+  "variantDimensions": {
+    "renderCategory": [
+      "layout"
+    ]
+  },
+  "representativeVariants": [
+    {
+      "type": "default"
+    }
+  ],
+  "anatomy": [
+    "root"
+  ],
+  "structurePatterns": [
+    "layout template"
+  ],
+  "usageHints": [
+    "Rendered with the layout template — see preview/component-split.html"
+  ],
+  "doNotInvent": [],
+  "unknowns": [],
+  "tokensConsumed": [
+    "--actionColor",
+    "--borderColor",
+    "--borderRadiusLarge",
+    "--borderRadiusMedium",
+    "--borderRadiusSmall",
+    "--cardColor",
+    "--dividerColor",
+    "--fontFamily",
+    "--fontSizeMedium",
+    "--fontSizeSmall",
+    "--fontSizeTiny",
+    "--fontWeightStrong",
+    "--primaryColor",
+    "--primaryColorHover",
+    "--spacer-12",
+    "--spacer-16",
+    "--spacer-24",
+    "--spacer-32",
+    "--spacer-4",
+    "--spacer-8",
+    "--textColor1",
+    "--textColor2",
+    "--textColor3"
+  ],
+  "domAnatomy": {
+    "root": {
+      "tag": "div",
+      "class": "ds-split",
+      "children": [
+        {
+          "tag": "div",
+          "class": "ds-split__content"
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "preview": "preview/component-split.html",
+    "source": "naive-ui split",
+    "css": {
+      "file": "components.css",
+      "marker": "── Split ──"
+    }
+  }
+}

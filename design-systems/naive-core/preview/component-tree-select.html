@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tree Select</title>
+  <link rel="stylesheet" href="../colors_and_type.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" />
+  <link rel="stylesheet" href="../components.css" />
+  <style>
+    /* ── preview-page chrome (preview-only) ─────────────────── */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--bodyColor); color: var(--textColor1); font-family: var(--fontFamily); font-size: var(--fontSizeMedium); line-height: var(--lineHeightMedium); min-height: 100%; }
+    body { padding: var(--spacer-32); }
+    .pv-header { margin-bottom: var(--spacer-32); padding-bottom: var(--spacer-16); border-bottom: 1px solid var(--dividerColor); }
+    .pv-header h1 { font-size: var(--heading-lg-font-size); font-weight: var(--heading-base-font-weight); margin-bottom: var(--spacer-4); }
+    .pv-header p { color: var(--textColor2); font-size: var(--fontSizeSmall); }
+    .pv-section { margin-bottom: var(--spacer-32); }
+    .pv-section__title { font-size: var(--heading-sm-font-size); font-weight: var(--heading-base-font-weight); margin-bottom: var(--spacer-12); color: var(--textColor1); }
+    .row { display: flex; gap: var(--spacer-12); align-items: center; flex-wrap: wrap; }
+    .stack-12 { display: flex; flex-direction: column; gap: var(--spacer-12); }
+
+    /* @component-css-start */
+    /* ===== Tree Select ===== */
+.ds-tree-select { display: inline-flex; align-items: center; width: 260px; height: var(--heightMedium); padding: 0 var(--spacer-12); background: var(--inputColor); color: var(--textColor1); border: 1px solid var(--borderColor); border-radius: var(--borderRadiusMedium); font-family: var(--fontFamily); font-size: var(--fontSizeMedium); outline: none; transition: border-color 0.12s; }
+.ds-tree-select--small { height: var(--heightSmall); font-size: var(--fontSizeSmall); }
+.ds-tree-select--large { height: var(--heightLarge); font-size: var(--fontSizeLarge); }
+.ds-tree-select::placeholder { color: var(--placeholderColor); }
+.ds-tree-select:hover { border-color: var(--primaryColorHover); }
+.ds-tree-select:focus { border-color: var(--primaryColor); }
+.ds-tree-select--disabled, .ds-tree-select:disabled { background: var(--inputColorDisabled); color: var(--textColorDisabled); cursor: not-allowed; }
+.ds-tree-select--error { border-color: var(--errorColor); }
+.ds-tree-select__label { font-size: var(--fontSizeSmall); font-weight: var(--fontWeightStrong); color: var(--textColor1); }
+.ds-tree-select__feedback { font-size: var(--fontSizeTiny); margin-top: var(--spacer-4); }
+.ds-tree-select__feedback--success { color: var(--successColor); }
+.ds-tree-select__feedback--error { color: var(--errorColor); }
+    /* @component-css-end */
+  </style>
+</head>
+<body>
+  <header class="pv-header">
+    <h1>Tree Select</h1>
+    <p>naive-ui tree-select — renderCategory: form.</p>
+  </header>
+  <section class="pv-section">
+    <div class="pv-section__title">Sizes</div>
+    <div class="stack-12">
+      <input class="ds-tree-select ds-tree-select--small" placeholder="Small" />
+      <input class="ds-tree-select" placeholder="Medium (default)" />
+      <input class="ds-tree-select ds-tree-select--large" placeholder="Large" />
+    </div>
+  </section>
+  <section class="pv-section">
+    <div class="pv-section__title">States</div>
+    <div class="stack-12">
+      <input class="ds-tree-select" placeholder="Default" />
+      <input class="ds-tree-select" placeholder="Disabled" disabled />
+      <input class="ds-tree-select ds-tree-select--error" value="Invalid value" />
+    </div>
+  </section>
+  <section class="pv-section">
+    <div class="pv-section__title">With label and feedback</div>
+    <div class="stack-12">
+      <label class="ds-tree-select__label">Name</label>
+      <input class="ds-tree-select" value="Valid input" />
+      <span class="ds-tree-select__feedback ds-tree-select__feedback--success">✓ Looks good</span>
+      <label class="ds-tree-select__label">Email</label>
+      <input class="ds-tree-select ds-tree-select--error" value="not-an-email" />
+      <span class="ds-tree-select__feedback ds-tree-select__feedback--error">✕ Invalid email</span>
+    </div>
+  </section>
+</body>
+</html>

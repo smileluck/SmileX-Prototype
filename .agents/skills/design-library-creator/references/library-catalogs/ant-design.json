@@ -1,0 +1,20 @@
+{
+  "library": "ant-design",
+  "github": {
+    "owner": "ant-design",
+    "repo": "ant-design",
+    "srcDir": "components"
+  },
+  "totalCount": null,
+  "components": [],
+  "status": "stub — populate via GitHub Contents API on first use",
+  "expectedCount": "70+",
+  "excludedDirs": [
+    "_internal",
+    "_utils",
+    "composables",
+    "config-provider",
+    "theme",
+    "styles"
+  ]
+}

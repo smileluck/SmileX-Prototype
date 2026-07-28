@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Slider</title>
+  <link rel="stylesheet" href="../colors_and_type.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" />
+  <link rel="stylesheet" href="../components.css" />
+  <style>
+    /* ── preview-page chrome (preview-only) ─────────────────── */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--bodyColor); color: var(--textColor1); font-family: var(--fontFamily); font-size: var(--fontSizeMedium); line-height: var(--lineHeightMedium); min-height: 100%; }
+    body { padding: var(--spacer-32); }
+    .pv-header { margin-bottom: var(--spacer-32); padding-bottom: var(--spacer-16); border-bottom: 1px solid var(--dividerColor); }
+    .pv-header h1 { font-size: var(--heading-lg-font-size); font-weight: var(--heading-base-font-weight); margin-bottom: var(--spacer-4); }
+    .pv-header p { color: var(--textColor2); font-size: var(--fontSizeSmall); }
+    .pv-section { margin-bottom: var(--spacer-32); }
+    .pv-section__title { font-size: var(--heading-sm-font-size); font-weight: var(--heading-base-font-weight); margin-bottom: var(--spacer-12); color: var(--textColor1); }
+    .row { display: flex; gap: var(--spacer-12); align-items: center; flex-wrap: wrap; }
+    .stack-12 { display: flex; flex-direction: column; gap: var(--spacer-12); }
+
+    /* @component-css-start */
+    /* ===== Slider ===== */
+.ds-slider { position: relative; width: 100%; height: 20px; display: flex; align-items: center; }
+.ds-slider__track { position: relative; width: 100%; height: 4px; background: var(--railColor); border-radius: 2px; }
+.ds-slider__fill { position: absolute; left: 0; top: 0; height: 100%; background: var(--primaryColor); border-radius: 2px; }
+.ds-slider__thumb { position: absolute; top: 50%; width: 14px; height: 14px; background: var(--textColor1); border: 2px solid var(--primaryColor); border-radius: 50%; transform: translate(-50%, -50%); cursor: pointer; }
+.ds-slider__marks { display: flex; justify-content: space-between; margin-top: var(--spacer-8); font-size: var(--fontSizeTiny); color: var(--textColor3); }
+    /* @component-css-end */
+  </style>
+</head>
+<body>
+  <header class="pv-header">
+    <h1>Slider</h1>
+    <p>naive-ui slider — renderCategory: special.</p>
+  </header>
+  <section class="pv-section">
+    <div class="pv-section__title">Single</div>
+    <div class="ds-slider">
+      <div class="ds-slider__track"><div class="ds-slider__fill" style="width: 40%"></div><div class="ds-slider__thumb" style="left: 40%"></div></div>
+    </div>
+    <div class="ds-slider__marks"><span>0</span><span>50</span><span>100</span></div>
+  </section>
+  <section class="pv-section">
+    <div class="pv-section__title">Range</div>
+    <div class="ds-slider">
+      <div class="ds-slider__track"><div class="ds-slider__fill" style="left: 20%; width: 40%"></div><div class="ds-slider__thumb" style="left: 20%"></div><div class="ds-slider__thumb" style="left: 60%"></div></div>
+    </div>
+  </section>
+</body>
+</html>

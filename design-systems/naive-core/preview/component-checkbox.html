@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Checkbox</title>
+  <link rel="stylesheet" href="../colors_and_type.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" />
+  <link rel="stylesheet" href="../components.css" />
+  <style>
+    /* ── preview-page chrome (preview-only) ─────────────────── */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--bodyColor); color: var(--textColor1); font-family: var(--fontFamily); font-size: var(--fontSizeMedium); line-height: var(--lineHeightMedium); min-height: 100%; }
+    body { padding: var(--spacer-32); }
+    .pv-header { margin-bottom: var(--spacer-32); padding-bottom: var(--spacer-16); border-bottom: 1px solid var(--dividerColor); }
+    .pv-header h1 { font-size: var(--heading-lg-font-size); font-weight: var(--heading-base-font-weight); margin-bottom: var(--spacer-4); }
+    .pv-header p { color: var(--textColor2); font-size: var(--fontSizeSmall); }
+    .pv-section { margin-bottom: var(--spacer-32); }
+    .pv-section__title { font-size: var(--heading-sm-font-size); font-weight: var(--heading-base-font-weight); margin-bottom: var(--spacer-12); color: var(--textColor1); }
+    .row { display: flex; gap: var(--spacer-12); align-items: center; flex-wrap: wrap; }
+    .stack-12 { display: flex; flex-direction: column; gap: var(--spacer-12); }
+
+    /* @component-css-start */
+    /* ===== Checkbox ===== */
+.ds-checkbox { display: inline-flex; align-items: center; gap: var(--spacer-8); cursor: pointer; user-select: none; font-size: var(--fontSizeSmall); color: var(--textColor1); }
+.ds-checkbox__box { width: 16px; height: 16px; border: 1.5px solid var(--borderColor); border-radius: var(--borderRadiusSmall); display: inline-flex; align-items: center; justify-content: center; transition: all 0.12s; }
+.ds-checkbox--checked .ds-checkbox__box { background: var(--primaryColor); border-color: var(--primaryColor); }
+.ds-checkbox--checked .ds-checkbox__box::after { content: "\2713"; color: var(--invertedColor); font-size: 12px; font-weight: bold; }
+.ds-checkbox--indeterminate .ds-checkbox__box { background: var(--primaryColor); border-color: var(--primaryColor); }
+.ds-checkbox--indeterminate .ds-checkbox__box::after { content: ""; width: 8px; height: 2px; background: var(--invertedColor); }
+.ds-checkbox-group { display: flex; gap: var(--spacer-16); }
+    /* @component-css-end */
+  </style>
+</head>
+<body>
+  <header class="pv-header">
+    <h1>Checkbox</h1>
+    <p>naive-ui checkbox — renderCategory: special.</p>
+  </header>
+  <section class="pv-section">
+    <div class="pv-section__title">Checkbox group</div>
+    <div class="ds-checkbox-group">
+      <span class="ds-checkbox ds-checkbox--checked"><span class="ds-checkbox__box"></span>Checked</span>
+      <span class="ds-checkbox"><span class="ds-checkbox__box"></span>Unchecked</span>
+      <span class="ds-checkbox ds-checkbox--indeterminate"><span class="ds-checkbox__box"></span>Indeterminate</span>
+    </div>
+  </section>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "kitType": "mobile",
+  "screensGenerated": 3,
+  "coreComponentsUsed": ["button", "tag", "avatar", "input", "switch", "progress"],
+  "supportComponentsUsed": ["card", "list", "atoms"],
+  "previewClassReuseRate": 0.84,
+  "inventedComponents": [],
+  "interactiveStatesRendered": ["default", "active", "disabled"],
+  "primaryActionPerScreen": true,
+  "mockDataDensity": { "listRows": 5, "settingsRows": 4 },
+  "warnings": []
+}

@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "slug": "time-picker",
+  "name": "Time Picker",
+  "category": "form",
+  "sourceKind": "structured-spec",
+  "confidence": "high",
+  "semanticTypeCandidates": [
+    "time-picker"
+  ],
+  "variantDimensions": {
+    "renderCategory": [
+      "form"
+    ]
+  },
+  "representativeVariants": [
+    {
+      "type": "default"
+    }
+  ],
+  "anatomy": [
+    "root"
+  ],
+  "structurePatterns": [
+    "form template"
+  ],
+  "usageHints": [
+    "Rendered with the form template — see preview/component-time-picker.html"
+  ],
+  "doNotInvent": [],
+  "unknowns": [],
+  "tokensConsumed": [
+    "--borderColor",
+    "--borderRadiusLarge",
+    "--borderRadiusMedium",
+    "--borderRadiusSmall",
+    "--buttonColor2",
+    "--buttonColor2Hover",
+    "--dividerColor",
+    "--errorColor",
+    "--fontFamily",
+    "--fontSizeLarge",
+    "--fontSizeMedium",
+    "--fontSizeSmall",
+    "--fontSizeTiny",
+    "--fontWeightStrong",
+    "--heightLarge",
+    "--heightMedium",
+    "--heightSmall",
+    "--hoverColor",
+    "--inputColor",
+    "--inputColorDisabled",
+    "--placeholderColor",
+    "--popoverColor",
+    "--primaryColor",
+    "--primaryColorHover",
+    "--spacer-12",
+    "--spacer-8",
+    "--textColor1",
+    "--textColor2",
+    "--textColor3"
+  ],
+  "domAnatomy": {
+    "root": {
+      "tag": "div",
+      "class": "ds-time-picker",
+      "children": [
+        {
+          "tag": "div",
+          "class": "ds-time-picker__content"
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "preview": "preview/component-time-picker.html",
+    "source": "naive-ui time-picker",
+    "css": {
+      "file": "components.css",
+      "marker": "── Time Picker ──"
+    }
+  }
+}
