@@ -57,6 +57,13 @@
 - `components/*.json` 的 `tokensConsumed` 必须全部在 `css.json` 中有定义
 - `components.css` 必须与最新 preview 区块一致（重跑脚本后行数变化应在 ±2 内）
 
+### 4.5 同步 design-system.md
+- `<lib-path>/design-system.md` 存在时：
+  - `--rename`：同步替换 frontmatter 中的 token 名与正文引用
+  - `--add-color` / `--add-spacing`：在 frontmatter 对应表（colors / spacing）追加条目
+  - `--theme light`：更新 description 与正文中关于主题的表述
+- 不存在时：按主命令 Phase 4.5 的格式基于当前 token 补齐生成
+
 ### 5. 报告变更
 输出：
 - 影响的文件清单
@@ -69,6 +76,7 @@
 
 - ❌ **禁止**重命名后留下旧 token 引用（grep 必须为 0 命中）
 - ❌ **禁止**新增 token 后不更新 css.json（两文件必须同步）
+- ❌ **禁止**token 变更后 `design-system.md` 与 `css.json` 不同步（frontmatter 取值必须一致）
 - ✅ 所有重命名必须先 grep `--old` 列出影响范围，再批量替换
 - ✅ `--theme light` **不**自动反转颜色（仅移除标记）
 

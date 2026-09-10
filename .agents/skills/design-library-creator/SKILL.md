@@ -52,6 +52,7 @@ Phase 2: Token 规范化  → colors_and_type.css + css.json
 Phase 3: 组件拆解      → components/*.json + preview/component-*.html（按 8 类差异化渲染）
 Phase 4: 聚合 + UIKit  → components.css（脚本生成） + components/index.json + uikit-plan.json
                           + library-consumption.json + ui_kits/{type}/ × N
+                          + design-system.md（人类可读设计规范文档）
                           + 库专属 SKILL.md + README.md
 ```
 
@@ -241,6 +242,22 @@ node .agents/skills/design-library-creator/scripts/extract-components-css.mjs <l
 - `<lib-root>/README.md`（含 Downstream Consumption Guide）
 - 内容**按本库实际 token / 组件 / 主题**填充，不直接复制 trae-ui-example
 
+### 4.5 生成 design-system.md（人类可读设计规范文档）
+
+每个库必须产出 `<lib-root>/design-system.md`，格式与 `design-systems/design-system.md` **完全一致**（该文件是格式范本，可读不可改）：
+
+- **YAML frontmatter**（字段名固定）：`version`、`name`、`description`、`colors`、`typography`、`rounded`、`spacing`、`shadows`、`components`
+  - `colors`：平铺的语义化颜色表（primary / canvas / surface / border / text / text-muted / success / warning / danger / chart-* 等，按本库实际 token 值映射）
+  - `typography`：命名字号刻度（display-lg / title-md / title-sm / body-md / body-sm / caption / code），每项含 fontFamily / fontSize / fontWeight / lineHeight / letterSpacing
+  - `rounded` / `spacing` / `shadows`：命名刻度表
+  - `components`：关键组件的 token 级规格（app-canvas / top-nav / card / button-primary 等），值用 `{colors.xxx}`、`{rounded.xxx}`、`{shadows.xxx}`、`{typography.xxx}` 引用 frontmatter 中的 token
+- **正文 Markdown 章节**（顺序固定）：Overview → Colors → Typography → Layout → Components → Motion & Interaction → Responsive Behavior → Do's and Don'ts → Agent Prompt Guide（含 quick token reference 速查表）
+
+**强制要求**：
+- 所有取值必须来自本库 Phase 2 的实际 token（`colors_and_type.css` / `css.json`），**禁止照抄范本的色值与字号**
+- 正文的 Do's and Don'ts、Agent Prompt Guide 必须反映本库的真实风格定位（深色/浅色、品牌色、密度等），不写与本库无关的条目
+- `name` 字段填本库名称（即输出目录名），`description` 一句话概括本库风格
+
 ---
 
 ## 4 类来源适配器
@@ -283,6 +300,7 @@ node .agents/skills/design-library-creator/scripts/extract-components-css.mjs <l
 | Token 命名与契约冲突 | 拒绝写入，要求二选一：verbatim / 重命名 |
 | 组件 CSS 缺少 `@component-css-start` 标记 | 警告并跳过该组件，但保留 preview HTML |
 | 已有库根但 components.css 缺失 | 提示先运行 `refine-library` 重生成 |
+| 已有库根但 design-system.md 缺失 | 按 Phase 4.5 格式基于当前 token 补齐生成 |
 | 输出目录非空 | 询问 `--force` 后覆盖；默认拒绝 |
 | `tokensConsumed` 引用未定义 token | 报错，列出未定义 token，阻止写入 |
 | UIKit 缺少 quality-report.json | 报错，UIKit 不算完成 |
