@@ -24,6 +24,16 @@ description: "根据需求文档创建 HTML 原型，或对比需求文档与已
 
 ## 模式 A：根据需求创建原型
 
+### Phase 0: 风格选择（必走，不可跳过）
+
+创建原型前，必须先询问用户选择设计风格（使用 AskUserQuestion 工具）：
+
+1. 先列出 `design-systems/` 目录下所有可用的风格（每个子目录的 `design-system.md` 即一套风格，加上根目录的默认 `design-systems/design-system.md`）
+2. 用 AskUserQuestion 提问，第一个选项为默认风格（标注"推荐"或"默认"），其余按目录列出，每项附一句话风格描述（读取对应文件的 `description` 字段或 AGENTS.md 的可选风格清单）
+3. 如果用户在提问前已明确点名风格（如"用深色科技风"），则跳过提问，直接使用该风格
+4. 用户未选择/跳过提问时，使用默认 `design-systems/design-system.md`
+5. 选定后，读取对应的 `design-system.md`，后续 Phase 3 的样式规范以该文件为准
+
 ### Phase 1: 需求分析
 1. 读取需求文档（md/txt/doc/pdf）
 2. 提取以下信息：
@@ -165,11 +175,9 @@ description: "根据需求文档创建 HTML 原型，或对比需求文档与已
 
 #### 样式规范
 
-**默认设计系统**（完整规范见 `design-systems/design-system.md`，创建原型前必须先读取该文件）。除非用户明确要求其他风格，所有生成的原型必须遵循这套设计规范。
+**设计规范来源**：以 Phase 0 用户选定的风格文件为准（默认 `design-systems/design-system.md`，其他风格为 `design-systems/<风格名>/design-system.md`）。所有生成的原型必须完整遵循选定文件中的 token 与规范。
 
-**可选风格**：用户点名风格时，读取 `design-systems/<风格名>/design-system.md` 替代默认规范。当前可用：`dark-tech`（深色科技风）、`mono-minimal`（极简黑白 Linear 风）、`fresh-emerald`（清新翠绿 SaaS 风）、`warm-paper`（暖米纸感风）。清单以 `design-systems/` 目录实际内容为准。
-
-核心约束（从设计系统提炼，完整 token 以设计文档为准）：
+核心约束（以下为默认风格的提炼，选定其他风格时以该风格文件的 token 为准；完整规范始终以设计文档为准）：
 - 所有 CSS 在 `<style>` 标签内；用 CSS 变量承载设计 token，如 `--primary: #6366f1`、`--canvas: #f3f4f6`、`--surface: #ffffff`、`--border: #e5e7eb`、`--text: #1e293b`、`--text-muted: #64748b`、`--success/warning/danger` 等
 - 页面基调：冷灰画布 `#f3f4f6` + 白色 12px 圆角卡片 + 柔和阴影 `0 1px 3px rgba(0,0,0,0.05)`（hover `0 2px 10px 4px rgba(0,0,0,0.1)`）
 - 主色靛蓝 `#6366f1` 仅用于导航选中、主按钮、选中筛选、激活边框；hover 用 `#4f46e5`，浅色底用 `#eef2ff`
@@ -513,7 +521,7 @@ flowchart TD
 - `body` 上是否有 `transform`/`filter`/`will-change`（破坏 fixed 定位）
 
 #### E3. 设计系统合规检查
-对照 `design-systems/design-system.md`（用户指定其他风格时以用户要求为准）：
+对照 `design-systems/design-system.md`。用户指定其他风格（`design-systems/<风格名>/design-system.md`）时以指定风格为准；从原型代码无法判断所用风格且用户未指定时，先询问用户再检查：
 - 是否使用冷灰画布 `#f3f4f6` + 白色卡片 + 靛蓝主色 `#6366f1` 的基调
 - 卡片圆角 12px、阴影 `0 1px 3px rgba(0,0,0,0.05)`、边框 `#e5e7eb`
 - 主色是否克制使用（仅导航选中/主按钮/选中态），未引入第二个主导品牌色
