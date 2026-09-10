@@ -109,6 +109,11 @@ website/{slug}/
 ## 原型 HTML 规范
 
 - **默认设计系统**：`design-systems/design-system.md`。生成/审查原型时必须先读取并遵循该规范——冷灰画布 `#f3f4f6`、白色 12px 卡片、靛蓝主色 `#6366f1`、Roboto/系统 sans、紧凑运营型布局；原型为单文件无外部依赖，用原生 CSS/JS 复刻规范中 Element Plus / ECharts 的视觉与交互，不引入外部库。用户明确要求其他风格时除外。
+- **可选风格**：`design-systems/` 下每套风格一个目录（内含 `design-system.md`）。用户点名风格时（如"用深色科技风"）读取对应文件替代默认规范：
+  - `dark-tech` — 深色科技风：深 slate 画布 + 青色 Accent + 发光边框，数据密集型控制台
+  - `mono-minimal` — 极简黑白（Linear 风）：近白画布、黑底按钮、发丝边框、克制排版
+  - `fresh-emerald` — 清新翠绿 SaaS 风：薄荷画布、emerald 主色、大圆角柔和阴影
+  - `warm-paper` — 暖米纸感风：暖米画布、赭橙主色、衬线标题点缀，Notion 式编辑质感
 - 单文件自包含：CSS 在 `<style>`，JS 在 `<script>`
 - 页面切换：`<div class="page-section" id="page-xxx">` + `display` 控制
 - 模拟数据：覆盖所有分支状态（正常/异常/边界值/空状态）

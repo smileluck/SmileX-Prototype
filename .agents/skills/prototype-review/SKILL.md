@@ -167,6 +167,8 @@ description: "根据需求文档创建 HTML 原型，或对比需求文档与已
 
 **默认设计系统**（完整规范见 `design-systems/design-system.md`，创建原型前必须先读取该文件）。除非用户明确要求其他风格，所有生成的原型必须遵循这套设计规范。
 
+**可选风格**：用户点名风格时，读取 `design-systems/<风格名>/design-system.md` 替代默认规范。当前可用：`dark-tech`（深色科技风）、`mono-minimal`（极简黑白 Linear 风）、`fresh-emerald`（清新翠绿 SaaS 风）、`warm-paper`（暖米纸感风）。清单以 `design-systems/` 目录实际内容为准。
+
 核心约束（从设计系统提炼，完整 token 以设计文档为准）：
 - 所有 CSS 在 `<style>` 标签内；用 CSS 变量承载设计 token，如 `--primary: #6366f1`、`--canvas: #f3f4f6`、`--surface: #ffffff`、`--border: #e5e7eb`、`--text: #1e293b`、`--text-muted: #64748b`、`--success/warning/danger` 等
 - 页面基调：冷灰画布 `#f3f4f6` + 白色 12px 圆角卡片 + 柔和阴影 `0 1px 3px rgba(0,0,0,0.05)`（hover `0 2px 10px 4px rgba(0,0,0,0.1)`）
