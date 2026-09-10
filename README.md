@@ -60,7 +60,7 @@ npm -v       # 应显示 9+ 或更高
 ```bash
 npm install          # 安装依赖（必要）
 npm run dev          # 启动开发服务器 → http://localhost:5173
-npm run share        # 启动开发服务器 + 生成外网访问链接（localtunnel）
+npm run share        # 启动开发服务器 + 生成外网访问链接（cloudflared）
 npm run build        # 构建
 ```
 
@@ -83,11 +83,49 @@ curl -L https://github.com/cloudflare/cloudflared/releases/latest/download/cloud
 
 ## AI 工作流
 
-本项目使用 `/prototype-review` 技能与 AI 协作，支持两个方向的工作流。
+本项目内置 AI 技能（位于 `.agents/skills/`），用于与 AI 编程助手协作生成、审查、标注原型。
+
+> **本项目不绑定任何特定 AI 工具。** 技能是通用的 Markdown 指令文件，任何能读取项目文件的 AI 编程助手都可以使用——Claude Code、Kimi Code、Cursor、GitHub Copilot、Windsurf、Trae 等均可，不限于 Claude。
+
+### 工作原理
+
+```
+AGENTS.md                        # 项目级指令文件（开放标准，绝大多数 AI 工具自动读取）
+CLAUDE.md                        # 仅一行 @AGENTS.md 引用，用于兼容 Claude Code，不代表只能使用 Claude
+.agents/skills/<name>/SKILL.md   # 技能定义：描述 AI 应执行的完整流程与产出规范
+```
+
+### 如何使用
+
+**支持技能 / 斜杠命令的工具**（如 Claude Code、Kimi Code）——直接输入技能命令：
+
+```
+/prototype-review create docs/robot-requirements.md
+```
+
+**其他 AI 工具**（Cursor、Copilot、Windsurf 等）——用自然语言描述需求即可，AI 读取 `AGENTS.md` 与对应 `SKILL.md` 后会自动按技能流程执行：
+
+```
+根据 docs/robot-requirements.md 创建一个原型
+审查 robot-mgmt-v2 这个原型并补全标注
+```
+
+如果 AI 没有自动加载技能，可在对话中直接引用技能文件：
+
+```
+请按照 .agents/skills/prototype-review/SKILL.md 的流程，根据 docs/robot-requirements.md 创建原型
+```
+
+### 内置技能
+
+| 技能 | 用途 |
+|------|------|
+| `prototype-review` | 需求文档 → 原型 HTML + 标注 + SRS + 用户手册；或审查已有原型并补全 |
+| `design-library-creator` | 从任意 UI 来源（源码 / 网站 / 图片 / 组件库）生成设计系统包 |
 
 ### 方向一：需求文档 → 原型 HTML + 标注
 
-从需求文档出发，AI 自动生成完整原型（HTML + 标注 + 流程图）。
+从需求文档出发，AI 自动生成完整原型（HTML + 标注 + 流程图 + SRS + 用户手册）。
 
 **用法：**
 
@@ -108,12 +146,15 @@ curl -L https://github.com/cloudflare/cloudflared/releases/latest/download/cloud
 2. 生成单文件 HTML 原型（CSS + JS 内联，模拟数据覆盖所有状态）
 3. 为每个按钮、弹窗、Tab、表单生成标注（CSS 选择器定位）
 4. 制作 Mermaid 流程图（认证、核心流程、状态机、异常处理）
+5. 生成软件需求规格说明书（SRS）与用户手册
 
 生成的文件结构：
 ```
 website/<project-slug>/
   index.html      # 原型 HTML
   index.json      # 元数据 + 标注
+  srs.md          # 软件需求规格说明书
+  handbook.md     # 用户手册
   images/         # 流程图（Mermaid .md）
 ```
 
@@ -127,7 +168,7 @@ website/<project-slug>/
 /prototype-review <slug>                   # 审查原型，输出差距报告
 /prototype-review <slug> --annotate        # 审查 + 自动补全标注
 /prototype-review <slug> --flows           # 审查 + 制作流程图
-/prototype-review <slug> --full            # 审查 + 标注 + 流程图 + 模拟数据补全
+/prototype-review <slug> --full            # 审查 + 标注 + 流程图 + SRS + 手册 + 模拟数据补全
 ```
 
 **示例：**
@@ -167,6 +208,8 @@ website/                           # 原型数据存储
   {slug}/
     index.html                     # 单文件 HTML 原型
     index.json                     # 元数据 + 标注
+    srs.md                         # 软件需求规格说明书
+    handbook.md                    # 用户手册
     images/                        # 流程图
 ```
 
