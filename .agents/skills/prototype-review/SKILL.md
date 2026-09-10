@@ -164,10 +164,17 @@ description: "根据需求文档创建 HTML 原型，或对比需求文档与已
   ```
 
 #### 样式规范
-- 所有 CSS 在 `<style>` 标签内
-- 使用 CSS 变量统一颜色：`--primary`, `--secondary`, `--warning`, `--danger`
-- 卡片圆角 16px，阴影 `0 2px 12px rgba(0,0,0,0.08)`
-- 按钮 `padding: 12px 24px; border-radius: 10px`
+
+**默认设计系统**（完整规范见 `design-systems/design-system.md`，创建原型前必须先读取该文件）。除非用户明确要求其他风格，所有生成的原型必须遵循这套设计规范。
+
+核心约束（从设计系统提炼，完整 token 以设计文档为准）：
+- 所有 CSS 在 `<style>` 标签内；用 CSS 变量承载设计 token，如 `--primary: #6366f1`、`--canvas: #f3f4f6`、`--surface: #ffffff`、`--border: #e5e7eb`、`--text: #1e293b`、`--text-muted: #64748b`、`--success/warning/danger` 等
+- 页面基调：冷灰画布 `#f3f4f6` + 白色 12px 圆角卡片 + 柔和阴影 `0 1px 3px rgba(0,0,0,0.05)`（hover `0 2px 10px 4px rgba(0,0,0,0.1)`）
+- 主色靛蓝 `#6366f1` 仅用于导航选中、主按钮、选中筛选、激活边框；hover 用 `#4f46e5`，浅色底用 `#eef2ff`
+- 字体：Roboto + 系统 sans 回退；字号紧凑（12/14/16/24px），letter-spacing 保持 0
+- 控件圆角 8px、卡片 12px、筛选 pill/标签/头像用 9999px；主按钮高 40px
+- 布局密度优先：24px 页面边距、24–32px 面板间距，禁止营销页式 hero 区、装饰渐变、大面积留白
+- 原型为单文件无外部依赖：**不引入 Element Plus / UnoCSS / ECharts / Highlight.js**，用原生 CSS/JS 复刻其视觉与交互（如 tabs 下划线、tag 样式、聚焦边框）；图表用 Canvas/SVG 手绘简单实现，配色用 chart 色板（`#3b82f6` `#6366f1` `#10b981` `#f97316` `#a855f7`）
 - 页面切换动画：`.page-section.active { display: block; animation: fadeIn 0.4s ease; }`
 - 页面隐藏：`.page-section { display: none; }`
 
@@ -503,6 +510,14 @@ flowchart TD
 - 是否有 `* { !important }` 通配符可能覆盖标注样式
 - `body` 上是否有 `transform`/`filter`/`will-change`（破坏 fixed 定位）
 
+#### E3. 设计系统合规检查
+对照 `design-systems/design-system.md`（用户指定其他风格时以用户要求为准）：
+- 是否使用冷灰画布 `#f3f4f6` + 白色卡片 + 靛蓝主色 `#6366f1` 的基调
+- 卡片圆角 12px、阴影 `0 1px 3px rgba(0,0,0,0.05)`、边框 `#e5e7eb`
+- 主色是否克制使用（仅导航选中/主按钮/选中态），未引入第二个主导品牌色
+- 是否存在营销页式 hero 区、装饰渐变、玻璃拟态、大面积留白等违规项
+- 字体是否为 Roboto/系统 sans，字号是否在 12/14/16/24px 紧凑刻度内
+
 #### F. 流程图完整性
 - 核心流程是否有对应流程图
 - 异常分支是否都有覆盖
@@ -528,6 +543,7 @@ flowchart TD
 | page-section ID 格式 | ✅/❌ | |
 | 桥接导航兼容性 | ✅/❌ | 独立页面↔page-section 切换时 #app 显隐是否正确 |
 | z-index 合规 | ✅/❌ | 无元素占用 199–200，弹窗 ≥ 300 |
+| 设计系统合规 | ✅/❌ | 对照 design-systems/design-system.md |
 
 ### 标注覆盖检查
 | 页面 | 标注数 | 覆盖关键元素 | 缺失项 |

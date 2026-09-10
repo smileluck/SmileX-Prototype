@@ -108,6 +108,7 @@ website/{slug}/
 
 ## 原型 HTML 规范
 
+- **默认设计系统**：`design-systems/design-system.md`。生成/审查原型时必须先读取并遵循该规范——冷灰画布 `#f3f4f6`、白色 12px 卡片、靛蓝主色 `#6366f1`、Roboto/系统 sans、紧凑运营型布局；原型为单文件无外部依赖，用原生 CSS/JS 复刻规范中 Element Plus / ECharts 的视觉与交互，不引入外部库。用户明确要求其他风格时除外。
 - 单文件自包含：CSS 在 `<style>`，JS 在 `<script>`
 - 页面切换：`<div class="page-section" id="page-xxx">` + `display` 控制
 - 模拟数据：覆盖所有分支状态（正常/异常/边界值/空状态）
